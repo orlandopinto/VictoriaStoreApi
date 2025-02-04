@@ -1,3 +1,4 @@
+import { envs } from "./config";
 import { AppRoutes } from "./presentation/routes";
 import { Server } from "./presentation/Server";
 
@@ -10,7 +11,7 @@ import { Server } from "./presentation/Server";
 // o tomarla de las variables de las variables de entorno
 async function main() {
      new Server({
-          port: 3000,//envs.PORT
+          port: envs.PORT,
           routes: AppRoutes.routes
      }).start()
 }
