@@ -1,4 +1,5 @@
 import { envs } from "./config";
+import { MongoDatabase } from "./data/mongodb";
 import { AppRoutes } from "./presentation/routes";
 import { Server } from "./presentation/Server";
 
@@ -10,8 +11,8 @@ import { Server } from "./presentation/Server";
 //El puerto es opcional, si se quiere hacer declarativo colocar dentro de corchetes el puerto que se desea usar Server({4200})
 // o tomarla de las variables de las variables de entorno
 async function main() {
-     new Server({
-          port: envs.PORT,
-          routes: AppRoutes.routes
-     }).start()
+
+     await MongoDatabase.connect({ dbName: envs.MONGO_DB_NAME, mongoUrl: envs.MONGO_URL })
+
+     new Server({ port: envs.PORT, routes: AppRoutes.routes }).start()
 }
