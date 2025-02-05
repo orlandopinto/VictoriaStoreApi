@@ -1,10 +1,46 @@
-import { Request, Response } from "express"
-import { AuthRepository, CustomError, RegisterUserDto } from "../../domain";
-import { JwtAdapter } from "../../config";
+import { Request, Response } from "express";
+import { UserModel } from "../../data/mongodb";
+import { AuthRepository, CustomError, LoginUserDto, LoginUser, RegisterUser, RegisterUserDto } from "../../domain";
 
 export class AuthController {
 
      constructor(private readonly authRepository: AuthRepository) { }
+
+     // #region PUBLIC FUNCTIONS
+
+     loginUser = (req: Request, res: Response) => {
+          const [error, loginUserDto] = LoginUserDto.login(req.body);
+          if (error) return res.status(400).json({ error });
+
+          new LoginUser(this.authRepository)
+               .execute(loginUserDto!)
+               .then((data) => res.json(data))
+               .catch(error => this.handleEror(error, res));
+     }
+
+     registerUser = (req: Request, res: Response) => {
+
+          const [error, registerUserDto] = RegisterUserDto.create(req.body);
+          if (error) return res.status(400).json({ error });
+
+          new RegisterUser(this.authRepository)
+               .execute(registerUserDto!)
+               .then((data) => res.json(data))
+               .catch(error => this.handleEror(error, res));
+     }
+
+     getUsers = (req: Request, res: Response) => {
+          UserModel.find()
+               .then(users => res.json({
+                    //users,
+                    user: req.body.user
+               }))
+               .catch(() => res.status(500).json({ error: 'Internal Server Error' }));
+     }
+
+     // #endregion
+
+     // #region PRIVATE FUNCTIONS
 
      private handleEror = (error: unknown, res: Response) => {
           if (error instanceof CustomError) {
@@ -14,23 +50,5 @@ export class AuthController {
           return res.status(500).json({ error: 'Internal Server Error' })
      }
 
-     loginUser = (req: Request, res: Response) => {
-          res.json(req.body)
-     }
-
-     registerUser = (req: Request, res: Response) => {
-
-          const [error, registerUserDto] = RegisterUserDto.create(req.body);
-
-          if (error) res.status(400).json({ error });
-
-          this.authRepository.register(registerUserDto!)
-               .then(async (user) => res.json(
-                    {
-                         user,
-                         token: await JwtAdapter.generateToken({ email: user.email })
-                    }
-               ))
-               .catch(error => this.handleEror(error, res))
-     }
+     // #endregion
 }
