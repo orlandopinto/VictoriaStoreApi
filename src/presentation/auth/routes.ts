@@ -33,7 +33,7 @@ export class AuthorizationRoutes {
 
           router.post('/signin', accountController.signIn);
           router.post('/signup', accountController.signUp);
-          router.get('/systemusers', [AuthMiddleware.validateJWT], accountController.getSystemUsers)
+          router.get('/', [AuthMiddleware.validateJWT], accountController.getSystemUsers)
 
           return router;
      }

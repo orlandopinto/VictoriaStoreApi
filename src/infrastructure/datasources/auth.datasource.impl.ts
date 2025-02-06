@@ -33,7 +33,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                }
 
                // 3. Mapear la respuesta a nuestra entidadad
-               console.log('user: ', user)
+               //console.log('user: ', user)
                return UserMapper.userEntityFromObject(user);
 
           } catch (error) {

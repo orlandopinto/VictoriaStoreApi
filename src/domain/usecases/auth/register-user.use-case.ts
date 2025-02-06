@@ -7,8 +7,7 @@ import { SignToken, UserToken } from '../../types/auth.types';
 
 export class RegisterUser implements RegisterUserUseCase {
 
-     constructor(private readonly authRepository: AuthRepository, private readonly signToken: SignToken = JwtAdapter.generateToken
-     ) { }
+     constructor(private readonly authRepository: AuthRepository, private readonly signToken: SignToken = JwtAdapter.generateToken) { }
 
      async execute(registerUserDto: RegisterUserDto): Promise<UserToken> {
 

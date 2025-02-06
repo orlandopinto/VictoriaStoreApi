@@ -37,12 +37,7 @@ export class AuthController {
           try {
                UserModel.find()
                     .then(result => res.json({ result }))
-                    .catch((error) => {
-                         console.log('respuesta: ', res)
-                         console.log('status code: ', res.statusCode)
-                         console.log('error: ', error) //posiblemente caduque el token
-                         res.status(500).json({ error: 'Internal Server Error' })
-                    });
+                    .catch(error => this.handleEror(error, res));
           } catch (error) {
                console.log('error: ', error)
           }
@@ -69,7 +64,7 @@ export class AuthController {
                .catch(error => this.handleEror(error, res));
      }
 
-     getSystemUsers = (res: any) => {
+     getSystemUsers = (req: any, res: any) => {
           SystemUserModel.find()
                .then(users => res.json({ users }))
                .catch((error) => {
