@@ -4,14 +4,16 @@ export class UserMapper {
 
      static userEntityFromObject(object: { [key: string]: any }) {
 
-          const { id, _id, name, email, password, roles } = object
-          // Si no existe _id o id 
-          if (!_id || !id) throw CustomError.badRequest('Missing id')
+          const { id, _id, name, email, password, img, roles } = object
+          // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS ********* 
+
           if (!name) throw CustomError.badRequest('Missing name')
           if (!email) throw CustomError.badRequest('Missing ')
           if (!password) throw CustomError.badRequest('Missing password')
           if (!roles) throw CustomError.badRequest('Missing roles')
-          return new UserEntity(_id || id, name, email, password, roles);
+
+          // ********************** FIN DE LA VALIDACIÓN *********************
+          return new UserEntity(_id || id, name, email, password, img, roles);
      }
 
 }

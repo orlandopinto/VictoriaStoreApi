@@ -1,19 +1,19 @@
 import { JwtAdapter } from '../../../config';
-import { RegisterUserDto } from '../../dtos/auth/register-user.dto';
+import { SignInUserDto } from '../../dtos/auth';
 import { CustomError } from '../../errors/custom.error';
-import { RegisterUserUseCase } from '../../interfaces/IAuthorization';
+import { SignInUserUseCase } from '../../interfaces/IAuthorization';
 import { AuthRepository } from '../../repositories/auth.repository';
-import { SignToken, UserToken } from '../../types/auth.types';
+import { SignToken, SystemUserToken } from '../../types/auth.types';
 
-export class RegisterUser implements RegisterUserUseCase {
+export class SignInUser implements SignInUserUseCase {
 
      constructor(private readonly authRepository: AuthRepository, private readonly signToken: SignToken = JwtAdapter.generateToken
      ) { }
 
-     async execute(registerUserDto: RegisterUserDto): Promise<UserToken> {
+     async execute(SignInUserDto: SignInUserDto): Promise<SystemUserToken> {
 
-          //crear el usuario
-          const user = await this.authRepository.register(registerUserDto);
+          // hacer login
+          const user = await this.authRepository.signIn(SignInUserDto);
 
           // Token
           const token = await this.signToken({ id: user.id }, '2h')
@@ -25,7 +25,7 @@ export class RegisterUser implements RegisterUserUseCase {
                token: token,
                user: {
                     id: user.id,
-                    name: user.name,
+                    userName: user.userName,
                     email: user.email,
                }
           }

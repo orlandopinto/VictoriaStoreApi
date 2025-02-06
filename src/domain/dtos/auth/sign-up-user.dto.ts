@@ -1,19 +1,18 @@
 import { Validators } from "../../../config";
 
-export class RegisterUserDto {
+export class SignUpUserDto {
 
      private constructor(
-          public name: string,
+          public userName: string,
           public email: string,
-          public password: string,
-          public img?: string      //<== AQUI incluir todos los campos que se van a registrar
+          public password: string
      ) { }
 
      //primer argumento es el mensaje de error y el segundo argumento va a ser la instancia de DTO
      //nota lo de abajo es una Tupla
-     static create(object: { [key: string]: any }): [string?, RegisterUserDto?] {
-          const { name, email, password, img } = object; //<== AQUI
-          if (!name) return ['Missing name']
+     static create(object: { [key: string]: any }): [string?, SignUpUserDto?] {
+          const { userName, email, password } = object;
+          if (!userName) return ['Missing user name']
           if (!email) return ['Missing email']
           if (!Validators.email.test(email)) return ['Email is not valid']
           if (!password) return ['Missing password']
@@ -21,7 +20,7 @@ export class RegisterUserDto {
 
           return [
                undefined,
-               new RegisterUserDto(name, email, password, img) //<== Y AQUI
+               new SignUpUserDto(userName, email, password)
           ];
      }
 }

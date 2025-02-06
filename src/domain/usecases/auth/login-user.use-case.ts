@@ -1,22 +1,9 @@
 import { JwtAdapter } from '../../../config';
 import { LoginUserDto } from '../../dtos/auth/login-user.dto';
 import { CustomError } from '../../errors/custom.error';
+import { LoginUserUseCase } from '../../interfaces/IAuthorization';
 import { AuthRepository } from '../../repositories/auth.repository';
-
-type UserToken = {
-     token: string;
-     user: {
-          id: string;
-          name: string;
-          email: string;
-     }
-}
-
-interface LoginUserUseCase {
-     execute(loginUserDto: LoginUserDto): Promise<UserToken>
-}
-
-type SignToken = (payload: Object, duration?: any) => Promise<string | null>
+import { SignToken, UserToken } from '../../types/auth.types';
 
 export class LoginUser implements LoginUserUseCase {
 
