@@ -23,7 +23,7 @@ const systemUserSchema = new Schema(
           lastName: {
                type: String
           },
-          phoneNumner: {
+          phoneNumber: {
                type: String
           },
           imageProfilePath: {
@@ -44,7 +44,7 @@ const systemUserSchema = new Schema(
                default: 0
           },
           address: {
-            type:String,   
+               type: String
           },
           birthDate: {
                type: Date,

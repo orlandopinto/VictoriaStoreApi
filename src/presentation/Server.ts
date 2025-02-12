@@ -22,7 +22,14 @@ export class Server {
           //Middlewares
           this.app.use(express.json());
           this.app.use(express.urlencoded({ extended: true }));// x-www-formurlencoded
-
+          const cors = require('cors')
+          this.app.use(cors())
+          this.app.use((req, res, next) => {
+               res.setHeader('Access-Control-Allow-Origin', '*'); // Allow requests from any origin
+               res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+               res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+               next();
+          });
 
           this.app.use(this.routes);
 

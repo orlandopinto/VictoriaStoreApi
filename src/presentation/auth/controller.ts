@@ -66,11 +66,18 @@ export class AuthController {
 
      getSystemUsers = (req: any, res: any) => {
           SystemUserModel.find()
-               .then(users => res.json({ users }))
+               .then(users => {
+                    const Users = [...users];
+                    Users.map((item) => {
+                         item.password = "********************"
+                    })
+                    //console.log('users: ', tmpUsers)
+                    res.json(Users)
+               })
                .catch((error) => {
-                    console.log('respuesta: ', res)
-                    console.log('status code: ', res.statusCode)
-                    console.log('error: ', error) //posiblemente caduque el token
+                    // console.log('respuesta: ', res)
+                    // console.log('status code: ', res.statusCode)
+                    // console.log('error: ', error) //posiblemente caduque el token
                     res.status(500).json({ error: 'Internal Server Error' })
                });
      }
