@@ -20,12 +20,27 @@ export class SignInUser implements SignInUserUseCase {
                throw CustomError.internalServerError('Error generating token')
           }
 
+          //WARNING: Modificar la estructura que se necesita al hacer login
+          //NOTE: Independientemente de los campos definidos en SystemUserToken, aqui se puede omitir los campos
+          //      que retorna la api, siempre y cuando no sean obligatorios
           return {
                token: token,
                user: {
                     id: user.id,
-                    userName: user.userName,
                     email: user.email,
+                    password: "******************",
+                    address: user.address,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    phoneNumber: user.phoneNumber,
+                    imageProfilePath: user.imageProfilePath,
+                    city: user.city,
+                    zipcode: user.zipcode,
+                    lockoutEnabled: user.lockoutEnabled,
+                    accessFailedCount: user.accessFailedCount,
+                    birthDate: user.birthDate,
+                    roles: user.roles,
+                    permissions: user.permissions
                }
           }
      }

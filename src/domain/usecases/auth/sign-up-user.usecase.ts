@@ -20,12 +20,25 @@ export class SignUpUser implements SignUpUserUseCase {
                throw CustomError.internalServerError('Error generating token')
           }
 
+          //WARNING: Modificar la estructura que se necesita al hacer login
           return {
                token: token,
                user: {
                     id: user.id,
-                    userName: user.userName,
                     email: user.email,
+                    password: user.password,
+                    address: user.address,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    phoneNumber: user.phoneNumber,
+                    imageProfilePath: user.imageProfilePath,
+                    city: user.city,
+                    zipcode: user.zipcode,
+                    lockoutEnabled: user.lockoutEnabled,
+                    accessFailedCount: user.accessFailedCount,
+                    birthDate: user.birthDate,
+                    roles: user.roles,
+                    permissions: user.permissions
                }
           }
      }

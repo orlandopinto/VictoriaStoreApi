@@ -1,9 +1,9 @@
 import { Validators } from "../../../config";
+import { permissionsSchema } from "../../../data/mongodb/models/system-user.model";
 
 export class SignUpUserDto {
 
      private constructor(
-          public userName: string,
           public email: string,
           public password: string,
           public address: string,
@@ -16,14 +16,14 @@ export class SignUpUserDto {
           public lockoutEnabled: boolean,
           public accessFailedCount: number,
           public birthDate: Date,
-          public roles: string[]
+          public roles: string[],
+          public permissions: [typeof permissionsSchema]
      ) { }
 
-     //primer argumento es el mensaje de error y el segundo argumento va a ser la instancia de DTO
-     //nota lo de abajo es una Tupla
+     //WARNING: primer argumento es el mensaje de error y el segundo argumento va a ser la instancia de DTO
+     //NOTE: lo de abajo es una Tupla
      static create(object: { [key: string]: any }): [string?, SignUpUserDto?] {
-          const { userName, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles } = object;
-          if (!userName) return ['Missing user name']
+          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions } = object;
           if (!email) return ['Missing email']
           if (!Validators.email.test(email)) return ['Email is not valid']
           if (!password) return ['Missing password']
@@ -31,7 +31,7 @@ export class SignUpUserDto {
 
           return [
                undefined,
-               new SignUpUserDto(userName, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles)
+               new SignUpUserDto(email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions)
           ];
      }
 }

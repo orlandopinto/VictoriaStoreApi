@@ -9,7 +9,6 @@ export default class AuthMiddleware {
                await JwtAdapter.validateToken(req, res, next)
 
           } catch (error) {
-               console.log(error)
                res.status(500).json({ error: 'Internal Server Error' })
           }
 

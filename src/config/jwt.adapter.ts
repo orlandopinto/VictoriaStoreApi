@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
-import { envs } from './envs';
-
-const JWT_SEED = envs.JWT_SEED;
+import { JWT_SEED } from './envs';
 
 export class JwtAdapter {
 

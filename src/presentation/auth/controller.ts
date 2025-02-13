@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { AuthRepository, CustomError, LoginUser, LoginUserDto, RegisterUser, RegisterUserDto, SignInUser, SignUpUser } from "../../domain";
@@ -67,17 +66,17 @@ export class AuthController {
      getSystemUsers = (req: any, res: any) => {
           SystemUserModel.find()
                .then(users => {
-                    const Users = [...users];
-                    Users.map((item) => {
-                         item.password = "********************"
+                    const data = [...users];
+                    data.map((usr) => {
+                         usr.password = "********************"
                     })
-                    //console.log('users: ', tmpUsers)
-                    res.json(Users)
+                    res.json(data)
                })
                .catch((error) => {
                     // console.log('respuesta: ', res)
                     // console.log('status code: ', res.statusCode)
                     // console.log('error: ', error) //posiblemente caduque el token
+                    console.log('error: ', error)
                     res.status(500).json({ error: 'Internal Server Error' })
                });
      }
@@ -90,7 +89,7 @@ export class AuthController {
           if (error instanceof CustomError) {
                return res.status(error.statusCode).json({ error: error.message })
           }
-          console.log(error)
+          console.log('handleEror: ', error)
           return res.status(500).json({ error: 'Internal Server Error' })
      }
 

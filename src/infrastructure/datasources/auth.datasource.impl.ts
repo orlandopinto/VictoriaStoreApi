@@ -63,6 +63,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                if (error instanceof CustomError) {
                     throw error;
                }
+               console.log('AuthDatasourceImpl > register > Error: ', error)
                throw CustomError.internalServerError();
           }
      }
@@ -94,15 +95,15 @@ export class AuthDatasourceImpl implements AuthDatasource {
      }
 
      async signUp(registerUserDto: SignUpUserDto): Promise<SystemUserEntity> {
-          //TODO: Aqui es donde se especifican todos los campos para realizar el registro del usuario
-          const { userName, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles } = registerUserDto;
+          //NOTE: Aqui es donde se especifican todos los campos para realizar el registro del usuario
+          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions } = registerUserDto;
           try {
                // 1. verificar si el correo existe
                const exists = await SystemUserModel.findOne({ email: email })
                if (exists) throw CustomError.badRequest('User already exists.')
 
                // 2. Hash de contraseña
-               const user = await SystemUserModel.create({ userName: userName, email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles })
+               const user = await SystemUserModel.create({ email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions: permissions })
                await user.save();
 
                // 3. Mapear la respuesta a nuestra entidadad
@@ -112,6 +113,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                if (error instanceof CustomError) {
                     throw error;
                }
+               console.log('error: ', error)
                throw CustomError.internalServerError();
           }
      }

@@ -1,4 +1,5 @@
-import express, { Router } from 'express'
+import express, { Router } from 'express';
+import { PORT } from '../config';
 
 interface Options {
      port?: number;
@@ -11,7 +12,7 @@ export class Server {
      private readonly routes: Router;
 
      constructor(options: Options) {
-          const { port = 3000, routes } = options
+          const { port = 3500, routes } = options
           this.port = port;
           this.routes = routes;
      }
@@ -33,8 +34,8 @@ export class Server {
 
           this.app.use(this.routes);
 
-          this.app.listen(this.port, () => {
-               console.log(`Server running on port ${this.port}`)
+          this.app.listen(PORT || 3500, () => {
+               console.log(`Server running on port ${PORT}`)
           })
      }
 }
