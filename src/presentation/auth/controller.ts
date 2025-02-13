@@ -1,7 +1,9 @@
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
-import { AuthRepository, CustomError, LoginUser, LoginUserDto, RegisterUser, RegisterUserDto, SignInUser, SignUpUser } from "../../domain";
-import { SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { LoginUser, RegisterUser, SignInUser, SignUpUser } from "../../domain";
+import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { CustomError } from "../../domain/errors/custom.error";
+import { AuthRepository } from "../../domain/repositories/auth.repository";
 
 export class AuthController {
 

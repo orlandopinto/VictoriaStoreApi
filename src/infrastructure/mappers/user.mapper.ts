@@ -1,4 +1,5 @@
-import { CustomError, UserEntity } from "../../domain";
+import { UserEntity } from "../../domain/entities"
+import { CustomError } from "../../domain/errors/custom.error"
 
 export class UserMapper {
 

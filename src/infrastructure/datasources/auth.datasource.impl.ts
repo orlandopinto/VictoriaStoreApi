@@ -1,9 +1,11 @@
 import { BcryptAdapter } from "../../config";
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
-import { AuthDatasource, CustomError, LoginUserDto, RegisterUserDto, UserEntity } from "../../domain";
-import { SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { AuthDatasource } from "../../domain/datasources/auth.datasource";
+import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { UserEntity } from "../../domain/entities";
 import { SystemUserEntity } from "../../domain/entities/system-user.entity";
+import { CustomError } from "../../domain/errors/custom.error";
 import { SystemUserMapper } from "../mappers/system-user.mapper";
 import { UserMapper } from "../mappers/user.mapper";
 
@@ -32,8 +34,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                     throw CustomError.notFound('User name or password invalid.');
                }
 
-               // 3. Mapear la respuesta a nuestra entidadad
-               //console.log('user: ', user)
+               // 3. Mapear la respuesta a la entidad
                return UserMapper.userEntityFromObject(user);
 
           } catch (error) {
@@ -56,7 +57,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                const user = await UserModel.create({ name: name, email: email, password: this.hashPassword(password), img })
                await user.save();
 
-               // 3. Mapear la respuesta a nuestra entidadad
+               // 3. Mapear la respuesta a la entidad
                return UserMapper.userEntityFromObject(user);
 
           } catch (error) {
@@ -83,7 +84,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                     throw CustomError.notFound('User name or password invalid.');
                }
 
-               // 3. Mapear la respuesta a nuestra entidadad
+               // 3. Mapear la respuesta a la entidad
                return SystemUserMapper.systemUserEntityFromObject(user);
 
           } catch (error) {
@@ -106,7 +107,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                const user = await SystemUserModel.create({ email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions: permissions })
                await user.save();
 
-               // 3. Mapear la respuesta a nuestra entidadad
+               // 3. Mapear la respuesta a la entidad
                return SystemUserMapper.systemUserEntityFromObject(user);
 
           } catch (error) {

@@ -1,5 +1,5 @@
-import { CustomError } from "../../domain";
 import { SystemUserEntity } from "../../domain/entities/system-user.entity";
+import { CustomError } from "../../domain/errors/custom.error";
 
 export class SystemUserMapper {
 

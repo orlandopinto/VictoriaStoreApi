@@ -1,8 +1,5 @@
-import { SignInUserDto, SignUpUserDto } from "../dtos/auth";
-import { LoginUserDto } from "../dtos/auth/login-user.dto";
-import { RegisterUserDto } from "../dtos/auth/register-user.dto";
-import { SystemUserEntity } from "../entities/system-user.entity";
-import { UserEntity } from "../entities/user.entity";
+import { SignInUserDto, SignUpUserDto, LoginUserDto, RegisterUserDto } from "../dtos/auth";
+import { SystemUserEntity, UserEntity } from "../entities";
 
 export abstract class AuthDatasource {
 
