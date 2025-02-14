@@ -1,5 +1,5 @@
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../dtos/auth";
-import { SystemUserToken, UserToken } from "../types/auth.types";
+import { SystemUserToken, UserToken } from "../types/auth.type";
 
 export interface LoginUserUseCase {
      execute(loginUserDto: LoginUserDto): Promise<UserToken>

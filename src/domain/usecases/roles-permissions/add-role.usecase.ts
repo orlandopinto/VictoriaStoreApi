@@ -1,10 +1,10 @@
 import { JwtAdapter } from "../../../config";
-import { AddRoleDto } from "../../dtos/roles";
+import { AddRoleDto } from "../../dtos/roles-permissions";
 import { CustomError } from "../../errors/custom.error";
 import { AddRoleUseCase } from "../../interfaces/IRoles";
 import { RolesRepository } from "../../repositories/roles.repository";
-import { SignToken } from "../../types/auth.types";
-import { RoleToken } from "../../types/roles.types";
+import { SignToken } from "../../types";
+import { RoleToken } from "../../types/roles.type";
 
 export class AddRole implements AddRoleUseCase {
 

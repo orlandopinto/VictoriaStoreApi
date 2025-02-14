@@ -1,0 +1,1 @@
+export type SignToken = (payload: Object, duration?: any) => Promise<string | null>

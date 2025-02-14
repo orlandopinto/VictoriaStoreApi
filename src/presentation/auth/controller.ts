@@ -37,7 +37,7 @@ export class AuthController {
      getUsers = (req: any, res: any) => {
           try {
                UserModel.find()
-                    .then(result => res.json({ result }))
+                    .then(data => res.json({ data }))
                     .catch(error => this.handleEror(error, res));
           } catch (error) {
                console.log('error: ', error)

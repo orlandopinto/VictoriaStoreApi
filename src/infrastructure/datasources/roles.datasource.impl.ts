@@ -1,6 +1,6 @@
 import { RolesModel } from "../../data/mongodb/models/roles.model";
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles";
+import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles-permissions";
 import { RolesEntity, DeleteRoleEntity } from "../../domain/entities";
 import { CustomError } from "../../domain/errors/custom.error";
 import { RoleMapper } from "../mappers/roles.mapper";

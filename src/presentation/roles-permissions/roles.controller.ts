@@ -1,15 +1,13 @@
 import { RolesModel } from "../../data/mongodb/models/roles.model";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles";
+import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles-permissions";
 import { CustomError } from "../../domain/errors/custom.error";
 import { RolesRepository } from "../../domain/repositories/roles.repository";
-import { AddRole } from "../../domain/usecases/roles/add-role.usecase";
-import { DeleteRole } from "../../domain/usecases/roles/delete-role.usecase";
+import { AddRole } from "../../domain/usecases/roles-permissions/add-role.usecase";
+import { DeleteRole } from "../../domain/usecases/roles-permissions/delete-role.usecase";
 
 export class RoleController {
 
      constructor(private readonly rolesRepository: RolesRepository) { }
-
-     // #region PUBLIC FUNCTIONS
 
      addRole = (req: any, res: any) => {
           const [error, addRoleDto] = AddRoleDto.create(req.body);
@@ -38,16 +36,12 @@ export class RoleController {
      getRoles = (req: any, res: any) => {
           try {
                RolesModel.find()
-                    .then(result => res.json({ result }))
+                    .then(data => res.json({ data }))
                     .catch(error => this.handleEror(error, res));
           } catch (error) {
                console.log('error: ', error)
           }
      }
-
-     // #endregion
-
-     // #region PRIVATE FUNCTIONS
 
      private handleEror = (error: unknown, res: any) => {
           if (error instanceof CustomError) {
@@ -57,5 +51,4 @@ export class RoleController {
           return res.status(500).json({ error: 'Internal Server Error' })
      }
 
-     // #endregion
 }

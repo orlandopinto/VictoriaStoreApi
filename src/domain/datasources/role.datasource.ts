@@ -1,4 +1,4 @@
-import { AddRoleDto, DeleteRoleDto } from "../dtos/roles/index";
+import { AddRoleDto, DeleteRoleDto } from "../dtos/roles-permissions/index";
 import { DeleteRoleEntity, RolesEntity } from "../entities";
 
 export abstract class RoleDatasource {

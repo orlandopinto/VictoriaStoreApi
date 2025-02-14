@@ -1,5 +1,5 @@
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles";
+import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles-permissions";
 import { DeleteRoleEntity, RolesEntity } from "../../domain/entities/roles.entity";
 import { RolesRepository } from "../../domain/repositories/roles.repository";
 

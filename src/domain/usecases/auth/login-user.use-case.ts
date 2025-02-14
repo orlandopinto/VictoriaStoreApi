@@ -3,7 +3,8 @@ import { LoginUserDto } from '../../dtos/auth/login-user.dto';
 import { CustomError } from '../../errors/custom.error';
 import { LoginUserUseCase } from '../../interfaces/IAuthorization';
 import { AuthRepository } from '../../repositories/auth.repository';
-import { SignToken, UserToken } from '../../types/auth.types';
+import { SignToken } from '../../types';
+import { UserToken } from '../../types/auth.type';
 
 export class LoginUser implements LoginUserUseCase {
 
