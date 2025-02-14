@@ -1,9 +1,8 @@
-import { ResourseModel } from "../../data/mongodb";
-import { AddResourse } from "../../domain";
-import { AddResourseDto, DeleteResourseDto } from "../../domain/dtos/roles-permissions";
-import { CustomError } from "../../domain/errors/custom.error";
-import { ResourseRepository } from "../../domain/repositories";
-import { DeleteResourse } from "../../domain/usecases/roles-permissions";
+import { ResourseModel } from "../../../data/mongodb";
+import { AddResourse } from "../../../domain";
+import { AddResourseDto, DeleteResourseDto } from "../../../domain/dtos/roles-permissions";
+import { ResourseRepository } from "../../../domain/repositories";
+import { DeleteResourse } from "../../../domain/usecases/roles-permissions";
 
 export class ResourseController {
 
@@ -16,7 +15,7 @@ export class ResourseController {
           new AddResourse(this.resourseRepository)
                .execute(addResourseDto!)
                .then((data) => res.json(data))
-               .catch(error => this.handleEror(error, res));
+               .catch(error => { throw { error, res }; });
      }
 
      deleteResourse = (req: any, res: any) => {
@@ -27,7 +26,7 @@ export class ResourseController {
                new DeleteResourse(this.resourseRepository)
                     .execute(deleteResourseDto!)
                     .then((data) => res.json(data))
-                    .catch(error => this.handleEror(error, res));
+                    .catch(error => { throw { error, res }; });
           } catch (error) {
                console.log('error: ', error)
           }
@@ -37,20 +36,10 @@ export class ResourseController {
           try {
                ResourseModel.find()
                     .then(data => res.json({ data }))
-                    .catch(error => this.handleEror(error, res));
+                    .catch(error => { throw { error, res }; });
           } catch (error) {
                console.log('error: ', error)
           }
-     }
-
-     // #region PRIVATE FUNCTIONS
-
-     private handleEror = (error: unknown, res: any) => {
-          if (error instanceof CustomError) {
-               return res.status(error.statusCode).json({ error: error.message })
-          }
-          console.log('handleEror: ', error)
-          return res.status(500).json({ error: 'Internal Server Error' })
      }
 
 }

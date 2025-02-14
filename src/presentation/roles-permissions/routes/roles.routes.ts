@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { RolesDatasourceImpl } from "../../infrastructure/datasources/roles.datasource.impl";
-import { RolesRepositoryImpl } from "../../infrastructure/repositories/roles.repository.impl";
-import AuthMiddleware from "../middlewares/auth.middleware";
-import { RoleController } from "./roles.controller";
+import { RolesDatasourceImpl } from "../../../infrastructure/datasources/roles.datasource.impl";
+import { RolesRepositoryImpl } from "../../../infrastructure/repositories/roles.repository.impl";
+import AuthMiddleware from "../../middlewares/auth.middleware";
+import { RoleController } from "../controllers/roles.controller";
 
 export class RolesRoutes {
 

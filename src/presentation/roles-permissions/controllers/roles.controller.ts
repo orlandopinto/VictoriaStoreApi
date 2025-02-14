@@ -1,9 +1,9 @@
-import { RolesModel } from "../../data/mongodb/models/roles.model";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles-permissions";
-import { CustomError } from "../../domain/errors/custom.error";
-import { RolesRepository } from "../../domain/repositories/roles.repository";
-import { AddRole } from "../../domain/usecases/roles-permissions/add-role.usecase";
-import { DeleteRole } from "../../domain/usecases/roles-permissions/delete-role.usecase";
+import { RolesModel } from "../../../data/mongodb/models/roles.model";
+import { AddRoleDto, DeleteRoleDto } from "../../../domain/dtos/roles-permissions";
+import { CustomError } from "../../../domain/errors/custom.error";
+import { RolesRepository } from "../../../domain/repositories/roles.repository";
+import { AddRole } from "../../../domain/usecases/roles-permissions/add-role.usecase";
+import { DeleteRole } from "../../../domain/usecases/roles-permissions/delete-role.usecase";
 
 export class RoleController {
 

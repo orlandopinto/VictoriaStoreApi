@@ -1,9 +1,7 @@
-import { error } from "console";
 import { ResourseModel } from "../../data/mongodb/models/resourse.model";
 import { ResourseDatasource } from "../../domain/datasources";
 import { AddResourseDto, DeleteResourseDto } from "../../domain/dtos/roles-permissions";
-import { ResourseEntity, DeleteResourseEntity } from "../../domain/entities";
-//import { CustomError } from "../../domain/errors/custom.error";
+import { DeleteResourseEntity, ResourseEntity } from "../../domain/entities";
 import { ResourseMapper } from "../mappers";
 
 export class ResourseDatasourceImpl implements ResourseDatasource {
