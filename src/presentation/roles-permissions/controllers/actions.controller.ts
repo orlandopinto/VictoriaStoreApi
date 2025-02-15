@@ -7,7 +7,7 @@ export class ActionController {
 
      constructor(private readonly actionRepository: ActionRepository) { }
 
-     addAction = (req: any, res: any) => {
+     addAction = async (req: any, res: any) => {
           const [error, addActionDto] = AddActionDto.create(req.body);
           if (error) return res.status(400).json({ error });
 
