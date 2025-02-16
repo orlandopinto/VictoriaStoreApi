@@ -1,5 +1,5 @@
 import { Validators } from "../../../config";
-import { permissionsByUserSchema } from "../../../data/mongodb/models/system-user.model";
+import { accessSchema } from "../../../data/mongodb";
 
 export class SignUpUserDto {
 
@@ -16,8 +16,8 @@ export class SignUpUserDto {
           public lockoutEnabled: boolean,
           public accessFailedCount: number,
           public birthDate: Date,
-          public roles: string[],
-          public permissionsByUser: [typeof permissionsByUserSchema]
+          public roles?: string[],
+          public permissionsByUser?: typeof accessSchema[]
      ) { }
 
      //WARNING: primer argumento es el mensaje de error y el segundo argumento va a ser la instancia de DTO

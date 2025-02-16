@@ -1,4 +1,4 @@
-import { permissionsByUserSchema } from "../../data/mongodb/models/system-user.model";
+import { accessSchema } from '../../data/mongodb/models/access.model';
 
 export type UserToken = {
      token: string;
@@ -27,6 +27,6 @@ export type SystemUserToken = {
           accessFailedCount?: Number,
           birthDate?: Date,
           roles?: string[],
-          permissionsByUser?: [typeof permissionsByUserSchema][]
+          permissionsByUser?: [typeof accessSchema][]
      }
 }

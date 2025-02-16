@@ -1,29 +1,31 @@
-import { AddAuthorizationDto } from "../../dtos/roles-permissions";
-import { AddAuthorizationUseCase } from "../../interfaces";
-import { AuthorizationRepository } from '../../repositories';
+import { DeleteAccessDto } from "../../dtos/roles-permissions";
+import { DeleteAccessUseCase } from "../../interfaces/IAccess";
+import { AccessRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class AddAuthorization implements AddAuthorizationUseCase {
+export class DeleteAccess implements DeleteAccessUseCase {
 
-     constructor(private readonly authorizationRepository: AuthorizationRepository) { }
+     constructor(private readonly rermissionsByRoleRepository: AccessRepository) { }
 
-     async execute(addAuthorizationDto: AddAuthorizationDto): Promise<ApiResultResponse> {
+     async execute(deleteAccessDto: DeleteAccessDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const authorization = await this.authorizationRepository.addAuthorization(addAuthorizationDto);
-               if (authorization.hasError) {
-                    throw new Error(authorization.message);
+               const access = await this.rermissionsByRoleRepository.deleteAccess(deleteAccessDto);
+
+               console.log('access: ', access)
+               if (access.hasError) {
+                    throw new Error(access.message);
                }
 
                //NOTE: Al campo hasError se le asigna el valor de undefined para que no se muestre en los datos que se envían
-               authorization.hasError = undefined
+               access.hasError = undefined
 
                resultResponse.response = {
                     status: "success",
                     hasError: false,
-                    data: authorization,
+                    data: access,
                     statusCode: 200,
                     error: null,
                     errorMessage: ""

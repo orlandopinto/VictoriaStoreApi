@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-export const authorizationSchema = new Schema
+export const accessSchema = new Schema
      (
           {
                roleId: { type: String, required: [true, 'Role ID is required'] },
@@ -9,4 +9,4 @@ export const authorizationSchema = new Schema
           }, { versionKey: false }
      )
 
-export const AuthorizationModel = mongoose.model('Authorization', authorizationSchema);
+export const AccessModel = mongoose.model('Access', accessSchema);

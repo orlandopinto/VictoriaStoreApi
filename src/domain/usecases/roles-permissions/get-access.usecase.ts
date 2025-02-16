@@ -1,17 +1,17 @@
-import { GetAuthorizationUseCase } from "../../interfaces";
-import { AuthorizationRepository } from "../../repositories";
+import { GetAccessUseCase } from "../../interfaces";
+import { AccessRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class GetAuthorization implements GetAuthorizationUseCase {
+export class GetAccess implements GetAccessUseCase {
 
-     constructor(private readonly rermissionsByRoleRepository: AuthorizationRepository) { }
+     constructor(private readonly rermissionsByRoleRepository: AccessRepository) { }
 
      async get(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const rermissionsByRole = await this.rermissionsByRoleRepository.getAuthorizations();
+               const rermissionsByRole = await this.rermissionsByRoleRepository.getAccesss();
 
                resultResponse.response = {
                     status: "success",

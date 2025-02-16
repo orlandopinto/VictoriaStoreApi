@@ -1,11 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
-export const permissionsByUserSchema = new Schema
-     ({
-          roleId: { type: String, required: true },
-          resourseId: { type: String, required: true },
-          actionId: { type: String, required: true }
-     })
+import { accessSchema } from "..";
 
 const systemUserSchema = new Schema
      (
@@ -23,18 +17,17 @@ const systemUserSchema = new Schema
                address: { type: String, default: null },
                birthDate: { type: Date, default: null },
                roles: { type: [String], default: null },
-               permissionsByUser: { type: [permissionsByUserSchema], default: [] }
+               permissionsByUser: { type: [accessSchema], default: [] }
           },
           { timestamps: true, versionKey: false }
      )
 
 export const SystemUserModel = mongoose.model('SystemUsers', systemUserSchema);
 /*
-roles:[
-           //admin                                // user
-          "0989c250-4637-4b32-9daf-7c94863b0311","496ba21c-707d-48e0-be89-65b6c9d1cdfa"
-],
-authorizations:[
+
+        admin                                  user
+roles:["0989c250-4637-4b32-9daf-7c94863b0311","496ba21c-707d-48e0-be89-65b6c9d1cdfa"],
+access:[
      {
           roleId:"0989c250-4637-4b32-9daf-7c94863b0311",         // admin
           resourseId:"663ce6f9-377e-415a-9aef-3f701a3dd473",     // users

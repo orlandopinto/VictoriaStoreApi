@@ -1,4 +1,5 @@
-import { permissionsByUserSchema } from '../../data/mongodb/models/system-user.model';
+import { accessSchema } from "../../data/mongodb";
+
 export class SystemUserEntity {
 
      constructor(
@@ -16,7 +17,7 @@ export class SystemUserEntity {
           public accessFailedCount?: number,
           public birthDate?: Date,
           public roles?: string[],
-          public permissionsByUser?: [typeof permissionsByUserSchema][]
+          public permissionsByUser?: [typeof accessSchema][]
      ) { }
 
 }

@@ -1,6 +1,6 @@
-import { authorizationSchema } from "../../data/mongodb";
+import { accessSchema } from "../../data/mongodb";
 
-export class AddAuthorizationEntity {
+export class AddAccessEntity {
 
      constructor(
           public id: string,
@@ -13,7 +13,7 @@ export class AddAuthorizationEntity {
 
 }
 
-export class DeleteAuthorizationEntity {
+export class DeleteAccessEntity {
 
      constructor(
           public id: string,
@@ -23,10 +23,10 @@ export class DeleteAuthorizationEntity {
 
 }
 
-export class GetAuthorizationEntity {
+export class GetAccessEntity {
 
      constructor(
-          public authorization: [typeof authorizationSchema],
+          public permissionsByUser: [typeof accessSchema][],
           public hasError: boolean | undefined,
           public message: string
      ) { }
