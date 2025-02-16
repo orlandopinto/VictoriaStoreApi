@@ -1,7 +1,7 @@
 import { JwtAdapter } from '../../../config';
 import { SignUpUserDto } from '../../dtos/auth';
 import { CustomError } from '../../errors/custom.error';
-import { SignUpUserUseCase } from '../../interfaces/IAuthorization';
+import { SignUpUserUseCase } from '../../interfaces/IAuth';
 import { AuthRepository } from '../../repositories/auth.repository';
 import { SignToken } from '../../types';
 import { SystemUserToken } from '../../types/auth.type';
@@ -39,7 +39,7 @@ export class SignUpUser implements SignUpUserUseCase {
                     accessFailedCount: user.accessFailedCount,
                     birthDate: user.birthDate,
                     roles: user.roles,
-                    permissions: user.permissions
+                    permissionsByUser: user.permissionsByUser
                }
           }
      }

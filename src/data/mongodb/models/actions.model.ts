@@ -5,7 +5,7 @@ const actionsSchema = new Schema
           {
                actionName: { type: String, required: [true, 'Action name is required'], unique: true, lowercase: true, trim: true }
           },
-          { timestamps: true }
+          { versionKey: false }
      )
 
 export const ActionsModel = mongoose.model('Actions', actionsSchema);

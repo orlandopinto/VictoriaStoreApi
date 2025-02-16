@@ -15,25 +15,9 @@ export class AuthRoutes {
 
           router.post('/login', controller.loginUser);
           router.post('/register', controller.registerUser);
+          router.post('/signin', controller.signIn);
+          router.post('/signup', controller.signUp);
           router.get('/', [AuthMiddleware.validateJWT], controller.getUsers)
-
-          return router;
-     }
-}
-
-export class AuthorizationRoutes {
-
-     static get routes(): Router {
-
-          const router = Router();
-
-          const datasource = new AuthDatasourceImpl();
-          const authRepository = new AuthRepositoryImpl(datasource)
-          const accountController = new AuthController(authRepository);
-
-          router.post('/signin', accountController.signIn);
-          router.post('/signup', accountController.signUp);
-          router.get('/', [AuthMiddleware.validateJWT], accountController.getSystemUsers)
 
           return router;
      }

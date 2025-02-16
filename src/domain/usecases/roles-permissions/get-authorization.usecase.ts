@@ -1,23 +1,22 @@
-import { AddPermissionsByRoleDto } from "../../dtos/roles-permissions";
-import { AddPermissionsByRoleUseCase } from "../../interfaces/IPermissionsByRole";
-import { PermissionsByRoleRepository } from '../../repositories';
+import { GetAuthorizationUseCase } from "../../interfaces";
+import { AuthorizationRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class AddPermissionsByRole implements AddPermissionsByRoleUseCase {
+export class GetAuthorization implements GetAuthorizationUseCase {
 
-     constructor(private readonly permissionsByRoleRepository: PermissionsByRoleRepository) { }
+     constructor(private readonly rermissionsByRoleRepository: AuthorizationRepository) { }
 
-     async execute(addPermissionsByRoleDto: AddPermissionsByRoleDto): Promise<ApiResultResponse> {
+     async get(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const permissionsByRole = await this.permissionsByRoleRepository.addPermissionsByRole(addPermissionsByRoleDto);
+               const rermissionsByRole = await this.rermissionsByRoleRepository.getAuthorizations();
 
                resultResponse.response = {
                     status: "success",
                     hasError: false,
-                    data: permissionsByRole,
+                    data: rermissionsByRole,
                     statusCode: 200,
                     error: null,
                     errorMessage: ""

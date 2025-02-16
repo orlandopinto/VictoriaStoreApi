@@ -1,7 +1,7 @@
 import { JwtAdapter } from '../../../config';
 import { LoginUserDto } from '../../dtos/auth/login-user.dto';
 import { CustomError } from '../../errors/custom.error';
-import { LoginUserUseCase } from '../../interfaces/IAuthorization';
+import { LoginUserUseCase } from '../../interfaces/IAuth';
 import { AuthRepository } from '../../repositories/auth.repository';
 import { SignToken } from '../../types';
 import { UserToken } from '../../types/auth.type';

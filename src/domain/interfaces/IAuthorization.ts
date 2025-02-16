@@ -1,18 +1,14 @@
-import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../dtos/auth";
-import { SystemUserToken, UserToken } from "../types/auth.type";
+import { AddAuthorizationDto, DeleteAuthorizationDto, GetAuthorizationDto } from "../dtos/roles-permissions"
+import { ApiResultResponse } from "../types/api-result-response.type"
 
-export interface LoginUserUseCase {
-     execute(loginUserDto: LoginUserDto): Promise<UserToken>
+export interface AddAuthorizationUseCase {
+     execute(addAuthorizationDto: AddAuthorizationDto): Promise<ApiResultResponse>
 }
 
-export interface RegisterUserUseCase {
-     execute(registerUserDto: RegisterUserDto): Promise<UserToken>
+export interface DeleteAuthorizationUseCase {
+     execute(deleteAuthorizationDto: DeleteAuthorizationDto): Promise<ApiResultResponse>
 }
 
-export interface SignInUserUseCase {
-     execute(signInUserDto: SignInUserDto): Promise<SystemUserToken>
-}
-
-export interface SignUpUserUseCase {
-     execute(signUpUserDto: SignUpUserDto): Promise<SystemUserToken>
+export interface GetAuthorizationUseCase {
+     get(getAuthorizationDto: GetAuthorizationDto): Promise<ApiResultResponse>
 }

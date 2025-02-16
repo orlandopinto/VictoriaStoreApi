@@ -1,5 +1,5 @@
 import { Validators } from "../../../config";
-import { permissionsSchema } from "../../../data/mongodb/models/system-user.model";
+import { permissionsByUserSchema } from "../../../data/mongodb/models/system-user.model";
 
 export class SignUpUserDto {
 
@@ -17,13 +17,13 @@ export class SignUpUserDto {
           public accessFailedCount: number,
           public birthDate: Date,
           public roles: string[],
-          public permissions: [typeof permissionsSchema]
+          public permissionsByUser: [typeof permissionsByUserSchema]
      ) { }
 
      //WARNING: primer argumento es el mensaje de error y el segundo argumento va a ser la instancia de DTO
      //NOTE: lo de abajo es una Tupla
      static create(object: { [key: string]: any }): [string?, SignUpUserDto?] {
-          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions } = object;
+          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissionsByUser } = object;
           if (!email) return ['Missing email']
           if (!Validators.email.test(email)) return ['Email is not valid']
           if (!password) return ['Missing password']
@@ -31,7 +31,7 @@ export class SignUpUserDto {
 
           return [
                undefined,
-               new SignUpUserDto(email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions)
+               new SignUpUserDto(email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissionsByUser)
           ];
      }
 }
