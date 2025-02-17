@@ -4,16 +4,24 @@ export class AccessMapper {
 
      static addAccessEntityFromObject(object: { [key: string]: any }) {
 
-          const { id, _id, roleId, resourseId, actionId, hasError, message } = object
+          let { id, _id, roleId, resourseId, actionId, hasError, errorMessages } = object
 
-          // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS ********* 
+          let errors: string[] = []
+          // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS *********
 
-          // if (!roleId) return ['Missing role ID']
-          // if (!resourseId) return ['Missing resourse ID']
-          // if (!actionId) return ['Missing action ID']
+          if (!id) errors.push('Missing ID')
+          if (!roleId) errors.push('Missing role ID')
+          if (!resourseId) errors.push('Missing resourse ID')
+          if (!actionId) errors.push('Missing action ID')
+
+          if (errors.length > 0) {
+               hasError = true;
+               errorMessages = [...errors]
+               return new AddAccessEntity(_id || id, roleId, resourseId, actionId, hasError, errorMessages);
+          }
 
           // ********************** FIN DE LA VALIDACIÓN *********************
-          return new AddAccessEntity(_id || id, roleId, resourseId, actionId, hasError, message);
+          return new AddAccessEntity(_id || id, roleId, resourseId, actionId, hasError, errorMessages);
      }
 
      static deleteAccessEntityFromObject(object: { [key: string]: any }) {

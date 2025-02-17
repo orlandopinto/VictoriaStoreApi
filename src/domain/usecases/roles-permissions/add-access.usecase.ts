@@ -14,28 +14,32 @@ export class AddAccess implements AddAccessUseCase {
           try {
                const access = await this.accessRepository.addAccess(addAccessDto);
                if (access.hasError) {
-                    throw new Error(access.message);
+                    resultResponse.response = {
+                         status: "error",
+                         hasError: access.hasError,
+                         data: null,
+                         statusCode: 500,
+                         errorMessages: access.errorMessages
+                    }
+                    return resultResponse;
                }
-
-               //NOTE: Al campo hasError se le asigna el valor de undefined para que no se muestre en los datos que se envían
-               access.hasError = undefined
-
                resultResponse.response = {
                     status: "success",
                     hasError: false,
                     data: access,
                     statusCode: 200,
-                    error: null,
-                    errorMessage: ""
+                    errorMessages: null
                }
+
           } catch (error) {
                const err = error as Error
                resultResponse.response = {
                     status: "error",
                     hasError: true,
+                    data: null,
                     statusCode: 500,
                     error: err.stack,
-                    errorMessage: err.message
+                    errorMessage: err.message,
                }
           }
           return resultResponse;

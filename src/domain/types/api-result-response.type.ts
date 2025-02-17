@@ -6,5 +6,6 @@ export type ApiResultResponse = {
           statusCode: number;
           error?: any;
           errorMessage?: string
+          errorMessages?: string[] | null
      }
 }

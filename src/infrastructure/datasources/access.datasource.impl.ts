@@ -7,37 +7,24 @@ import { AccessMapper } from "../mappers";
 export class AccessDatasourceImpl implements AccessDatasource {
 
      async addAccess(addAccessDto: AddAccessDto): Promise<any> {
-          let { id, roleId, resourseId, actionId, hasError, message } = addAccessDto;
+          let { id, roleId, resourseId, actionId, hasError, errorMessages } = addAccessDto;
           hasError = false;
+          let errors: string[] = []
           try {
-               // 1. Crear el access
+               // 1. Crear el accesso
                try {
-                    if (!roleId) {
-                         hasError = true;
-                         message = 'Missing role ID'
-                    }
-                    if (!resourseId) {
-                         hasError = true;
-                         message = 'Missing resourse ID'
-                    }
-                    if (!actionId) {
-                         hasError = true;
-                         message = 'Missing action ID'
-                    }
+                    const access = await AccessModel.create({ id, roleId, resourseId, actionId, hasError, errorMessages })
+                    await access.save();
+                    //id = access._id.toString()
 
-                    if (roleId && resourseId && actionId) {
-                         const access = await AccessModel.create({ roleId, resourseId, actionId, hasError, message })
-                         await access.save();
-                         id = access._id.toString()
-                         return AccessMapper.addAccessEntityFromObject({ id, roleId, resourseId, actionId, hasError, message });
-                    }
                } catch (error) {
                     hasError = true
-                    message = (error as any).errmsg
+                    errors.push((error as any).errmsg)
+                    errorMessages = [...errors]
                }
 
                // 2. Mapear la respuesta a la entidad
-               return AccessMapper.addAccessEntityFromObject({ id, roleId, resourseId, actionId, hasError, message });
+               return AccessMapper.addAccessEntityFromObject({ id, roleId, resourseId, actionId, hasError, errorMessages });
 
           } catch (error) {
                throw error;

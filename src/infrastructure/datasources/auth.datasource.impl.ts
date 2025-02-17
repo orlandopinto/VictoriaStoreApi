@@ -1,5 +1,5 @@
 import { BcryptAdapter } from "../../config";
-import { UserModel } from "../../data/mongodb";
+import { AccessModel, ActionsModel, UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
@@ -74,6 +74,12 @@ export class AuthDatasourceImpl implements AuthDatasource {
           try {
 
                // 1. Verificar si existe el email
+               // const access = await AccessModel.find();
+               // console.log('ACCESS: ', access);
+
+               // const actions = await ActionsModel.find()
+               // console.log('actions: ', actions);
+
                const user = await SystemUserModel.findOne({ email }).lean()
                if (!user) {
                     throw CustomError.notFound('User not found.');

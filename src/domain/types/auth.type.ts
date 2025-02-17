@@ -30,3 +30,21 @@ export type SystemUserToken = {
           permissionsByUser?: [typeof accessSchema][]
      }
 }
+/*
+
+export type EnviromentData = {
+     user: User,
+     access: Access[],
+     roles: Roles[],
+     resourses: Resourses[],
+     actions: Actions[],
+
+}
+
+
+
+
+
+
+
+*/

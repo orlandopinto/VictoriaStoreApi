@@ -8,7 +8,7 @@ export class AddAccessEntity {
           public resourseId: string,
           public actionId: string,
           public hasError: boolean | undefined,
-          public message: string
+          public errorMessages: string[]
      ) { }
 
 }
@@ -26,7 +26,7 @@ export class DeleteAccessEntity {
 export class GetAccessEntity {
 
      constructor(
-          public permissionsByUser: [typeof accessSchema][],
+          public access: [typeof accessSchema][],
           public hasError: boolean | undefined,
           public message: string
      ) { }
