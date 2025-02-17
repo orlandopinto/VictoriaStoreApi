@@ -1,7 +1,6 @@
-export type RoleToken = {
-     token: string;
+export type Roles = {
      role: {
-          id: string;
+          _id: string;
           roleName: string;
      }
 }

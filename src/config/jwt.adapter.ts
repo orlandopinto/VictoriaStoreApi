@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
-import { JWT_SEED } from './envs';
+import { DURATION_TOKEN, JWT_SEED } from './envs';
 
 export class JwtAdapter {
 
-     static async generateToken(payload: Object, duration: any = '2h'): Promise<string | null> {
+     static async generateToken(payload: Object, duration: any = DURATION_TOKEN): Promise<string | null> {
 
           return new Promise((resolve) => {
 
@@ -38,9 +38,9 @@ export class JwtAdapter {
                }
                else {
                     req.body.user = user
-                    next() //proceed to the next action in the calling function
+                    next()
                }
-          }) //end of jwt.verify()
-     } //end of function
+          })
+     }
 
 }

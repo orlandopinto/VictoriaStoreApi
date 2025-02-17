@@ -1,4 +1,4 @@
-import { JwtAdapter } from '../../../config';
+import { DURATION_TOKEN, JwtAdapter } from '../../../config';
 import { LoginUserDto } from '../../dtos/auth/login-user.dto';
 import { CustomError } from '../../errors/custom.error';
 import { LoginUserUseCase } from '../../interfaces/IAuth';
@@ -8,7 +8,10 @@ import { UserToken } from '../../types/auth.type';
 
 export class LoginUser implements LoginUserUseCase {
 
-     constructor(private readonly authRepository: AuthRepository, private readonly signToken: SignToken = JwtAdapter.generateToken) { }
+     constructor(
+          private readonly authRepository: AuthRepository,
+          private readonly signToken: SignToken = JwtAdapter.generateToken
+     ) { }
 
      async execute(loginUserDto: LoginUserDto): Promise<UserToken> {
 
@@ -16,7 +19,7 @@ export class LoginUser implements LoginUserUseCase {
           const user = await this.authRepository.login(loginUserDto);
 
           // Token
-          const token = await this.signToken({ id: user.id }, '2h')
+          const token = await this.signToken({ id: user.id }, DURATION_TOKEN)
           if (!token) {
                throw CustomError.internalServerError('Error generating token')
           }

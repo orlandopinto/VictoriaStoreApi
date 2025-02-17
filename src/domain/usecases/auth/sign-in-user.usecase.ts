@@ -1,48 +1,57 @@
-import { JwtAdapter } from '../../../config';
 import { SignInUserDto } from '../../dtos/auth';
-import { CustomError } from '../../errors/custom.error';
+import { EnvironmentSystemUserEntityResult } from '../../entities';
 import { SignInUserUseCase } from '../../interfaces/IAuth';
 import { AuthRepository } from '../../repositories/auth.repository';
-import { SignToken } from '../../types';
-import { SystemUserToken } from '../../types/auth.type';
+import { ApiResultResponse } from '../../types';
 
 export class SignInUser implements SignInUserUseCase {
 
-     constructor(private readonly authRepository: AuthRepository, private readonly signToken: SignToken = JwtAdapter.generateToken) { }
+     constructor(private readonly authRepository: AuthRepository) { }
 
-     async execute(SignInUserDto: SignInUserDto): Promise<SystemUserToken> {
+     async execute(SignInUserDto: SignInUserDto): Promise<ApiResultResponse> {
 
-          // hacer login
-          const user = await this.authRepository.signIn(SignInUserDto);
+          let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
-          // Token
-          const token = await this.signToken({ id: user.id }, '2h')
-          if (!token) {
-               throw CustomError.internalServerError('Error generating token')
-          }
+          try {
+               const environment = await this.authRepository.signIn(SignInUserDto);
 
-          //WARNING: Modificar la estructura que se necesita al hacer login
-          //NOTE: Independientemente de los campos definidos en SystemUserToken, aqui se puede omitir los campos
-          //      que retorna la api, siempre y cuando no sean obligatorios
-          return {
-               token: token,
-               user: {
-                    id: user.id,
-                    email: user.email,
-                    password: "******************",
-                    address: user.address,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    phoneNumber: user.phoneNumber,
-                    imageProfilePath: user.imageProfilePath,
-                    city: user.city,
-                    zipcode: user.zipcode,
-                    lockoutEnabled: user.lockoutEnabled,
-                    accessFailedCount: user.accessFailedCount,
-                    birthDate: user.birthDate,
-                    roles: user.roles,
-                    permissionsByUser: user.permissionsByUser
+               if (environment.hasError) {
+                    resultResponse.response = {
+                         status: "error",
+                         hasError: environment.hasError,
+                         data: null,
+                         statusCode: 500,
+                         errorMessages: environment.errorMessages
+                    }
+                    return resultResponse;
+               }
+
+               const environmentResponse: EnvironmentSystemUserEntityResult = {
+                    token: environment.token,
+                    EnviromentData: environment.EnviromentData,
+                    errorMessages: environment.errorMessages,
+                    hasError: environment.hasError,
+               }
+
+               resultResponse.response = {
+                    status: "success",
+                    hasError: false,
+                    data: environmentResponse,
+                    statusCode: 200,
+                    errorMessages: null
+               }
+
+          } catch (error) {
+               const err = error as Error
+               resultResponse.response = {
+                    status: "error",
+                    hasError: true,
+                    data: null,
+                    statusCode: 500,
+                    error: err.stack,
+                    errorMessage: err.message,
                }
           }
+          return resultResponse;
      }
 }

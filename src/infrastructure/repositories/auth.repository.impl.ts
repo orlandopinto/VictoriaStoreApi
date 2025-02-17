@@ -1,7 +1,7 @@
 
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
-import { SystemUserEntity, UserEntity } from "../../domain/entities";
+import { EnvironmentSystemUserEntity, SystemUserEntity, UserEntity } from "../../domain/entities";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 
 export class AuthRepositoryImpl implements AuthRepository {
@@ -16,7 +16,7 @@ export class AuthRepositoryImpl implements AuthRepository {
           return this.authDatasource.register(registerUserDto);
      }
 
-     signIn(signInUserDto: SignInUserDto): Promise<SystemUserEntity> {
+     signIn(signInUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
           return this.authDatasource.signIn(signInUserDto);
      }
 

@@ -1,35 +1,20 @@
-import { Validators } from "../../../config";
-import { accessSchema } from "../../../data/mongodb";
+import { EnviromentData } from "../../types/index";
 
 export class SignInUserDto {
      constructor(
+          public token: string,
           public email: string,
           public password: string,
-          public address: string,
-          public firstName: string,
-          public lastName: string,
-          public phoneNumber: string,
-          public imageProfilePath: string,
-          public city: string,
-          public zipcode: number,
-          public lockoutEnabled: boolean,
-          public accessFailedCount: number,
-          public birthDate: Date,
-          public roles?: string[],
-          public permissionsByUser?: typeof accessSchema[]
+          public EnviromentData: EnviromentData,
+          public hasError: boolean,
+          public errorMessages?: string[]
      ) { }
 
-     //WARNINGprimer argumento es el mensaje de error y el segundo argumento va a ser la instancia de DTO
-     //NOTE: lo de abajo es una Tupla
      static signIn(object: { [key: string]: any }): [string?, SignInUserDto?] {
-          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissionsByUser } = object;
-          if (!email) return ['Missing email']
-          if (!password) return ['Missing password']
-          if (!Validators.email.test(email)) return ['Email is not valid']
-
+          let { token, email, password, EnviromentData, hasError, errorMessages } = object;
           return [
                undefined,
-               new SignInUserDto(email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissionsByUser)
+               new SignInUserDto(token, email, password, EnviromentData, hasError, errorMessages)
           ];
      }
 

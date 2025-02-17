@@ -11,7 +11,7 @@ export class ActionMapper {
           if (!actionName) throw CustomError.badRequest('Missing action name')
 
           // ********************** FIN DE LA VALIDACIÓN *********************
-          return new ActionEntity(_id || id, actionName);
+          return new ActionEntity(id || _id, actionName);
      }
 
      static deleteActionEntityFromObject(object: { [key: string]: any }) {

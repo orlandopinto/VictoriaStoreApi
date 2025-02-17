@@ -1,9 +1,9 @@
 import { AddRoleDto, DeleteRoleDto } from "../dtos/roles-permissions/index"
 import { DeleteRoleEntity } from "../entities"
-import { RoleToken } from "../types/roles.type"
+import { Roles } from "../types/roles.type"
 
 export interface AddRoleUseCase {
-     execute(addRoleDto: AddRoleDto): Promise<RoleToken>
+     execute(addRoleDto: AddRoleDto): Promise<Roles>
 }
 
 export interface DeleteRoleUseCase {

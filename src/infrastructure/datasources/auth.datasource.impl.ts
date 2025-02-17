@@ -1,12 +1,14 @@
-import { BcryptAdapter } from "../../config";
-import { AccessModel, ActionsModel, UserModel } from "../../data/mongodb";
+import { BcryptAdapter, DURATION_TOKEN, JwtAdapter } from "../../config";
+import { AccessModel, ActionsModel, ResourseModel, UserModel } from "../../data/mongodb";
+import { RolesModel } from "../../data/mongodb/models/roles.model";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
 import { UserEntity } from "../../domain/entities";
-import { SystemUserEntity } from "../../domain/entities/system-user.entity";
+import { EnvironmentSystemUserEntity, SystemUserEntity } from "../../domain/entities/system-user.entity";
 import { CustomError } from "../../domain/errors/custom.error";
-import { SystemUserMapper } from "../mappers/system-user.mapper";
+import { Access, Actions, EnvironmentSystemUser, Resourses, Roles, SignToken } from "../../domain/types";
+import { SystemUserMapper } from "../mappers";
 import { UserMapper } from "../mappers/user.mapper";
 
 type HashFunction = (password: string) => string
@@ -16,7 +18,8 @@ export class AuthDatasourceImpl implements AuthDatasource {
 
      constructor(
           private readonly hashPassword: HashFunction = BcryptAdapter.hash,
-          private readonly compareFunction: CompareFunction = BcryptAdapter.compare
+          private readonly compareFunction: CompareFunction = BcryptAdapter.compare,
+          private readonly signToken: SignToken = JwtAdapter.generateToken
      ) { }
 
      async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
@@ -69,35 +72,53 @@ export class AuthDatasourceImpl implements AuthDatasource {
           }
      }
 
-     async signIn(loginSystemUserDto: SignInUserDto): Promise<SystemUserEntity> {
-          const { email, password } = loginSystemUserDto;
+     async signIn(loginSystemUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
+          //NOTE: Validar si se puede inyectar el token aqui
+
+          let { token, email, password, EnviromentData, hasError, errorMessages } = loginSystemUserDto;
+
+          hasError = false;
+          errorMessages = []
+          let errors: string[] = []
           try {
 
-               // 1. Verificar si existe el email
-               // const access = await AccessModel.find();
-               // console.log('ACCESS: ', access);
+               let env: EnvironmentSystemUserEntity = { token, email, password, EnviromentData, errorMessages, hasError }
 
-               // const actions = await ActionsModel.find()
-               // console.log('actions: ', actions);
+               if (!email) errors.push('Missing email')
+               if (!password) errors.push('Missing password')
 
-               const user = await SystemUserModel.findOne({ email }).lean()
-               if (!user) {
-                    throw CustomError.notFound('User not found.');
-               }
+               // 2. Verifica si existe el usuario
+               const userLogged = await SystemUserModel.findOne({ email }).lean() as unknown as EnvironmentSystemUser
+               if (!userLogged) errors.push('User not found.')
 
                // 2. Verifica si la contraseña hace match
-               if (!this.compareFunction(password, user.password)) {
-                    throw CustomError.notFound('User name or password invalid.');
+               if (userLogged && password && !this.compareFunction(password, userLogged.password)) {
+                    errors.push('User name or password invalid.')
                }
 
-               // 3. Mapear la respuesta a la entidad
-               return SystemUserMapper.systemUserEntityFromObject(user);
+               token = await this.signToken({ email: email }, DURATION_TOKEN) as string
+               if (!token) {
+                    errors.push('Error generating token')
+               }
+
+               if (errors.length === 0) {
+                    const access = await AccessModel.find() as Access[];
+                    const roles = await RolesModel.find() as Roles[]
+                    const resourses = await ResourseModel.find() as Resourses[]
+                    const actions = await ActionsModel.find() as Actions[]
+                    userLogged.password = "***************"
+                    EnviromentData = { user: userLogged, access, roles, resourses, actions }
+                    env = { token, email: userLogged.email, password: "****************", EnviromentData, errorMessages, hasError }
+               }
+               else {
+                    hasError = true;
+                    errorMessages = [...errors]
+               }
+               return new EnvironmentSystemUserEntity(token, email, password, EnviromentData, hasError, errorMessages);
 
           } catch (error) {
-               if (error instanceof CustomError) {
-                    throw error;
-               }
-               throw CustomError.internalServerError();
+               //NOTE: Registrar en log
+               throw error;
           }
      }
 

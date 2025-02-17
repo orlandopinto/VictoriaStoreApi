@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 const resourseSchema = new Schema
      (
           {
-               resourseName: { type: String, required: [true, 'Resourse name is required'], unique: true, lowercase: true, trim: true }
+               resourseName: { type: String, required: [true, 'Resourse name is required'], unique: true, trim: true }
           },
           { versionKey: false }
      )
