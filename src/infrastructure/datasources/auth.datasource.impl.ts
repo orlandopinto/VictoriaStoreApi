@@ -6,7 +6,7 @@ import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../
 import { UserEntity } from "../../domain/entities";
 import { EnvironmentSystemUserEntity, SystemUserEntity } from "../../domain/entities/system-user.entity";
 import { CustomError } from "../../domain/errors/custom.error";
-import { EnvironmentSystemUser, SignToken } from "../../domain/types";
+import { SignToken } from "../../domain/types";
 import { SystemUserMapper } from "../mappers";
 import { UserMapper } from "../mappers/user.mapper";
 
@@ -74,20 +74,20 @@ export class AuthDatasourceImpl implements AuthDatasource {
      async signIn(loginSystemUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
           //NOTE: Validar si se puede inyectar el token aqui
 
-          let { token, email, password, EnviromentData, hasError, errorMessages } = loginSystemUserDto;
+          let { token, email, password, userData, hasError, errorMessages } = loginSystemUserDto;
 
           hasError = false;
           errorMessages = []
           let errors: string[] = []
           try {
 
-               let env: EnvironmentSystemUserEntity = { token, email, password, EnviromentData, errorMessages, hasError }
+               let env: EnvironmentSystemUserEntity = { token, email, password, userData, errorMessages, hasError }
 
                if (!email) errors.push('Missing email')
                if (!password) errors.push('Missing password')
 
                // 2. Verifica si existe el usuario
-               const userLogged = await SystemUserModel.findOne({ email }).lean() as unknown as EnvironmentSystemUser
+               const userLogged = await SystemUserModel.findOne({ email }).lean() as unknown as SystemUserEntity
                if (!userLogged) errors.push('User not found.')
 
                // 2. Verifica si la contraseña hace match
@@ -102,14 +102,14 @@ export class AuthDatasourceImpl implements AuthDatasource {
 
                if (errors.length === 0) {
                     userLogged.password = "***************"
-                    EnviromentData = { user: userLogged }
-                    env = { token, email: userLogged.email, password: "****************", EnviromentData, errorMessages, hasError }
+                    userData = userLogged
+                    env = { token, email: userLogged.email, password: "****************", userData, errorMessages, hasError }
                }
                else {
                     hasError = true;
                     errorMessages = [...errors]
                }
-               return new EnvironmentSystemUserEntity(token, email, password, EnviromentData, hasError, errorMessages);
+               return new EnvironmentSystemUserEntity(token, email, password, userData, hasError, errorMessages);
 
           } catch (error) {
                //NOTE: Registrar en log

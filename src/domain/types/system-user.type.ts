@@ -21,7 +21,7 @@ export type SystemUser = {
      }
 }
 
-export type EnvironmentSystemUser = {
+export type userData = {
      id: string,
      email: string,
      password: string,

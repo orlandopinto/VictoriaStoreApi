@@ -1,5 +1,5 @@
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../dtos/auth";
-import { ApiResultResponse, EnviromentData, SystemUser } from "../types";
+import { ApiResultResponse, SystemUser } from "../types";
 import { UserToken } from "../types/auth.type";
 
 export interface LoginUserUseCase {

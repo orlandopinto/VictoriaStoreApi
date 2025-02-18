@@ -30,7 +30,7 @@ export class SignInUser implements SignInUserUseCase {
 
                const environmentResponse: EnvironmentSystemUserEntityResult = {
                     token: environment.token,
-                    EnviromentData: environment.EnviromentData
+                    userData: environment.userData
                }
 
                resultResponse = {

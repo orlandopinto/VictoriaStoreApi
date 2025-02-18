@@ -16,8 +16,7 @@ const systemUserSchema = new Schema
                accessFailedCount: { type: Number, default: 0 },
                address: { type: String, default: null },
                birthDate: { type: Date, default: null },
-               roles: { type: [String], default: null },
-               permissions: { type: [permissionsSchema], default: [] }
+               roles: { type: [String], default: null }
           },
           { timestamps: true, versionKey: false }
      )
