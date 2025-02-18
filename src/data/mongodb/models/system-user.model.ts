@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { accessSchema } from "..";
+import { permissionsSchema } from "..";
 
 const systemUserSchema = new Schema
      (
@@ -17,7 +17,7 @@ const systemUserSchema = new Schema
                address: { type: String, default: null },
                birthDate: { type: Date, default: null },
                roles: { type: [String], default: null },
-               permissionsByUser: { type: [accessSchema], default: [] }
+               permissions: { type: [permissionsSchema], default: [] }
           },
           { timestamps: true, versionKey: false }
      )

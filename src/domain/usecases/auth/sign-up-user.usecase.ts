@@ -41,7 +41,7 @@ export class SignUpUser implements SignUpUserUseCase {
                     accessFailedCount: user.accessFailedCount,
                     birthDate: user.birthDate,
                     roles: user.roles,
-                    permissionsByUser: user.permissionsByUser
+                    permissions: user.permissions
                }
           }
      }

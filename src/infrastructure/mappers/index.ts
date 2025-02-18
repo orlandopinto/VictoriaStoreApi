@@ -1,6 +1,4 @@
-export * from './roles.mapper'
+export * from './resourse.mapper'
 export * from './system-user.mapper'
 export * from './user.mapper'
-export * from './resourse.mapper'
-export * from './action.maper'
-export * from './access.mapper'
+

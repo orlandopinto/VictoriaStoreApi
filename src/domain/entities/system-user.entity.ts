@@ -1,5 +1,5 @@
-import { accessSchema } from "../../data/mongodb";
-import { Actions, EnviromentData } from "../types";
+import { permissionsSchema } from "../../data/mongodb";
+import { EnviromentData } from "../types";
 
 export class SystemUserEntity {
 
@@ -18,7 +18,7 @@ export class SystemUserEntity {
           public accessFailedCount?: number,
           public birthDate?: Date,
           public roles?: string[],
-          public permissionsByUser?: [typeof accessSchema][]
+          public permissions?: [typeof permissionsSchema][]
      ) { }
 
 }
@@ -31,7 +31,7 @@ export class EnvironmentSystemUserEntity {
           public password: string,
           public EnviromentData: EnviromentData,
           public hasError: boolean,
-          public errorMessages?: string[]
+          public errorMessages?: string[] | null
      ) { }
 
 }
@@ -42,8 +42,6 @@ export class EnvironmentSystemUserEntityResult {
      constructor(
           public token: string,
           public EnviromentData: EnviromentData,
-          public hasError: boolean,
-          public errorMessages?: string[]
      ) { }
 
 }

@@ -1,4 +1,4 @@
-import { accessSchema } from "../../data/mongodb";
+import { permissionsSchema } from "../../data/mongodb";
 
 export type SystemUser = {
      token: string;
@@ -17,7 +17,7 @@ export type SystemUser = {
           accessFailedCount?: Number,
           birthDate?: Date,
           roles?: string[],
-          permissionsByUser?: [typeof accessSchema][]
+          permissions?: [typeof permissionsSchema][]
      }
 }
 
@@ -36,5 +36,5 @@ export type EnvironmentSystemUser = {
      accessFailedCount?: Number,
      birthDate?: Date,
      roles?: string[],
-     permissionsByUser?: [typeof accessSchema][]
+     permissions?: [typeof permissionsSchema][]
 }

@@ -16,40 +16,43 @@ export class SignInUser implements SignInUserUseCase {
                const environment = await this.authRepository.signIn(SignInUserDto);
 
                if (environment.hasError) {
-                    resultResponse.response = {
+                    resultResponse = {
                          status: "error",
                          hasError: environment.hasError,
                          data: null,
+                         message: null,
                          statusCode: 500,
-                         errorMessages: environment.errorMessages
+                         stackTrace: null,
+                         errorMessage: null
                     }
                     return resultResponse;
                }
 
                const environmentResponse: EnvironmentSystemUserEntityResult = {
                     token: environment.token,
-                    EnviromentData: environment.EnviromentData,
-                    errorMessages: environment.errorMessages,
-                    hasError: environment.hasError,
+                    EnviromentData: environment.EnviromentData
                }
 
-               resultResponse.response = {
+               resultResponse = {
                     status: "success",
                     hasError: false,
                     data: environmentResponse,
+                    message: null,
                     statusCode: 200,
-                    errorMessages: null
+                    stackTrace: null,
+                    errorMessage: null
                }
 
           } catch (error) {
                const err = error as Error
-               resultResponse.response = {
+               resultResponse = {
                     status: "error",
                     hasError: true,
                     data: null,
+                    message: null,
                     statusCode: 500,
-                    error: err.stack,
-                    errorMessage: err.message,
+                    stackTrace: err.stack,
+                    errorMessage: err.message
                }
           }
           return resultResponse;

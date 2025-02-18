@@ -1,11 +1,9 @@
 export type ApiResultResponse = {
-     response: {
-          status: string;
-          hasError: boolean;
-          data?: any;
-          statusCode: number;
-          error?: any;
-          errorMessage?: string
-          errorMessages?: string[] | null
-     }
+     status: string;
+     hasError: boolean;
+     data?: any;
+     message: string | null;
+     statusCode: number;
+     stackTrace: any | null;
+     errorMessage: string | null;
 }

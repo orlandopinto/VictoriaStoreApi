@@ -1,18 +1,21 @@
 
 export class AddRoleDto {
      constructor(
-          public roleName: string
+          public roleName: string,
+          public roleDescription: string | null,
+          public hasError: boolean | undefined,
+          public errorMessage: string[]
      ) { }
 
-     //primer argumento es el mensaje de error y el segundo argumento va a ser la instancia de DTO
-     //nota lo de abajo es una Tupla
      static create(object: { [key: string]: any }): [string?, AddRoleDto?] {
-          const { roleName } = object;
-          if (!roleName) return ['Missing role name']
+          const { roleName, roleDescription, hasError, errorMessage } = object;
+          if (!roleName) return ['Missing role name on create role']
+          //NOTE: Se valida undefined porque permite valor nulo
+          if (roleDescription === undefined) return ['Missing role description on create role']
 
           return [
                undefined,
-               new AddRoleDto(roleName)
+               new AddRoleDto(roleName, roleDescription, hasError, errorMessage)
           ];
      }
 

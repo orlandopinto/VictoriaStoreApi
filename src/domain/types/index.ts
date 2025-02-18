@@ -1,4 +1,4 @@
-export * from './access.type'
+export * from './permissions.type'
 export * from './actions.type'
 export * from './api-result-response.type'
 export * from './auth.type'

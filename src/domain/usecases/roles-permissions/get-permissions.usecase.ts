@@ -1,23 +1,24 @@
-import { DeleteRoleDto } from "../../dtos/roles-permissions";
-import { DeleteRoleUseCase } from "../../interfaces/IRoles";
-import { RolesRepository } from "../../repositories/roles.repository";
+import { GetPermissionsDto } from "../../dtos/roles-permissions";
+import { GetPermissionsUseCase } from "../../interfaces";
+import { PermissionsRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class DeleteRole implements DeleteRoleUseCase {
+export class GetPermissions implements GetPermissionsUseCase {
 
-     constructor(private readonly roleRepository: RolesRepository) { }
+     constructor(private readonly permissionsByRoleRepository: PermissionsRepository) { }
 
-     async execute(deleteRoleDto: DeleteRoleDto): Promise<ApiResultResponse> {
+     async execute(getPermissionsDto: GetPermissionsDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const role = await this.roleRepository.deleteRole(deleteRoleDto);
+               const permissionsByRole = await this.permissionsByRoleRepository.getPermissions(getPermissionsDto);
+
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: role,
-                    message: "Role deleted successfully.",
+                    data: permissionsByRole,
+                    message: null,
                     statusCode: 200,
                     stackTrace: null,
                     errorMessage: null

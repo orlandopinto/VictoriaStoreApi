@@ -14,21 +14,25 @@ export class AddResourse implements AddResourseUseCase {
           try {
                const resourse = await this.resourseRepository.addResourse(addResourseDto);
 
-               resultResponse.response = {
+               resultResponse = {
                     status: "success",
                     hasError: false,
                     data: resourse,
+                    message: null,
                     statusCode: 200,
-                    error: null,
-                    errorMessage: ""
+                    stackTrace: null,
+                    errorMessage: null
                }
           } catch (error) {
-               resultResponse.response = {
+               const err = error as Error
+               resultResponse = {
                     status: "error",
                     hasError: true,
+                    data: null,
+                    message: null,
                     statusCode: 500,
-                    error: error,
-                    errorMessage: (error as any).errmsg
+                    stackTrace: err.stack,
+                    errorMessage: err.message
                }
           }
           return resultResponse;

@@ -1,31 +1,40 @@
-import { DURATION_TOKEN, JwtAdapter } from "../../../config";
 import { AddRoleDto } from "../../dtos/roles-permissions";
-import { CustomError } from "../../errors/custom.error";
 import { AddRoleUseCase } from "../../interfaces/IRoles";
 import { RolesRepository } from "../../repositories/roles.repository";
-import { SignToken } from "../../types";
-import { Roles } from "../../types/roles.type";
+import { ApiResultResponse } from "../../types";
 
 export class AddRole implements AddRoleUseCase {
 
-     constructor(private readonly roleRepository: RolesRepository, private readonly signToken: SignToken = JwtAdapter.generateToken) { }
+     constructor(private readonly roleRepository: RolesRepository) { }
 
-     async execute(addRoleDto: AddRoleDto): Promise<Roles> {
+     async execute(addRoleDto: AddRoleDto): Promise<ApiResultResponse> {
 
-          // Add Role
-          const role = await this.roleRepository.addRole(addRoleDto);
+          let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
-          // Token
-          const token = await this.signToken({ id: role.id }, DURATION_TOKEN)
-          if (!token) {
-               throw CustomError.internalServerError('Error generating token')
-          }
+          try {
+               const role = await this.roleRepository.addRole(addRoleDto);
+               resultResponse = {
+                    status: "success",
+                    hasError: false,
+                    data: role,
+                    message: "Role created successfully",
+                    statusCode: 200,
+                    stackTrace: null,
+                    errorMessage: null
+               }
 
-          return {
-               role: {
-                    _id: role.id,
-                    roleName: role.roleName
+          } catch (error) {
+               const err = error as Error
+               resultResponse = {
+                    status: "error",
+                    hasError: true,
+                    data: null,
+                    message: null,
+                    statusCode: 500,
+                    stackTrace: err.stack,
+                    errorMessage: err.message
                }
           }
+          return resultResponse;
      }
 }

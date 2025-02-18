@@ -10,5 +10,5 @@ export * from './usecases/roles-permissions/delete-role.usecase'
 //RESOURSES
 export * from './usecases/roles-permissions/add-resourse.usecase'
 //PERMISSIONS BY ROLE
-export * from './usecases/roles-permissions/add-access.usecase'
-export * from './usecases/roles-permissions/delete-access.usecase'
+export * from './usecases/roles-permissions/add-permissions.usecase'
+export * from './usecases/roles-permissions/delete-permissions.usecase'

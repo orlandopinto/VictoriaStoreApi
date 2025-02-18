@@ -13,22 +13,25 @@ export class AddAction implements AddActionUseCase {
 
           try {
                const action = await this.actionRepository.addAction(addActionDto);
-
-               resultResponse.response = {
+               resultResponse = {
                     status: "success",
                     hasError: false,
                     data: action,
+                    message: "Action created successfully",
                     statusCode: 200,
-                    error: null,
-                    errorMessage: ""
+                    stackTrace: null,
+                    errorMessage: null
                }
           } catch (error) {
-               resultResponse.response = {
+               const err = error as Error
+               resultResponse = {
                     status: "error",
                     hasError: true,
+                    data: null,
+                    message: null,
                     statusCode: 500,
-                    error: error,
-                    errorMessage: (error as any).errmsg
+                    stackTrace: err.stack,
+                    errorMessage: err.message
                }
           }
           return resultResponse;
