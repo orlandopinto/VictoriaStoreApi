@@ -1,23 +1,23 @@
-import { DeleteResourseDto } from "../../dtos/roles-permissions";
-import { DeleteResourseUseCase } from "../../interfaces/IResourses";
-import { ResourseRepository } from "../../repositories";
+import { GetRolesEntity } from "../../entities";
+import { GetRolesUseCase } from "../../interfaces";
+import { RolesRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class DeleteResourse implements DeleteResourseUseCase {
+export class GetRoles implements GetRolesUseCase {
 
-     constructor(private readonly resourseRepository: ResourseRepository) { }
+     constructor(private readonly rolesByRoleRepository: RolesRepository) { }
 
-     async execute(deleteResourseDto: DeleteResourseDto): Promise<ApiResultResponse> {
+     async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const resourse = await this.resourseRepository.deleteResourse(deleteResourseDto);
-
+               const rolesByRole = await this.rolesByRoleRepository.getRoles();
+               const data = { ...rolesByRole } as unknown as GetRolesEntity
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: resourse,
+                    data: data,
                     message: null,
                     statusCode: 200,
                     stackTrace: null,

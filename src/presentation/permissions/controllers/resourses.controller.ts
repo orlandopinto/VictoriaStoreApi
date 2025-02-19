@@ -1,8 +1,8 @@
 import { ResourseModel } from "../../../data/mongodb";
 import { AddResourse } from "../../../domain";
-import { AddResourseDto, DeleteResourseDto } from "../../../domain/dtos/roles-permissions";
+import { AddResourseDto, DeleteResourseDto } from "../../../domain/dtos/permissions";
 import { ResourseRepository } from "../../../domain/repositories";
-import { DeleteResourse } from "../../../domain/usecases/roles-permissions";
+import { DeleteResourse } from "../../../domain/usecases/permissions";
 
 export class ResourseController {
 

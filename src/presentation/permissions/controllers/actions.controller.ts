@@ -1,32 +1,30 @@
-import { AddPermissions } from "../../../domain";
-import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../../../domain/dtos/roles-permissions";
+import { AddActionDto, DeleteActionDto, GetActionsDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
-import { PermissionsRepository } from "../../../domain/repositories";
+import { ActionRepository } from "../../../domain/repositories";
 import { ApiResultResponse } from "../../../domain/types";
-import { DeletePermissions } from "../../../domain/usecases/roles-permissions";
-import { GetPermissions } from "../../../domain/usecases/roles-permissions/get-permissions.usecase";
+import { AddAction, DeleteAction, GetActions } from "../../../domain/usecases/permissions";
 
-export class PermissionsController {
+export class ActionController {
 
-     constructor(private readonly permissionsRepository: PermissionsRepository) { }
+     constructor(private readonly actionRepository: ActionRepository) { }
 
-     addPermissions = (req: any, res: any) => {
-          const [error, addPermissionsDto] = AddPermissionsDto.create(req.body);
+     addAction = async (req: any, res: any) => {
+          const [error, addActionDto] = AddActionDto.create(req.body);
           if (error) return this.handleError(error, res);
 
-          new AddPermissions(this.permissionsRepository)
-               .execute(addPermissionsDto!)
+          new AddAction(this.actionRepository)
+               .execute(addActionDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
 
-     deletePermissions = (req: any, res: any) => {
+     deleteAction = (req: any, res: any) => {
           try {
-               const [error, deletePermissionsDto] = DeletePermissionsDto.delete(req.body);
-               if (error) return this.handleError(error, res);
+               const [error, deleteActionDto] = DeleteActionDto.delete(req.body);
+               if (error) return res.status(400).json({ error });
 
-               new DeletePermissions(this.permissionsRepository)
-                    .execute(deletePermissionsDto!)
+               new DeleteAction(this.actionRepository)
+                    .execute(deleteActionDto!)
                     .then((data) => res.json(data))
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
@@ -34,14 +32,18 @@ export class PermissionsController {
           }
      }
 
-     getPermissions = (req: any, res: any) => {
+     getActions = (req: any, res: any) => {
           try {
-               const [error, getPermissionsDto] = GetPermissionsDto.get(req.body);
-               if (error) return res.status(400).json({ error });
+               const [error] = GetActionsDto.get(req.body);
+               if (error) return this.handleError(error, res);
 
-               new GetPermissions(this.permissionsRepository)
-                    .execute(getPermissionsDto!)
-                    .then((data) => res.json(data))
+               new GetActions(this.actionRepository)
+                    .execute()
+                    .then((data) => {
+                         //NOTE: Asignar objeto.data para que lo devuelva a la api como data
+                         data.data = data.data.actions
+                         return res.json(data)
+                    })
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
                console.log('error: ', error)

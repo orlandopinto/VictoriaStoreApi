@@ -1,23 +1,24 @@
-import { DeletePermissionsDto } from "../../dtos/roles-permissions";
-import { DeletePermissionsUseCase } from "../../interfaces/IPermissions";
-import { PermissionsRepository } from "../../repositories";
+import { DeleteActionDto } from "../../dtos/permissions";
+import { DeleteActionUseCase } from "../../interfaces";
+import { ActionRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class DeletePermissions implements DeletePermissionsUseCase {
+export class DeleteAction implements DeleteActionUseCase {
 
-     constructor(private readonly rermissionsByRoleRepository: PermissionsRepository) { }
+     constructor(private readonly actionRepository: ActionRepository) { }
 
-     async execute(deletePermissionsDto: DeletePermissionsDto): Promise<ApiResultResponse> {
+     async execute(deleteActionDto: DeleteActionDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const permissions = await this.rermissionsByRoleRepository.deletePermissions(deletePermissionsDto);
+               const action = await this.actionRepository.deleteAction(deleteActionDto);
+
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: permissions,
-                    message: "Permission deleted successfully.",
+                    data: action,
+                    message: "Action deleted successfully",
                     statusCode: 200,
                     stackTrace: null,
                     errorMessage: null

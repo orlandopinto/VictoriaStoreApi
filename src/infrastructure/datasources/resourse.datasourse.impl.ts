@@ -1,7 +1,8 @@
-import { ResourseModel } from "../../data/mongodb/models/resourse.model";
+import { ResourseModel, resourseSchema } from "../../data/mongodb/models/resourse.model";
 import { ResourseDatasource } from "../../domain/datasources";
-import { AddResourseDto, DeleteResourseDto } from "../../domain/dtos/roles-permissions";
-import { DeleteResourseEntity, ResourseEntity } from "../../domain/entities";
+import { AddResourseDto, DeleteResourseDto } from "../../domain/dtos/permissions";
+import { DeleteResourseEntity, GetResourseEntity, ResourseEntity } from "../../domain/entities";
+import { CustomError } from "../../domain/errors/custom.error";
 import { ResourseMapper } from "../mappers";
 
 export class ResourseDatasourceImpl implements ResourseDatasource {
@@ -40,6 +41,21 @@ export class ResourseDatasourceImpl implements ResourseDatasource {
 
           } catch (error) {
                throw error;
+          }
+     }
+
+     async getResourses(): Promise<GetResourseEntity> {
+          try {
+
+               const resourses = await ResourseModel.find() as unknown as [typeof resourseSchema][]
+
+               return new GetResourseEntity(resourses);
+
+          } catch (error) {
+               if (error instanceof CustomError) {
+                    throw error;
+               }
+               throw CustomError.internalServerError();
           }
      }
 

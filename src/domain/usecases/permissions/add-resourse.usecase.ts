@@ -1,4 +1,4 @@
-import { AddResourseDto } from "../../dtos/roles-permissions";
+import { AddResourseDto } from "../../dtos/permissions";
 import { AddResourseUseCase } from "../../interfaces";
 import { ResourseRepository } from '../../repositories';
 import { ApiResultResponse } from "../../types";

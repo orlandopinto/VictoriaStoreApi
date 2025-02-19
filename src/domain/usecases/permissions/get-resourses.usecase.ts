@@ -1,23 +1,24 @@
-import { AddActionDto } from "../../dtos/roles-permissions";
-import { AddActionUseCase } from "../../interfaces";
-import { ActionRepository } from '../../repositories';
+import { GetResourseEntity } from "../../entities";
+import { GetResoursesUseCase } from "../../interfaces";
+import { ResourseRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class AddAction implements AddActionUseCase {
+export class GetResourses implements GetResoursesUseCase {
 
-     constructor(private readonly actionRepository: ActionRepository) { }
+     constructor(private readonly resoursesRepository: ResourseRepository) { }
 
-     async execute(addActionDto: AddActionDto): Promise<ApiResultResponse> {
+     async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const action = await this.actionRepository.addAction(addActionDto);
+               const resourses = await this.resoursesRepository.getResourses();
+               const data = { ...resourses } as unknown as GetResourseEntity
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: action,
-                    message: "Action created successfully",
+                    data: data,
+                    message: null,
                     statusCode: 200,
                     stackTrace: null,
                     errorMessage: null

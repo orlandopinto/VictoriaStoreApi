@@ -1,6 +1,6 @@
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles-permissions";
-import { DeleteRoleEntity, RolesEntity } from "../../domain/entities/roles.entity";
+import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
+import { DeleteRoleEntity, GetRolesEntity, RolesEntity } from "../../domain/entities/roles.entity";
 import { RolesRepository } from "../../domain/repositories/roles.repository";
 
 export class RolesRepositoryImpl implements RolesRepository {
@@ -13,6 +13,10 @@ export class RolesRepositoryImpl implements RolesRepository {
 
      deleteRole(deleteRoleDto: DeleteRoleDto): Promise<DeleteRoleEntity> {
           return this.roleDatasource.deleteRole(deleteRoleDto);
+     }
+
+     getRoles(): Promise<GetRolesEntity> {
+          return this.roleDatasource.getRoles();
      }
 
 }

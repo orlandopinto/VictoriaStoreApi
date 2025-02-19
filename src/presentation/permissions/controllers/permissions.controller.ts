@@ -1,32 +1,32 @@
-import { RolesModel } from "../../../data/mongodb/models/roles.model";
-import { AddRoleDto, DeleteRoleDto } from "../../../domain/dtos/roles-permissions";
+import { AddPermissions } from "../../../domain";
+import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
-import { RolesRepository } from "../../../domain/repositories/roles.repository";
-import { ApiResultResponse } from '../../../domain/types/api-result-response.type';
-import { AddRole } from "../../../domain/usecases/roles-permissions/add-role.usecase";
-import { DeleteRole } from "../../../domain/usecases/roles-permissions/delete-role.usecase";
+import { PermissionsRepository } from "../../../domain/repositories";
+import { ApiResultResponse } from "../../../domain/types";
+import { DeletePermissions } from "../../../domain/usecases/permissions";
+import { GetPermissions } from "../../../domain/usecases/permissions/get-permissions.usecase";
 
-export class RoleController {
+export class PermissionsController {
 
-     constructor(private readonly rolesRepository: RolesRepository) { }
+     constructor(private readonly permissionsRepository: PermissionsRepository) { }
 
-     addRole = (req: any, res: any) => {
-          const [error, addRoleDto] = AddRoleDto.create(req.body);
+     addPermissions = (req: any, res: any) => {
+          const [error, addPermissionsDto] = AddPermissionsDto.create(req.body);
           if (error) return this.handleError(error, res);
 
-          new AddRole(this.rolesRepository)
-               .execute(addRoleDto!)
+          new AddPermissions(this.permissionsRepository)
+               .execute(addPermissionsDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
 
-     deleteRole = (req: any, res: any) => {
+     deletePermissions = (req: any, res: any) => {
           try {
-               const [error, deleteRoleDto] = DeleteRoleDto.delete(req.body);
+               const [error, deletePermissionsDto] = DeletePermissionsDto.delete(req.body);
                if (error) return this.handleError(error, res);
 
-               new DeleteRole(this.rolesRepository)
-                    .execute(deleteRoleDto!)
+               new DeletePermissions(this.permissionsRepository)
+                    .execute(deletePermissionsDto!)
                     .then((data) => res.json(data))
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
@@ -34,11 +34,18 @@ export class RoleController {
           }
      }
 
-     getRoles = (req: any, res: any) => {
+     getPermissions = (req: any, res: any) => {
           try {
-               //TODO: Corregir la siguiente linea, esta buscando por model en vez del reposiorio
-               RolesModel.find()
-                    .then(data => res.json({ data }))
+               const [error, getPermissionsDto] = GetPermissionsDto.get(req.body);
+               if (error) return res.status(400).json({ error });
+
+               new GetPermissions(this.permissionsRepository)
+                    .execute(getPermissionsDto!)
+                    .then((data) => {
+                         //NOTE: Asignar objeto.data para que lo devuelva a la api como data
+                         data.data = data.data.permissions
+                         return res.json(data)
+                    })
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
                console.log('error: ', error)

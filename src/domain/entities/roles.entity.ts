@@ -1,3 +1,5 @@
+import { rolesSchema } from "../../data/mongodb";
+
 export class RolesEntity {
 
      constructor(
@@ -16,6 +18,14 @@ export class DeleteRoleEntity {
           public roleName: string,
           public hasError: boolean | undefined,
           public errorMessage: string[]
+     ) { }
+
+}
+
+export class GetRolesEntity {
+
+     constructor(
+          public roles: [typeof rolesSchema][],
      ) { }
 
 }

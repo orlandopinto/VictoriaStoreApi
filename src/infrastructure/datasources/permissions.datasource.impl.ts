@@ -1,6 +1,6 @@
 import { PermissionsModel, permissionsSchema } from "../../data/mongodb";
 import { PermissionsDatasource } from "../../domain/datasources";
-import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../../domain/dtos/roles-permissions";
+import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../../domain/dtos/permissions";
 import { AddPermissionsEntity, DeletePermissionsEntity, GetPermissionsEntity } from "../../domain/entities";
 import { CustomError } from '../../domain/errors/custom.error';
 

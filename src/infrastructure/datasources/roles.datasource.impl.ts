@@ -1,7 +1,7 @@
-import { RolesModel } from "../../data/mongodb/models/roles.model";
+import { RolesModel, rolesSchema } from "../../data/mongodb/models/roles.model";
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/roles-permissions";
-import { DeleteRoleEntity, RolesEntity } from "../../domain/entities";
+import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
+import { DeleteRoleEntity, GetRolesEntity, RolesEntity } from "../../domain/entities";
 import { CustomError } from "../../domain/errors/custom.error";
 
 export class RolesDatasourceImpl implements RoleDatasource {
@@ -38,6 +38,21 @@ export class RolesDatasourceImpl implements RoleDatasource {
                await RolesModel.deleteOne({ roleName: roleName })
 
                return new DeleteRoleEntity(roleName, hasError, errorMessage);
+
+          } catch (error) {
+               if (error instanceof CustomError) {
+                    throw error;
+               }
+               throw CustomError.internalServerError();
+          }
+     }
+
+     async getRoles(): Promise<GetRolesEntity> {
+          try {
+
+               const roles = await RolesModel.find() as unknown as [typeof rolesSchema][]
+
+               return new GetRolesEntity(roles);
 
           } catch (error) {
                if (error instanceof CustomError) {

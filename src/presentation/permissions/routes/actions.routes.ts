@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { ActionsRepositoryImpl } from "../../../infrastructure";
-import { ActionDatasourceImpl } from "../../../infrastructure/datasources";
 import AuthMiddleware from "../../middlewares/auth.middleware";
 import { ActionController } from "../controllers/actions.controller";
+import { ActionDatasourceImpl } from "../../../infrastructure/datasources";
 
 export class ActionsRoutes {
 

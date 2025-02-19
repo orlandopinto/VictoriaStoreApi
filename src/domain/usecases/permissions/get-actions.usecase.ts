@@ -1,28 +1,28 @@
-import { AddRoleDto } from "../../dtos/roles-permissions";
-import { AddRoleUseCase } from "../../interfaces/IRoles";
-import { RolesRepository } from "../../repositories/roles.repository";
+import { GetActionsEntity } from "../../entities";
+import { GetActionsUseCase } from "../../interfaces";
+import { ActionRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class AddRole implements AddRoleUseCase {
+export class GetActions implements GetActionsUseCase {
 
-     constructor(private readonly roleRepository: RolesRepository) { }
+     constructor(private readonly actionsRepository: ActionRepository) { }
 
-     async execute(addRoleDto: AddRoleDto): Promise<ApiResultResponse> {
+     async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const role = await this.roleRepository.addRole(addRoleDto);
+               const actions = await this.actionsRepository.getActions();
+               const data = { ...actions } as unknown as GetActionsEntity
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: role,
-                    message: "Role created successfully",
+                    data: data,
+                    message: null,
                     statusCode: 200,
                     stackTrace: null,
                     errorMessage: null
                }
-
           } catch (error) {
                const err = error as Error
                resultResponse = {

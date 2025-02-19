@@ -1,4 +1,4 @@
-import { AddResourseDto, DeleteResourseDto } from "../dtos/roles-permissions/index"
+import { AddResourseDto, DeleteResourseDto, GetResoursesDto } from "../dtos/permissions/index"
 import { ApiResultResponse } from "../types/api-result-response.type"
 
 export interface AddResourseUseCase {
@@ -7,4 +7,8 @@ export interface AddResourseUseCase {
 
 export interface DeleteResourseUseCase {
      execute(deleteResourseDto: DeleteResourseDto): Promise<ApiResultResponse>
+}
+
+export interface GetResoursesUseCase {
+     execute(getActionsDto: GetResoursesDto): Promise<ApiResultResponse>
 }

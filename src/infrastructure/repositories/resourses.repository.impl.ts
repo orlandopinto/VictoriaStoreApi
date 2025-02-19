@@ -1,6 +1,6 @@
 import { ResourseDatasource } from "../../domain/datasources";
-import { AddResourseDto, DeleteResourseDto } from "../../domain/dtos/roles-permissions";
-import { DeleteResourseEntity, ResourseEntity } from "../../domain/entities";
+import { AddResourseDto, DeleteResourseDto } from "../../domain/dtos/permissions";
+import { DeleteResourseEntity, GetResourseEntity, ResourseEntity } from "../../domain/entities";
 import { ResourseRepository } from "../../domain/repositories";
 
 export class ResoursesRepositoryImpl implements ResourseRepository {
@@ -13,6 +13,10 @@ export class ResoursesRepositoryImpl implements ResourseRepository {
 
      deleteResourse(deleteResourseDto: DeleteResourseDto): Promise<DeleteResourseEntity> {
           return this.resourseDatasource.deleteResourse(deleteResourseDto);
+     }
+
+     getResourses(): Promise<GetResourseEntity> {
+          return this.resourseDatasource.getResourses();
      }
 
 }

@@ -1,4 +1,5 @@
-import { GetPermissionsDto } from "../../dtos/roles-permissions";
+import { GetPermissionsDto } from "../../dtos/permissions";
+import { GetPermissionsEntity } from "../../entities";
 import { GetPermissionsUseCase } from "../../interfaces";
 import { PermissionsRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
@@ -13,11 +14,11 @@ export class GetPermissions implements GetPermissionsUseCase {
 
           try {
                const permissionsByRole = await this.permissionsByRoleRepository.getPermissions(getPermissionsDto);
-
+               const data = { ...permissionsByRole } as unknown as GetPermissionsEntity
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: permissionsByRole,
+                    data: data,
                     message: null,
                     statusCode: 200,
                     stackTrace: null,

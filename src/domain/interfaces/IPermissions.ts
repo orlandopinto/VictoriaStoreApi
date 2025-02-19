@@ -1,4 +1,4 @@
-import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../dtos/roles-permissions"
+import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../dtos/permissions"
 import { ApiResultResponse } from "../types/api-result-response.type"
 
 export interface AddPermissionsUseCase {

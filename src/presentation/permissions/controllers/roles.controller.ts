@@ -1,31 +1,32 @@
-import { ActionsModel } from "../../../data/mongodb";
-import { AddActionDto, DeleteActionDto } from "../../../domain/dtos/roles-permissions";
+import { AddRoleDto, DeleteRoleDto, GetRolesDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
-import { ActionRepository } from "../../../domain/repositories";
-import { ApiResultResponse } from "../../../domain/types";
-import { AddAction, DeleteAction } from "../../../domain/usecases/roles-permissions";
+import { RolesRepository } from "../../../domain/repositories/roles.repository";
+import { ApiResultResponse } from '../../../domain/types/api-result-response.type';
+import { AddRole } from "../../../domain/usecases/permissions/add-role.usecase";
+import { DeleteRole } from "../../../domain/usecases/permissions/delete-role.usecase";
+import { GetRoles } from "../../../domain/usecases/permissions/get-roles.usecase";
 
-export class ActionController {
+export class RoleController {
 
-     constructor(private readonly actionRepository: ActionRepository) { }
+     constructor(private readonly rolesRepository: RolesRepository) { }
 
-     addAction = async (req: any, res: any) => {
-          const [error, addActionDto] = AddActionDto.create(req.body);
+     addRole = (req: any, res: any) => {
+          const [error, addRoleDto] = AddRoleDto.create(req.body);
           if (error) return this.handleError(error, res);
 
-          new AddAction(this.actionRepository)
-               .execute(addActionDto!)
+          new AddRole(this.rolesRepository)
+               .execute(addRoleDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
 
-     deleteAction = (req: any, res: any) => {
+     deleteRole = (req: any, res: any) => {
           try {
-               const [error, deleteActionDto] = DeleteActionDto.delete(req.body);
-               if (error) return res.status(400).json({ error });
+               const [error, deleteRoleDto] = DeleteRoleDto.delete(req.body);
+               if (error) return this.handleError(error, res);
 
-               new DeleteAction(this.actionRepository)
-                    .execute(deleteActionDto!)
+               new DeleteRole(this.rolesRepository)
+                    .execute(deleteRoleDto!)
                     .then((data) => res.json(data))
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
@@ -33,10 +34,18 @@ export class ActionController {
           }
      }
 
-     getActions = (req: any, res: any) => {
+     getRoles = (req: any, res: any) => {
           try {
-               ActionsModel.find()
-                    .then(data => res.json({ data }))
+               const [error] = GetRolesDto.get(req.body);
+               if (error) return this.handleError(error, res);
+
+               new GetRoles(this.rolesRepository)
+                    .execute()
+                    .then((data) => {
+                         //NOTE: Asignar objeto.data para que lo devuelva a la api como data
+                         data.data = data.data.roles
+                         return res.json(data)
+                    })
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
                console.log('error: ', error)

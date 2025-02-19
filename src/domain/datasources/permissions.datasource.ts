@@ -1,4 +1,4 @@
-import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../dtos/roles-permissions/index";
+import { AddPermissionsDto, DeletePermissionsDto, GetPermissionsDto } from "../dtos/permissions/index";
 import { AddPermissionsEntity, DeletePermissionsEntity, GetPermissionsEntity } from "../entities";
 
 export abstract class PermissionsDatasource {

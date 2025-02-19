@@ -1,4 +1,6 @@
-export class ActionEntity {
+import { actionsSchema } from "../../data/mongodb";
+
+export class AddActionEntity {
 
      constructor(
           public id: string,
@@ -15,6 +17,14 @@ export class DeleteActionEntity {
           public actionName: string,
           public hasError: boolean | undefined,
           public errorMessage: string[]
+     ) { }
+
+}
+
+export class GetActionsEntity {
+
+     constructor(
+          public actions: [typeof actionsSchema][],
      ) { }
 
 }

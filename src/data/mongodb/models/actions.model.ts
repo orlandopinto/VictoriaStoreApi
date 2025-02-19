@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const actionsSchema = new Schema
+export const actionsSchema = new Schema
      (
           {
                actionName: { type: String, required: [true, 'Action name is required'], unique: true, trim: true }
