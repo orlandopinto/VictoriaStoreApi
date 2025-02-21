@@ -1,13 +1,13 @@
 import { RolesModel, rolesSchema } from "../../data/mongodb/models/roles.model";
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
 import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
-import { DeleteRoleEntity, GetRolesEntity, RolesEntity } from "../../domain/entities";
+import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity } from "../../domain/entities";
 import { CustomError } from "../../domain/errors/custom.error";
 
 export class RolesDatasourceImpl implements RoleDatasource {
 
-     async addRole(addRoleDto: AddRoleDto): Promise<RolesEntity> {
-          let { roleName, roleDescription, hasError, errorMessage } = addRoleDto;
+     async addRole(addRoleDto: AddRoleDto): Promise<AddRoleEntity> {
+          let { roleName, roleDescription } = addRoleDto;
           try {
 
                // 1. Verificar si existe el role
@@ -18,7 +18,7 @@ export class RolesDatasourceImpl implements RoleDatasource {
                const role = await RolesModel.create({ roleName, roleDescription })
                await role.save();
 
-               return new RolesEntity(role.id, roleName, roleDescription, hasError, errorMessage);
+               return new AddRoleEntity(role.id, roleName, roleDescription);
 
           } catch (error) {
                if (error instanceof CustomError) {
@@ -29,7 +29,7 @@ export class RolesDatasourceImpl implements RoleDatasource {
      }
 
      async deleteRole(deleteRoleDto: DeleteRoleDto): Promise<DeleteRoleEntity> {
-          let { roleName, hasError, errorMessage } = deleteRoleDto;
+          let { roleName } = deleteRoleDto;
           try {
                const exists = await RolesModel.findOne({ roleName: roleName })
                if (!exists) throw CustomError.badRequest("The role name does not exist or has been deleted.")
@@ -37,7 +37,7 @@ export class RolesDatasourceImpl implements RoleDatasource {
                // 2. eliminar el role
                await RolesModel.deleteOne({ roleName: roleName })
 
-               return new DeleteRoleEntity(roleName, hasError, errorMessage);
+               return new DeleteRoleEntity(roleName);
 
           } catch (error) {
                if (error instanceof CustomError) {

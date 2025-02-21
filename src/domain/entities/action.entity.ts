@@ -4,9 +4,7 @@ export class AddActionEntity {
 
      constructor(
           public id: string,
-          public actionName: string,
-          public hasError: boolean | undefined,
-          public errorMessage: string[]
+          public actionName: string
      ) { }
 
 }
@@ -14,9 +12,7 @@ export class AddActionEntity {
 export class DeleteActionEntity {
 
      constructor(
-          public actionName: string,
-          public hasError: boolean | undefined,
-          public errorMessage: string[]
+          public actionName: string
      ) { }
 
 }

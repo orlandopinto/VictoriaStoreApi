@@ -15,8 +15,8 @@ export class PermissionsRepositoryImpl implements PermissionsRepository {
           return this.permissionsDatasource.deletePermissions(deletePermissionsDto);
      }
 
-     getPermissions(getPermissionsDto: GetPermissionsDto): Promise<GetPermissionsEntity> {
-          return this.permissionsDatasource.getPermissions(getPermissionsDto);
+     getPermissions(): Promise<GetPermissionsEntity> {
+          return this.permissionsDatasource.getPermissions();
      }
 
 }

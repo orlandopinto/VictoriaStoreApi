@@ -1,4 +1,5 @@
 import { DeleteResourseDto } from "../../dtos/permissions";
+import { CustomError } from "../../errors/custom.error";
 import { DeleteResourseUseCase } from "../../interfaces/IResourses";
 import { ResourseRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
@@ -18,21 +19,23 @@ export class DeleteResourse implements DeleteResourseUseCase {
                     status: "success",
                     hasError: false,
                     data: resourse,
-                    message: null,
+                    message: "Resourse deleted successfully.",
                     statusCode: 200,
-                    stackTrace: null,
-                    errorMessage: null
+                    stackTrace: null
                }
           } catch (error) {
                const err = error as Error
+               let statusCode: number = 500;
+               if (error instanceof CustomError) {
+                    statusCode = error.statusCode;
+               }
                resultResponse = {
                     status: "error",
                     hasError: true,
                     data: null,
-                    message: null,
-                    statusCode: 500,
-                    stackTrace: err.stack,
-                    errorMessage: err.message
+                    message: err.message,
+                    statusCode: statusCode,
+                    stackTrace: err.stack
                }
           }
           return resultResponse;

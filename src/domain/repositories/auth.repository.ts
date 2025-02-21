@@ -1,5 +1,5 @@
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../dtos/auth";
-import { UserEntity, SystemUserEntity, EnvironmentSystemUserEntity } from "../entities";
+import { EnvironmentSystemUserEntity, SystemUserEntity, UserEntity } from "../entities";
 
 export abstract class AuthRepository {
 

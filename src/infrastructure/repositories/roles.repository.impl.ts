@@ -1,13 +1,13 @@
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
 import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
-import { DeleteRoleEntity, GetRolesEntity, RolesEntity } from "../../domain/entities/roles.entity";
+import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity } from "../../domain/entities/roles.entity";
 import { RolesRepository } from "../../domain/repositories/roles.repository";
 
 export class RolesRepositoryImpl implements RolesRepository {
 
      constructor(private readonly roleDatasource: RoleDatasource) { }
 
-     addRole(addRoleDto: AddRoleDto): Promise<RolesEntity> {
+     addRole(addRoleDto: AddRoleDto): Promise<AddRoleEntity> {
           return this.roleDatasource.addRole(addRoleDto);
      }
 

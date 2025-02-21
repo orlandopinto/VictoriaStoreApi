@@ -1,4 +1,5 @@
 import { GetRolesEntity } from "../../entities";
+import { CustomError } from "../../errors/custom.error";
 import { GetRolesUseCase } from "../../interfaces";
 import { RolesRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
@@ -20,19 +21,21 @@ export class GetRoles implements GetRolesUseCase {
                     data: data,
                     message: null,
                     statusCode: 200,
-                    stackTrace: null,
-                    errorMessage: null
+                    stackTrace: null
                }
           } catch (error) {
                const err = error as Error
+               let statusCode: number = 500;
+               if (error instanceof CustomError) {
+                    statusCode = error.statusCode;
+               }
                resultResponse = {
                     status: "error",
                     hasError: true,
                     data: null,
-                    message: null,
-                    statusCode: 500,
-                    stackTrace: err.stack,
-                    errorMessage: err.message
+                    message: err.message,
+                    statusCode: statusCode,
+                    stackTrace: err.stack
                }
           }
           return resultResponse;

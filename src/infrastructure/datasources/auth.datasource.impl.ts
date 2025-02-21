@@ -7,7 +7,6 @@ import { UserEntity } from "../../domain/entities";
 import { EnvironmentSystemUserEntity, SystemUserEntity } from "../../domain/entities/system-user.entity";
 import { CustomError } from "../../domain/errors/custom.error";
 import { SignToken } from "../../domain/types";
-import { SystemUserMapper } from "../mappers";
 import { UserMapper } from "../mappers/user.mapper";
 
 type HashFunction = (password: string) => string
@@ -28,7 +27,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                // 1. Verificar si existe el email
                const user = await UserModel.findOne({ email }).lean()
                if (!user) {
-                    throw CustomError.notFound('User not found.');
+                    throw CustomError.notFound('User name or password invalid.');
                }
 
                // 2. Verifica si la contraseña hace match
@@ -72,44 +71,33 @@ export class AuthDatasourceImpl implements AuthDatasource {
      }
 
      async signIn(loginSystemUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
-          //NOTE: Validar si se puede inyectar el token aqui
 
-          let { token, email, password, userData, hasError, errorMessages } = loginSystemUserDto;
+          let { token, email, password } = loginSystemUserDto;
 
-          hasError = false;
-          errorMessages = []
-          let errors: string[] = []
           try {
-
-               let env: EnvironmentSystemUserEntity = { token, email, password, userData, errorMessages, hasError }
-
-               if (!email) errors.push('Missing email')
-               if (!password) errors.push('Missing password')
+               // 1. Verifica si los campos del body son correctos
+               if (!email) throw CustomError.badRequest("Missing email")
+               if (!password) throw CustomError.badRequest("Missing password")
+               //if (password.length < 6) throw CustomError.badRequest('Password too short')
 
                // 2. Verifica si existe el usuario
-               const userLogged = await SystemUserModel.findOne({ email }).lean() as unknown as SystemUserEntity
-               if (!userLogged) errors.push('User not found.')
-
-               // 2. Verifica si la contraseña hace match
-               if (userLogged && password && !this.compareFunction(password, userLogged.password)) {
-                    errors.push('User name or password invalid.')
+               let userData = await SystemUserModel.findOne({ email }).lean() as unknown as SystemUserEntity
+               if (!userData) {
+                    throw CustomError.badRequest("User name or password invalid..")
                }
 
+               // 3. Verifica si la contraseña hace match
+               if (userData && password && !this.compareFunction(password, userData.password)) {
+                    throw CustomError.badRequest("User name or password invalid..")
+               }
+
+               // 4. Se genera el token
                token = await this.signToken({ email: email }, DURATION_TOKEN) as string
                if (!token) {
-                    errors.push('Error generating token')
+                    throw CustomError.badRequest("Error generating token.")
                }
 
-               if (errors.length === 0) {
-                    userLogged.password = "***************"
-                    userData = userLogged
-                    env = { token, email: userLogged.email, password: "****************", userData, errorMessages, hasError }
-               }
-               else {
-                    hasError = true;
-                    errorMessages = [...errors]
-               }
-               return new EnvironmentSystemUserEntity(token, email, password, userData, hasError, errorMessages);
+               return new EnvironmentSystemUserEntity(token, userData);
 
           } catch (error) {
                //NOTE: Registrar en log
@@ -119,18 +107,18 @@ export class AuthDatasourceImpl implements AuthDatasource {
 
      async signUp(registerUserDto: SignUpUserDto): Promise<SystemUserEntity> {
           //NOTE: Aqui es donde se especifican todos los campos para realizar el registro del usuario
-          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions } = registerUserDto;
+          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles } = registerUserDto;
           try {
                // 1. verificar si el correo existe
                const exists = await SystemUserModel.findOne({ email: email })
                if (exists) throw CustomError.badRequest('User already exists.')
 
                // 2. Hash de contraseña
-               const user = await SystemUserModel.create({ email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, permissions })
+               const user = await SystemUserModel.create({ email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles })
                await user.save();
 
                // 3. Mapear la respuesta a la entidad
-               return SystemUserMapper.systemUserEntityFromObject(user);
+               return new SystemUserEntity(user.id, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles);
 
           } catch (error) {
                if (error instanceof CustomError) {

@@ -1,4 +1,3 @@
-import { permissionsSchema } from "../../data/mongodb";
 import { userData } from "../types";
 
 export class SystemUserEntity {
@@ -17,8 +16,7 @@ export class SystemUserEntity {
           public lockoutEnabled?: boolean,
           public accessFailedCount?: number,
           public birthDate?: Date,
-          public roles?: string[],
-          public permissions?: [typeof permissionsSchema][]
+          public roles?: string[]
      ) { }
 
 }
@@ -27,21 +25,7 @@ export class EnvironmentSystemUserEntity {
 
      constructor(
           public token: string,
-          public email: string,
-          public password: string,
-          public userData: userData,
-          public hasError: boolean,
-          public errorMessages?: string[] | null
-     ) { }
-
-}
-
-//NOTE: Se crea esta clase para excluir los campos email y password que eran necesarios para validar el usuario
-export class EnvironmentSystemUserEntityResult {
-
-     constructor(
-          public token: string,
-          public userData: userData,
+          public userData: userData
      ) { }
 
 }

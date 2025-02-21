@@ -1,13 +1,11 @@
 
 export class DeletePermissionsDto {
      constructor(
-          public id: string,
-          public hasError: boolean | undefined,
-          public errorMessage: string[]
+          public id: string
      ) { }
 
      static delete(object: { [key: string]: any }): [string?, DeletePermissionsDto?] {
-          let { id, hasError, errorMessage } = object
+          let { id } = object
 
           // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS *********
 
@@ -16,7 +14,7 @@ export class DeletePermissionsDto {
           // ********************** FIN DE LA VALIDACIÓN *********************
           return [
                undefined,
-               new DeletePermissionsDto(id, hasError, errorMessage)
+               new DeletePermissionsDto(id)
           ];
      }
 

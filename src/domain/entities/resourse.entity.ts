@@ -1,6 +1,6 @@
 import { resourseSchema } from "../../data/mongodb";
 
-export class ResourseEntity {
+export class AddResourseEntity {
 
      constructor(
           public id: string,
@@ -12,8 +12,7 @@ export class ResourseEntity {
 export class DeleteResourseEntity {
 
      constructor(
-          public resourseName: string,
-          public message: string
+          public resourseName: string
      ) { }
 
 }

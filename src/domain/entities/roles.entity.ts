@@ -1,13 +1,11 @@
 import { rolesSchema } from "../../data/mongodb";
 
-export class RolesEntity {
+export class AddRoleEntity {
 
      constructor(
           public id: string,
           public roleName: string,
-          public roleDescription: string | null,
-          public hasError: boolean | undefined,
-          public errorMessage: string[]
+          public roleDescription: string | null
      ) { }
 
 }
@@ -15,9 +13,7 @@ export class RolesEntity {
 export class DeleteRoleEntity {
 
      constructor(
-          public roleName: string,
-          public hasError: boolean | undefined,
-          public errorMessage: string[]
+          public roleName: string
      ) { }
 
 }

@@ -1,4 +1,5 @@
 import { AddRoleDto } from "../../dtos/permissions";
+import { CustomError } from "../../errors/custom.error";
 import { AddRoleUseCase } from "../../interfaces/IRoles";
 import { RolesRepository } from "../../repositories/roles.repository";
 import { ApiResultResponse } from "../../types";
@@ -18,21 +19,23 @@ export class AddRole implements AddRoleUseCase {
                     hasError: false,
                     data: role,
                     message: "Role created successfully",
-                    statusCode: 200,
-                    stackTrace: null,
-                    errorMessage: null
+                    statusCode: 201,
+                    stackTrace: null
                }
 
           } catch (error) {
                const err = error as Error
+               let statusCode: number = 500;
+               if (error instanceof CustomError) {
+                    statusCode = error.statusCode;
+               }
                resultResponse = {
                     status: "error",
                     hasError: true,
                     data: null,
-                    message: null,
-                    statusCode: 500,
-                    stackTrace: err.stack,
-                    errorMessage: err.message
+                    message: err.message,
+                    statusCode: statusCode,
+                    stackTrace: err.stack
                }
           }
           return resultResponse;

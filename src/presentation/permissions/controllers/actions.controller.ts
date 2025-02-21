@@ -53,9 +53,8 @@ export class ActionController {
      private handleCustomError = (error: unknown, res: any) => {
           if (error instanceof CustomError) {
                const responsError: ApiResultResponse = {
-                    errorMessage: error.message,
                     hasError: true,
-                    message: null,
+                    message: error.message,
                     stackTrace: null,
                     status: "error",
                     statusCode: error.statusCode,
@@ -69,9 +68,8 @@ export class ActionController {
      handleError = (error: string, res: any) => {
           if (error) {
                const responsError: ApiResultResponse = {
-                    errorMessage: error as string,
                     hasError: true,
-                    message: null,
+                    message: error as string,
                     stackTrace: null,
                     status: "error",
                     statusCode: 400,

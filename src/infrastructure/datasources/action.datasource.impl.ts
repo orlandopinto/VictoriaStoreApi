@@ -7,14 +7,17 @@ import { CustomError } from "../../domain/errors/custom.error";
 export class ActionDatasourceImpl implements ActionDatasource {
 
      async addAction(addActionDto: AddActionDto): Promise<AddActionEntity> {
-          const { actionName, hasError, errorMessage } = addActionDto;
+          const { actionName } = addActionDto;
           try {
-               // 1. Crear el action
+               // 1. Verificar si existe el role
+               const exists = await ActionsModel.findOne({ actionName: actionName })
+               if (exists) throw CustomError.badRequest('Action already exists.')
+
+               // 2. Crear el action
                const action = await ActionsModel.create({ actionName: actionName })
                await action.save();
 
-               // 2. Mapear la respuesta a la entidad
-               return new AddActionEntity(action.id, actionName, hasError, errorMessage);
+               return new AddActionEntity(action.id, actionName);
 
           } catch (error) {
                throw error;
@@ -22,15 +25,15 @@ export class ActionDatasourceImpl implements ActionDatasource {
      }
 
      async deleteAction(deleteActionDto: DeleteActionDto): Promise<DeleteActionEntity> {
-          const { actionName, hasError, errorMessage } = deleteActionDto;
+          const { actionName } = deleteActionDto;
           try {
                const exists = await ActionsModel.findOne({ actionName: actionName })
-               if (!exists) throw CustomError.badRequest("The role name does not exist or has been deleted.")
+               if (!exists) throw CustomError.badRequest("The action name does not exist or has been deleted.")
 
                // 2. eliminar el role
                await ActionsModel.deleteOne({ actionName: actionName })
 
-               return new DeleteActionEntity(actionName, hasError, errorMessage);
+               return new DeleteActionEntity(actionName);
 
           } catch (error) {
                throw error;

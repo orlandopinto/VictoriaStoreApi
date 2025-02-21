@@ -5,5 +5,4 @@ export type ApiResultResponse = {
      message: string | null;
      statusCode: number;
      stackTrace: any | null;
-     errorMessage: string | null;
 }

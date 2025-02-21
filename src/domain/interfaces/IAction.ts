@@ -1,4 +1,3 @@
-import { GetActionsDto } from "../dtos/permissions/get-actions.dto"
 import { AddActionDto, DeleteActionDto } from "../dtos/permissions/index"
 import { ApiResultResponse } from "../types/api-result-response.type"
 
@@ -11,5 +10,5 @@ export interface DeleteActionUseCase {
 }
 
 export interface GetActionsUseCase {
-     execute(getActionsDto: GetActionsDto): Promise<ApiResultResponse>
+     execute(): Promise<ApiResultResponse>
 }

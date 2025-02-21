@@ -5,6 +5,6 @@ export abstract class PermissionsRepository {
 
      abstract addPermissions(addPermissionsDto: AddPermissionsDto): Promise<AddPermissionsEntity>
      abstract deletePermissions(deletePermissionsDto: DeletePermissionsDto): Promise<DeletePermissionsEntity>
-     abstract getPermissions(getPermissionsDto: GetPermissionsDto): Promise<GetPermissionsEntity>
+     abstract getPermissions(): Promise<GetPermissionsEntity>
 
 }

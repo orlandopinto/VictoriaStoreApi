@@ -40,8 +40,7 @@ export class SignUpUser implements SignUpUserUseCase {
                     lockoutEnabled: user.lockoutEnabled,
                     accessFailedCount: user.accessFailedCount,
                     birthDate: user.birthDate,
-                    roles: user.roles,
-                    permissions: user.permissions
+                    roles: user.roles
                }
           }
      }

@@ -6,7 +6,7 @@ import { CustomError } from '../../domain/errors/custom.error';
 
 export class PermissionsDatasourceImpl implements PermissionsDatasource {
 
-     async addPermissions(addPermissionsDto: AddPermissionsDto): Promise<any> {
+     async addPermissions(addPermissionsDto: AddPermissionsDto): Promise<AddPermissionsEntity> {
 
           let { id, roleId, roleName, resourseId, resourseName, actionId, actionName } = addPermissionsDto;
           try {
@@ -14,7 +14,7 @@ export class PermissionsDatasourceImpl implements PermissionsDatasource {
                const exists = await PermissionsModel.findOne({ id: id })
                if (exists) throw CustomError.badRequest('Permission already exists.')
 
-               // 1. Crear el permissions
+               // 2. Crear el permissions
                const permissions = await PermissionsModel.create({ id, roleId, roleName, resourseId, resourseName, actionId, actionName })
                await permissions.save();
 
@@ -26,7 +26,7 @@ export class PermissionsDatasourceImpl implements PermissionsDatasource {
 
      }
 
-     async deletePermissions(deletePermissionsDto: DeletePermissionsDto): Promise<any> {
+     async deletePermissions(deletePermissionsDto: DeletePermissionsDto): Promise<DeletePermissionsEntity> {
           let { id } = deletePermissionsDto;
           try {
                const exists = await PermissionsModel.findOne({ id })
@@ -41,10 +41,9 @@ export class PermissionsDatasourceImpl implements PermissionsDatasource {
           }
      }
 
-     async getPermissions(getPermissionsDto: GetPermissionsDto): Promise<GetPermissionsEntity> {
-          let { permissions } = getPermissionsDto;
+     async getPermissions(): Promise<GetPermissionsEntity> {
           try {
-               permissions = await PermissionsModel.find()
+               const permissions = await PermissionsModel.find() as unknown as [typeof permissionsSchema][]
 
                return new GetPermissionsEntity(permissions);
 

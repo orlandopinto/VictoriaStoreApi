@@ -1,19 +1,17 @@
 
 export class AddActionDto {
      constructor(
-          public actionName: string,
-          public hasError: boolean | undefined,
-          public errorMessage: string[]
+          public actionName: string
      ) { }
 
 
      static create(object: { [key: string]: any }): [string?, AddActionDto?] {
-          const { actionName, hasError, errorMessage } = object;
+          const { actionName } = object;
           if (!actionName) return ['Missing action name on create action']
 
           return [
                undefined,
-               new AddActionDto(actionName, hasError, errorMessage)
+               new AddActionDto(actionName)
           ];
      }
 
