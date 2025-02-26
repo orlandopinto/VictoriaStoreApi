@@ -1,28 +1,27 @@
-import { AddPermissionsDto } from "../../dtos/permissions";
+import { DeletePermissionsByRoleDto } from "../../dtos/permissions";
 import { CustomError } from "../../errors/custom.error";
-import { AddPermissionsUseCase } from "../../interfaces";
-import { PermissionsRepository } from '../../repositories';
+import { DeletePermissionsByRoleUseCase } from "../../interfaces/IPermissionsByRole";
+import { PermissionsByRoleRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class AddPermissions implements AddPermissionsUseCase {
+export class DeletePermissionsByRole implements DeletePermissionsByRoleUseCase {
 
-     constructor(private readonly permissionsRepository: PermissionsRepository) { }
+     constructor(private readonly permissionsByRoleRepository: PermissionsByRoleRepository) { }
 
-     async execute(addPermissionsDto: AddPermissionsDto): Promise<ApiResultResponse> {
+     async execute(deletePermissionsByRoleDto: DeletePermissionsByRoleDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const permissions = await this.permissionsRepository.addPermissions(addPermissionsDto);
+               const permissionsByRole = await this.permissionsByRoleRepository.deletePermissionsByRole(deletePermissionsByRoleDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: permissions,
-                    message: "Permission created successfully",
-                    statusCode: 201,
+                    data: permissionsByRole,
+                    message: "Permission deleted successfully.",
+                    statusCode: 200,
                     stackTrace: null
                }
-
           } catch (error) {
                const err = error as Error
                let statusCode: number = 500;

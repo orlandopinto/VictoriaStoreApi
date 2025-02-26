@@ -1,6 +1,6 @@
-import { permissionsSchema } from "../../data/mongodb";
+import { permissionsByRoleSchema } from "../../data/mongodb";
 
-export class AddPermissionsEntity {
+export class AddPermissionsByRoleEntity {
 
      constructor(
           public id: string,
@@ -14,14 +14,14 @@ export class AddPermissionsEntity {
 
 }
 
-export class DeletePermissionsEntity {
+export class DeletePermissionsByRoleEntity {
 
      constructor(public id: string) { }
 
 }
 
-export class GetPermissionsEntity {
+export class GetPermissionsByRoleEntity {
 
-     constructor(public permissions: [typeof permissionsSchema][]) { }
+     constructor(public permissionsByRole: [typeof permissionsByRoleSchema][]) { }
 
 }

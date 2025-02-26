@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-export const permissionsSchema = new Schema
+export const permissionsByRoleSchema = new Schema
      (
           {
                id: { type: String, required: [true, 'ID is required'], unique: true },
@@ -13,4 +13,4 @@ export const permissionsSchema = new Schema
           }, { versionKey: false }
      )
 
-export const PermissionsModel = mongoose.model('Permissions', permissionsSchema);
+export const PermissionsByRoleModel = mongoose.model('PermissionsByRole', permissionsByRoleSchema);

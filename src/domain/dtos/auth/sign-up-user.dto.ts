@@ -1,5 +1,3 @@
-import { Validators } from "../../../config";
-import { permissionsSchema } from "../../../data/mongodb";
 
 export class SignUpUserDto {
 

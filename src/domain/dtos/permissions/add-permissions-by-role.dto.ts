@@ -1,5 +1,5 @@
 
-export class AddPermissionsDto {
+export class AddPermissionsByRoleDto {
      constructor(
           public id: string,
           public roleId: string,
@@ -10,7 +10,7 @@ export class AddPermissionsDto {
           public actionName: string
      ) { }
 
-     static create(object: { [key: string]: any }): [string?, AddPermissionsDto?] {
+     static create(object: { [key: string]: any }): [string?, AddPermissionsByRoleDto?] {
           const { id, roleId, roleName, resourseId, resourseName, actionId, actionName } = object;
           // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS *********
 
@@ -25,7 +25,7 @@ export class AddPermissionsDto {
           // ********************** FIN DE LA VALIDACIÓN *********************
           return [
                undefined,
-               new AddPermissionsDto(id, roleId, roleName, resourseId, resourseName, actionId, actionName)
+               new AddPermissionsByRoleDto(id, roleId, roleName, resourseId, resourseName, actionId, actionName)
           ];
      }
 

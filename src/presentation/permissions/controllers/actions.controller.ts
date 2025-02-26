@@ -1,8 +1,8 @@
+import { AddAction, DeleteAction, GetActions } from "../../../domain";
 import { AddActionDto, DeleteActionDto, GetActionsDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
 import { ActionRepository } from "../../../domain/repositories";
 import { ApiResultResponse } from "../../../domain/types";
-import { AddAction, DeleteAction, GetActions } from "../../../domain/usecases/permissions";
 
 export class ActionController {
 

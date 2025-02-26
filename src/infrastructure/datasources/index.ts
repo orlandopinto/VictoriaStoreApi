@@ -1,5 +1,5 @@
 export * from './action.datasource.impl'
 export * from './auth.datasource.impl'
-export * from './permissions.datasource.impl'
+export * from './permissions-by-role.datasource.impl'
 export * from './resourse.datasourse.impl'
 export * from './roles.datasource.impl'

@@ -1,6 +1,6 @@
 export * from './IAction'
 export * from './IAuth'
-export * from './IPermissions'
+export * from './IPermissionsByRole'
 export * from './IResourses'
 export * from './IRoles'
 

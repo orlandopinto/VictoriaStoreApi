@@ -1,29 +1,28 @@
-import { GetPermissionsDto } from "../../dtos/permissions";
-import { GetPermissionsEntity } from "../../entities";
+import { AddPermissionsByRoleDto } from "../../dtos/permissions";
 import { CustomError } from "../../errors/custom.error";
-import { GetPermissionsUseCase } from "../../interfaces";
-import { PermissionsRepository } from "../../repositories";
+import { AddPermissionsByRoleUseCase } from "../../interfaces";
+import { PermissionsByRoleRepository } from '../../repositories';
 import { ApiResultResponse } from "../../types";
 
-export class GetPermissions implements GetPermissionsUseCase {
+export class AddPermissionsByRole implements AddPermissionsByRoleUseCase {
 
-     constructor(private readonly permissionsByRoleRepository: PermissionsRepository) { }
+     constructor(private readonly permissionsRepository: PermissionsByRoleRepository) { }
 
-     async execute(getPermissionsDto: GetPermissionsDto): Promise<ApiResultResponse> {
+     async execute(addPermissionsDto: AddPermissionsByRoleDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const permissionsByRole = await this.permissionsByRoleRepository.getPermissions();
-               const data = { ...permissionsByRole } as unknown as GetPermissionsEntity
+               const permissionsByRole = await this.permissionsRepository.addPermissionsByRole(addPermissionsDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: data,
-                    message: null,
-                    statusCode: 200,
+                    data: permissionsByRole,
+                    message: "Permission created successfully",
+                    statusCode: 201,
                     stackTrace: null
                }
+
           } catch (error) {
                const err = error as Error
                let statusCode: number = 500;

@@ -1,10 +1,9 @@
 import mongoose, { Schema } from "mongoose";
-import { permissionsSchema } from "..";
 
 const systemUserSchema = new Schema
      (
           {
-               email: { type: String, required: [true, 'Email is required'], unique: true, lowercase: true },
+               email: { type: String, required: [true, 'Email is required'], unique: true },
                password: { type: String, required: [true, 'Password is required'] },
                firstName: { type: String, default: null },
                lastName: { type: String, default: null },
