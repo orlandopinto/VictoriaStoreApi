@@ -1,11 +1,11 @@
-import { permissionsByRoleSchema } from "../../../data/mongodb";
+import { PermissionsByRole } from "../../types";
 
 export class GetPermissionsByRoleDto {
      constructor(
-          public permissionsByRole: [typeof permissionsByRoleSchema][]
+          public permissionsByRole: PermissionsByRole[]
      ) { }
 
-     static get(object: { [key: string]: any }): [string?, GetPermissionsByRoleDto?] {
+     static get(object: { [key: string]: PermissionsByRole[] }): [string?, GetPermissionsByRoleDto?] {
           const { permissionsByRole } = object;
           return [
                undefined,
@@ -13,4 +13,4 @@ export class GetPermissionsByRoleDto {
           ];
      }
 
-}
+} 0

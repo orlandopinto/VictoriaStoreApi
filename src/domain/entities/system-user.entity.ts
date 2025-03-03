@@ -16,7 +16,8 @@ export class SystemUserEntity {
           public lockoutEnabled?: boolean,
           public accessFailedCount?: number,
           public birthDate?: Date,
-          public roles?: string[]
+          public roles?: string[],
+          public isActive?: boolean
      ) { }
 
 }

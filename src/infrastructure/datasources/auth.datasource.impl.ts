@@ -107,18 +107,18 @@ export class AuthDatasourceImpl implements AuthDatasource {
 
      async signUp(registerUserDto: SignUpUserDto): Promise<SystemUserEntity> {
           //NOTE: Aqui es donde se especifican todos los campos para realizar el registro del usuario
-          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles } = registerUserDto;
+          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = registerUserDto;
           try {
                // 1. verificar si el correo existe
                const exists = await SystemUserModel.findOne({ email: email })
                if (exists) throw CustomError.badRequest('User already exists.')
 
                // 2. Hash de contraseña
-               const user = await SystemUserModel.create({ email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles })
+               const user = await SystemUserModel.create({ email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive })
                await user.save();
 
                // 3. Mapear la respuesta a la entidad
-               return new SystemUserEntity(user.id, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles);
+               return new SystemUserEntity(user.id, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive);
 
           } catch (error) {
                if (error instanceof CustomError) {

@@ -17,6 +17,7 @@ export type SystemUser = {
           accessFailedCount?: Number,
           birthDate?: Date,
           roles?: string[],
+          isActive?: boolean
           permissionsByRole?: [typeof permissionsByRoleSchema][]
      }
 }
@@ -36,5 +37,6 @@ export type userData = {
      accessFailedCount?: Number,
      birthDate?: Date,
      roles?: string[],
+     isActive?: boolean,
      permissionsByRole?: [typeof permissionsByRoleSchema][]
 }

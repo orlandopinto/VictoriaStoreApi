@@ -4,12 +4,12 @@ export class DeletePermissionsByRoleDto {
           public id: string
      ) { }
 
-     static delete(object: { [key: string]: any }): [string?, DeletePermissionsByRoleDto?] {
+     static delete(object: { [key: string]: string }): [string?, DeletePermissionsByRoleDto?] {
           let { id } = object
 
           // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS *********
 
-          if (!id) return ['Missing id']
+          if (!id) return ['Missing id role']
 
           // ********************** FIN DE LA VALIDACIÓN *********************
           return [

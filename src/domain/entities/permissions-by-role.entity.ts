@@ -1,27 +1,21 @@
-import { permissionsByRoleSchema } from "../../data/mongodb";
+import { PermissionsByRole, Role } from "../types";
 
 export class AddPermissionsByRoleEntity {
 
      constructor(
-          public id: string,
-          public roleId: string,
-          public roleName: string,
-          public resourseId: string,
-          public resourseName: string,
-          public actionId: string,
-          public actionName: string
+          public permissionsByRole: PermissionsByRole,
      ) { }
 
 }
 
-export class DeletePermissionsByRoleEntity {
+// export class DeletePermissionsByRoleEntity {
 
-     constructor(public id: string) { }
+//      constructor(public role: Role) { }
 
-}
+// }
 
 export class GetPermissionsByRoleEntity {
 
-     constructor(public permissionsByRole: [typeof permissionsByRoleSchema][]) { }
+     constructor(public permissionsByRole: PermissionsByRole[]) { }
 
 }

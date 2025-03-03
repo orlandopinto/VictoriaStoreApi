@@ -1,5 +1,5 @@
-import { AddPermissionsByRole, DeletePermissionsByRole, GetPermissionsByRole } from "../../../domain";
-import { AddPermissionsByRoleDto, DeletePermissionsByRoleDto, GetPermissionsByRoleDto } from "../../../domain/dtos/permissions";
+import { AddPermissionsByRole, GetPermissionsByRole } from "../../../domain";
+import { AddPermissionsByRoleDto, GetPermissionsByRoleDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
 import { PermissionsByRoleRepository } from "../../../domain/repositories";
 import { ApiResultResponse } from "../../../domain/types";
@@ -18,19 +18,19 @@ export class PermissionsByRoleController {
                .catch(error => this.handleCustomError(error, res));
      }
 
-     deletePermissionsByRole = (req: any, res: any) => {
-          try {
-               const [error, deletePermissionsByRoleDto] = DeletePermissionsByRoleDto.delete(req.body);
-               if (error) return this.handleError(error, res);
+     // deletePermissionsByRole = (req: any, res: any) => {
+     //      try {
+     //           const [error, deletePermissionsByRoleDto] = DeletePermissionsByRoleDto.delete(req.body);
+     //           if (error) return this.handleError(error, res);
 
-               new DeletePermissionsByRole(this.permissionsByRoleRepository)
-                    .execute(deletePermissionsByRoleDto!)
-                    .then((data) => res.json(data))
-                    .catch(error => this.handleCustomError(error, res));
-          } catch (error) {
-               console.log('error: ', error)
-          }
-     }
+     //           new DeletePermissionsByRole(this.permissionsByRoleRepository)
+     //                .execute(deletePermissionsByRoleDto!)
+     //                .then((data) => res.json(data))
+     //                .catch(error => this.handleCustomError(error, res));
+     //      } catch (error) {
+     //           console.log('error: ', error)
+     //      }
+     // }
 
      getPermissionsByRole = (req: any, res: any) => {
           try {

@@ -1,10 +1,10 @@
-import { AddPermissionsByRoleDto, DeletePermissionsByRoleDto } from "../dtos/permissions/index";
-import { AddPermissionsByRoleEntity, DeletePermissionsByRoleEntity, GetPermissionsByRoleEntity } from "../entities";
+import { AddPermissionsByRoleDto } from "../dtos/permissions/index";
+import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity } from "../entities";
 
 export abstract class PermissionsByRoleDatasource {
 
      abstract addPermissionsByRole(addPermissionsByRoleDto: AddPermissionsByRoleDto): Promise<AddPermissionsByRoleEntity>
-     abstract deletePermissionsByRole(deletePermissionsByRoleDto: DeletePermissionsByRoleDto): Promise<DeletePermissionsByRoleEntity>
+     //abstract deletePermissionsByRole(deletePermissionsByRoleDto: DeletePermissionsByRoleDto): Promise<DeletePermissionsByRoleEntity>
      abstract getPermissionsByRole(): Promise<GetPermissionsByRoleEntity>
 
 }

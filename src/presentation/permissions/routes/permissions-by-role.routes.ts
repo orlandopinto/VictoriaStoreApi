@@ -15,7 +15,7 @@ export class PermissionsByRoleRoutes {
           const controller = new PermissionsByRoleController(permissionsRepository);
 
           router.post('/', [AuthMiddleware.validateJWT], controller.addPermissionsByRole);
-          router.delete('/', [AuthMiddleware.validateJWT], controller.deletePermissionsByRole);
+          //router.delete('/', [AuthMiddleware.validateJWT], controller.deletePermissionsByRole);
           router.get('/', [AuthMiddleware.validateJWT], controller.getPermissionsByRole);
 
           return router;

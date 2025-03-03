@@ -14,15 +14,16 @@ export class SignUpUserDto {
           public lockoutEnabled: boolean,
           public accessFailedCount: number,
           public birthDate: Date,
-          public roles?: string[]
+          public roles?: string[],
+          public isActive?: boolean
      ) { }
 
      static create(object: { [key: string]: any }): [string?, SignUpUserDto?] {
-          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles } = object;
+          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = object;
 
           return [
                undefined,
-               new SignUpUserDto(email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles)
+               new SignUpUserDto(email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive)
           ];
      }
 }
