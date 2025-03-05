@@ -1,4 +1,4 @@
-import { PermissionsByRoleModel, RolesModel, SystemUserModel } from "../../data/mongodb";
+import { PermissionsByRoleModel, RolesModel, rolesSchema, SystemUserModel } from "../../data/mongodb";
 import { PermissionsByRoleDatasource } from "../../domain/datasources";
 import { AddPermissionsByRoleDto } from "../../domain/dtos/permissions";
 import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity } from "../../domain/entities";
@@ -9,49 +9,24 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
 
      async addPermissionsByRole(addPermissionsByRoleDto: AddPermissionsByRoleDto): Promise<AddPermissionsByRoleEntity> {
 
-          let { permissionsByRole } = addPermissionsByRoleDto;
+          let { role, actionsSelected, usersByRole } = addPermissionsByRoleDto;
           try {
 
-               const permissions: PermissionsByRole = permissionsByRole; //{} as PermissionsByRole
-
                //REGISTRAR NUEVO ROL
-               //permissions.newRole = permissionsByRole.newRole;
-
-               const foundRole = RolesModel.create({ roleName: permissions.role.roleName, roleDescription: permissions.role.roleDescription })
-               const roleResult = await (await foundRole).save();
+               let roleResult = {} as any;
+               if (role.hasOwnProperty('roleName')) {
+                    const foundRole = await RolesModel.create({ roleName: role.roleName, roleDescription: role.roleDescription })
+                    roleResult = await foundRole.save() as unknown as typeof rolesSchema;
+               }
 
                //REGISTRAR PERMISSIONS
-               permissions.actionListSelected = permissionsByRole.actionListSelected;
-               permissions.usersByRole = permissionsByRole.usersByRole;
+               if (actionsSelected.length > 0) {
+                    const resultadoactionListSelected = await PermissionsByRoleModel.insertMany(actionsSelected)
+                    console.log('resultado > actionListSelected: ', resultadoactionListSelected)
+               }
 
-               let permissionsByRoleList: ActionsSelected[] = [];
-
-               permissions.actionListSelected.map((item) => {
-                    const permissionsByRoleModel: ActionsSelected = {
-                         id: roleResult._id.toString(),
-                         roleId: item.roleId,
-                         roleName: item.roleName,
-                         resourseId: item.resourseId,
-                         resourseName: item.resourseName,
-                         actionId: item.actionId,
-                         actionName: item.actionName
-                    }
-                    permissionsByRoleList.push(permissionsByRoleModel)
-               })
-
-               permissionsByRoleList.map(async (permissions) => {
-                    // 1. Verificar si existe el role
-                    //const exists = await PermissionsByRoleModel.findOne({ id: "p.id" })
-                    //if (exists) throw CustomError.badRequest('Permission already exists.')
-
-                    // 2. Crear el permissionsByRole
-                    const newPermissions = await PermissionsByRoleModel.create({ permissions })
-                    await newPermissions.save();
-
-               })
                //ASIGNAR ROL A USUARIOS
-
-               permissions.usersByRole.map(async (user) => {
+               usersByRole.map(async (user) => {
                     const currentUser = await SystemUserModel.findOne({ email: user.email })
                     if (currentUser) {
                          await SystemUserModel.findOneAndUpdate(
@@ -67,7 +42,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                     }
                })
 
-               return new AddPermissionsByRoleEntity(permissions);
+               return new AddPermissionsByRoleEntity(role, actionsSelected, usersByRole);
 
           } catch (error) {
                throw error;

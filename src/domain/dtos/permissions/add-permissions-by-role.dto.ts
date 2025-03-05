@@ -1,52 +1,23 @@
-import { PermissionsByRole } from "../../types";
+import { ActionsSelected, Role, UsersByRole } from "../../types";
 
 export class AddPermissionsByRoleDto {
      constructor(
-          public permissionsByRole: PermissionsByRole
+          public role: Role,
+          public actionsSelected: ActionsSelected[],
+          public usersByRole: UsersByRole[]
      ) { }
 
-     static create(object: { [key: string]: PermissionsByRole }): [string?, AddPermissionsByRoleDto?] {
-          const { permissionsByRole } = object;
+     static create(object: { [key: string]: any }): [string?, AddPermissionsByRoleDto?] {
+          const { role, actionsSelected, usersByRole } = object;
           // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS *********
-
-          if (!permissionsByRole) return ['Missing permissionsByRole on create permission']
+          if (!role) return ['Missing role on create permission']
+          if (!actionsSelected) return ['Missing actionsSelected on create permission']
+          if (!usersByRole) return ['Missing usersByRole on create permission']
           // ********************** FIN DE LA VALIDACIÓN *********************
           return [
                undefined,
-               new AddPermissionsByRoleDto(permissionsByRole)
+               new AddPermissionsByRoleDto(role, actionsSelected, usersByRole)
           ];
      }
 
 }
-
-// export class AddPermissionsByRoleDto {
-//      constructor(
-//           public id: string,
-//           public roleId: string,
-//           public roleName: string,
-//           public resourseId: string,
-//           public resourseName: string,
-//           public actionId: string,
-//           public actionName: string
-//      ) { }
-
-//      static create(object: { [key: string]: any }): [string?, AddPermissionsByRoleDto?] {
-//           const { id, roleId, roleName, resourseId, resourseName, actionId, actionName } = object;
-//           // ********* VALIDAR TODOS LOS CAMPOS QUE SON OBLIGATORIOS *********
-
-//           if (!id) return ['Missing id on create permission']
-//           if (!roleId) return ['Missing role id on create permission']
-//           if (!roleName) return ['Missing role name on create permission']
-//           if (!resourseId) return ['Missing resourse ID on create permission']
-//           if (!resourseName) return ['Missing resourse name on create permission']
-//           if (!actionId) return ['Missing action ID on create permission']
-//           if (!actionName) return ['Missing action name on create permission']
-
-//           // ********************** FIN DE LA VALIDACIÓN *********************
-//           return [
-//                undefined,
-//                new AddPermissionsByRoleDto(id, roleId, roleName, resourseId, resourseName, actionId, actionName)
-//           ];
-//      }
-
-// }

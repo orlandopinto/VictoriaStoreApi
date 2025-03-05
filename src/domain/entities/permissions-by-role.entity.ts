@@ -1,9 +1,11 @@
-import { PermissionsByRole, Role } from "../types";
+import { ActionsSelected, PermissionsByRole, Role, UsersByRole } from "../types";
 
 export class AddPermissionsByRoleEntity {
 
      constructor(
-          public permissionsByRole: PermissionsByRole,
+          public role: Role,
+          public actionsSelected: ActionsSelected[],
+          public usersByRole: UsersByRole[]
      ) { }
 
 }
