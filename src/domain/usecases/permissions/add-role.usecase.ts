@@ -1,12 +1,12 @@
 import { AddRoleDto } from "../../dtos/permissions";
 import { CustomError } from "../../errors/custom.error";
-import { AddRoleUseCase } from "../../interfaces/IRoles";
-import { RolesRepository } from "../../repositories/roles.repository";
+import { AddRoleUseCase } from "../../interfaces/IRole";
+import { RoleRepository } from "../../repositories/role.repository";
 import { ApiResultResponse } from "../../types";
 
 export class AddRole implements AddRoleUseCase {
 
-     constructor(private readonly roleRepository: RolesRepository) { }
+     constructor(private readonly roleRepository: RoleRepository) { }
 
      async execute(addRoleDto: AddRoleDto): Promise<ApiResultResponse> {
 

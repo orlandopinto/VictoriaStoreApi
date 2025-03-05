@@ -1,26 +1,26 @@
-import { AddResourseDto } from "../../dtos/permissions";
+import { GetPagesEntity } from "../../entities";
 import { CustomError } from "../../errors/custom.error";
-import { AddResourseUseCase } from "../../interfaces";
-import { ResourseRepository } from '../../repositories';
+import { GetPagesUseCase } from "../../interfaces";
+import { PageRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class AddResourse implements AddResourseUseCase {
+export class GetPages implements GetPagesUseCase {
 
-     constructor(private readonly resourseRepository: ResourseRepository) { }
+     constructor(private readonly pageRepository: PageRepository) { }
 
-     async execute(addResourseDto: AddResourseDto): Promise<ApiResultResponse> {
+     async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const resourse = await this.resourseRepository.addResourse(addResourseDto);
-
+               const pages = await this.pageRepository.getPages();
+               const data = { ...pages } as unknown as GetPagesEntity
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: resourse,
-                    message: "Resourse created successfully",
-                    statusCode: 201,
+                    data: data,
+                    message: null,
+                    statusCode: 200,
                     stackTrace: null
                }
           } catch (error) {

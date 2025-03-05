@@ -1,12 +1,12 @@
 import { DeleteRoleDto } from "../../dtos/permissions";
 import { CustomError } from "../../errors/custom.error";
-import { DeleteRoleUseCase } from "../../interfaces/IRoles";
-import { RolesRepository } from "../../repositories/roles.repository";
+import { DeleteRoleUseCase } from "../../interfaces/IRole";
+import { RoleRepository } from "../../repositories/role.repository";
 import { ApiResultResponse } from "../../types";
 
 export class DeleteRole implements DeleteRoleUseCase {
 
-     constructor(private readonly roleRepository: RolesRepository) { }
+     constructor(private readonly roleRepository: RoleRepository) { }
 
      async execute(deleteRoleDto: DeleteRoleDto): Promise<ApiResultResponse> {
 

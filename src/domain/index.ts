@@ -11,14 +11,13 @@ export * from './usecases/permissions/add-role.usecase'
 export * from './usecases/permissions/delete-role.usecase'
 export * from './usecases/permissions/get-roles.usecase'
 
-//RESOURSES
-export * from './usecases/permissions/add-resourse.usecase'
-export * from './usecases/permissions/delete-resourse.usecase'
-export * from './usecases/permissions/get-resourses.usecase'
+//PAGES
+export * from './usecases/permissions/add-page.usecase'
+export * from './usecases/permissions/delete-page.usecase'
+export * from './usecases/permissions/get-pages.usecase'
 
 //PERMISSIONS BY ROLE
 export * from './usecases/permissions/add-permissions-by-role.usecase'
-//export * from './usecases/permissions/delete-permissions-by-role.usecase'
 export * from './usecases/permissions/get-permissions-by-role.usecase'
 
 //ACTIONS

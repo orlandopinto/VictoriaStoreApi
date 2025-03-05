@@ -5,7 +5,7 @@ import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
 import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity } from "../../domain/entities";
 import { CustomError } from "../../domain/errors/custom.error";
 
-export class RolesDatasourceImpl implements RoleDatasource {
+export class RoleDatasourceImpl implements RoleDatasource {
 
      async addRole(addRoleDto: AddRoleDto): Promise<AddRoleEntity> {
           let { roleName, roleDescription } = addRoleDto;

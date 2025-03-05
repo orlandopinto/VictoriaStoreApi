@@ -4,7 +4,6 @@ import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity } from "../entit
 export abstract class PermissionsByRoleDatasource {
 
      abstract addPermissionsByRole(addPermissionsByRoleDto: AddPermissionsByRoleDto): Promise<AddPermissionsByRoleEntity>
-     //abstract deletePermissionsByRole(deletePermissionsByRoleDto: DeletePermissionsByRoleDto): Promise<DeletePermissionsByRoleEntity>
      abstract getPermissionsByRole(): Promise<GetPermissionsByRoleEntity>
 
 }

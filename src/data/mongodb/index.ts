@@ -1,6 +1,6 @@
 export * from './models/actions.model'
 export * from './models/permissions-by-role.model'
-export * from './models/resourse.model'
+export * from './models/pages.model'
 export * from './models/system-user.model'
 export * from './models/user.model'
 export * from './models/roles.model'

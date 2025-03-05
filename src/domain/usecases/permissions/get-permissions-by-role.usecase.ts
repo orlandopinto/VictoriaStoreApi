@@ -13,8 +13,8 @@ export class GetPermissionsByRole implements GetPermissionsUseCase {
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const permissionsByRole = await this.permissionsByRoleRepository.getPermissionsByRole();
-               const data = { ...permissionsByRole } as unknown as GetPermissionsByRoleEntity
+               const permissionsProfile = await this.permissionsByRoleRepository.getPermissionsByRole();
+               const data = { ...permissionsProfile } as unknown as GetPermissionsByRoleEntity
                resultResponse = {
                     status: "success",
                     hasError: false,

@@ -1,9 +1,9 @@
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
 import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
-import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity } from "../../domain/entities/roles.entity";
-import { RolesRepository } from "../../domain/repositories/roles.repository";
+import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity } from "../../domain/entities/role.entity";
+import { RoleRepository } from "../../domain/repositories/role.repository";
 
-export class RolesRepositoryImpl implements RolesRepository {
+export class RoleRepositoryImpl implements RoleRepository {
 
      constructor(private readonly roleDatasource: RoleDatasource) { }
 

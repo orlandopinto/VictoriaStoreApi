@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { RolesDatasourceImpl } from "../../../infrastructure/datasources/roles.datasource.impl";
-import { RolesRepositoryImpl } from "../../../infrastructure/repositories/roles.repository.impl";
+import { RoleDatasourceImpl } from "../../../infrastructure/datasources/role.datasource.impl";
+import { RoleRepositoryImpl } from "../../../infrastructure/repositories/role.repository.impl";
 import AuthMiddleware from "../../middlewares/auth.middleware";
-import { RoleController } from "../controllers/roles.controller";
+import { RoleController } from "../controllers/role.controller";
 
-export class RolesRoutes {
+export class RoleRoutes {
 
      static get routes(): Router {
 
           const router = Router();
 
-          const datasource = new RolesDatasourceImpl();
-          const roleRepository = new RolesRepositoryImpl(datasource)
+          const datasource = new RoleDatasourceImpl();
+          const roleRepository = new RoleRepositoryImpl(datasource)
           const controller = new RoleController(roleRepository);
 
           router.post('/', [AuthMiddleware.validateJWT], controller.addRole);

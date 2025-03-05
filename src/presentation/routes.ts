@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { AuthRoutes } from "./auth/auth.routes";
 import { AuthorizationRoutes } from "./auth/authorization.routes";
-import { ActionsRoutes } from './permissions/routes/actions.routes';
+import { ActionRoutes } from './permissions/routes/action.routes';
 import { PermissionsByRoleRoutes } from "./permissions/routes/permissions-by-role.routes";
-import { ResoursesRoutes } from "./permissions/routes/resourses.routes";
-import { RolesRoutes } from "./permissions/routes/roles.routes";
+import { PageRoutes } from "./permissions/routes/page.routes";
+import { RoleRoutes } from "./permissions/routes/role.routes";
 
 export class AppRoutes {
      static get routes(): Router {
@@ -13,10 +13,10 @@ export class AppRoutes {
           router.use('/api/auth', AuthRoutes.routes)
           router.use('/api/systemauth', AuthorizationRoutes.routes)
 
-          router.use('/api/actions', ActionsRoutes.routes)
+          router.use('/api/actions', ActionRoutes.routes)
           router.use('/api/permissions', PermissionsByRoleRoutes.routes)
-          router.use('/api/resourses', ResoursesRoutes.routes)
-          router.use('/api/roles', RolesRoutes.routes)
+          router.use('/api/pages', PageRoutes.routes)
+          router.use('/api/roles', RoleRoutes.routes)
 
           return router;
      }

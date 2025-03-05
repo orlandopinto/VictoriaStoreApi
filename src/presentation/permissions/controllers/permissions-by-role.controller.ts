@@ -18,20 +18,6 @@ export class PermissionsByRoleController {
                .catch(error => this.handleCustomError(error, res));
      }
 
-     // deletePermissionsByRole = (req: any, res: any) => {
-     //      try {
-     //           const [error, deletePermissionsByRoleDto] = DeletePermissionsByRoleDto.delete(req.body);
-     //           if (error) return this.handleError(error, res);
-
-     //           new DeletePermissionsByRole(this.permissionsByRoleRepository)
-     //                .execute(deletePermissionsByRoleDto!)
-     //                .then((data) => res.json(data))
-     //                .catch(error => this.handleCustomError(error, res));
-     //      } catch (error) {
-     //           console.log('error: ', error)
-     //      }
-     // }
-
      getPermissionsByRole = (req: any, res: any) => {
           try {
                const [error] = GetPermissionsByRoleDto.get(req.body);
@@ -41,7 +27,7 @@ export class PermissionsByRoleController {
                     .execute()
                     .then((data) => {
                          //NOTE: Asignar objeto.data para que lo devuelva a la api como data
-                         data.data = data.data.permissionsByRole
+                         data.data = data.data.permissionsProfile
                          return res.json(data)
                     })
                     .catch(error => this.handleCustomError(error, res));

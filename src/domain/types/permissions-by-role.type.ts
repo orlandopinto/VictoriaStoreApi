@@ -4,12 +4,12 @@ export type Role = {
      roleDescription?: string
 }
 
-export type ActionsSelected = {
+export type PermissionsByRole = {
      id: string
      actionId: string
      actionName: string
-     resourseId: string
-     resourseName: string
+     pageId: string
+     pageName: string
      roleId: string | null
      roleName: string | null
 }
@@ -21,8 +21,8 @@ export type UsersByRole = {
      imageProfilePath?: string
 }
 
-export type PermissionsByRole = {
+export type PermissionsProfile = {
      role: Role;
-     actionListSelected: ActionsSelected[];
+     permissionsByRole: PermissionsByRole[];
      usersByRole: UsersByRole[]
 }

@@ -1,12 +1,12 @@
 import { GetRolesEntity } from "../../entities";
 import { CustomError } from "../../errors/custom.error";
 import { GetRolesUseCase } from "../../interfaces";
-import { RolesRepository } from "../../repositories";
+import { RoleRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
 export class GetRoles implements GetRolesUseCase {
 
-     constructor(private readonly rolesByRoleRepository: RolesRepository) { }
+     constructor(private readonly rolesByRoleRepository: RoleRepository) { }
 
      async execute(): Promise<ApiResultResponse> {
 

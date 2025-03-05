@@ -3,7 +3,7 @@ import { AddActionDto, DeleteActionDto } from "../../domain/dtos/permissions";
 import { DeleteActionEntity, AddActionEntity, GetActionsEntity } from "../../domain/entities";
 import { ActionRepository } from "../../domain/repositories";
 
-export class ActionsRepositoryImpl implements ActionRepository {
+export class ActionRepositoryImpl implements ActionRepository {
 
      constructor(private readonly actionDatasource: ActionDatasource) { }
 

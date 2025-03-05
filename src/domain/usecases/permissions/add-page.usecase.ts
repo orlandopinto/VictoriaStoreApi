@@ -1,26 +1,26 @@
-import { DeleteResourseDto } from "../../dtos/permissions";
+import { AddPageDto } from "../../dtos/permissions";
 import { CustomError } from "../../errors/custom.error";
-import { DeleteResourseUseCase } from "../../interfaces/IResourses";
-import { ResourseRepository } from "../../repositories";
+import { AddPageUseCase } from "../../interfaces";
+import { PageRepository } from '../../repositories';
 import { ApiResultResponse } from "../../types";
 
-export class DeleteResourse implements DeleteResourseUseCase {
+export class AddPage implements AddPageUseCase {
 
-     constructor(private readonly resourseRepository: ResourseRepository) { }
+     constructor(private readonly pageRepository: PageRepository) { }
 
-     async execute(deleteResourseDto: DeleteResourseDto): Promise<ApiResultResponse> {
+     async execute(addPageDto: AddPageDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const resourse = await this.resourseRepository.deleteResourse(deleteResourseDto);
+               const page = await this.pageRepository.addPage(addPageDto);
 
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: resourse,
-                    message: "Resourse deleted successfully.",
-                    statusCode: 200,
+                    data: page,
+                    message: "Page created successfully",
+                    statusCode: 201,
                     stackTrace: null
                }
           } catch (error) {

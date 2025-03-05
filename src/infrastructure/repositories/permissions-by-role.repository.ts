@@ -11,10 +11,6 @@ export class PermissionsByRoleRepositoryImpl implements PermissionsByRoleReposit
           return this.permissionsByRoleDatasource.addPermissionsByRole(addPermissionsByRoleDto);
      }
 
-     // deletePermissionsByRole(deletePermissionsByRoleDto: DeletePermissionsByRoleDto): Promise<DeletePermissionsByRoleEntity> {
-     //      return this.permissionsByRoleDatasource.deletePermissionsByRole(deletePermissionsByRoleDto);
-     // }
-
      getPermissionsByRole(): Promise<GetPermissionsByRoleEntity> {
           return this.permissionsByRoleDatasource.getPermissionsByRole();
      }

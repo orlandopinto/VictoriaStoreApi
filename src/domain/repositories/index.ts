@@ -1,5 +1,5 @@
 export * from './auth.repository'
-export * from './roles.repository'
-export * from './resourse.repository'
+export * from './role.repository'
+export * from './page.repository'
 export * from './action.repository'
 export * from './permissions-by-role.repository'

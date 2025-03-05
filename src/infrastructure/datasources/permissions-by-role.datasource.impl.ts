@@ -2,14 +2,13 @@ import { PermissionsByRoleModel, RolesModel, rolesSchema, SystemUserModel } from
 import { PermissionsByRoleDatasource } from "../../domain/datasources";
 import { AddPermissionsByRoleDto } from "../../domain/dtos/permissions";
 import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity } from "../../domain/entities";
-import { ActionsSelected, PermissionsByRole, Role, UsersByRole } from "../../domain/types";
+import { PermissionsByRole, PermissionsProfile, Role, UsersByRole } from "../../domain/types";
 
 export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasource {
 
-
      async addPermissionsByRole(addPermissionsByRoleDto: AddPermissionsByRoleDto): Promise<AddPermissionsByRoleEntity> {
 
-          let { role, actionsSelected, usersByRole } = addPermissionsByRoleDto;
+          let { role, permissionsByRole, usersByRole } = addPermissionsByRoleDto;
           try {
 
                //REGISTRAR NUEVO ROL
@@ -20,9 +19,9 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                }
 
                //REGISTRAR PERMISSIONS
-               if (actionsSelected.length > 0) {
-                    const resultadoactionListSelected = await PermissionsByRoleModel.insertMany(actionsSelected)
-                    console.log('resultado > actionListSelected: ', resultadoactionListSelected)
+               if (permissionsByRole.length > 0) {
+                    const permissionsByRoleInsertResult = await PermissionsByRoleModel.insertMany(permissionsByRole)
+                    console.log('permissionsByRoleInsertResult: ', permissionsByRoleInsertResult)
                }
 
                //ASIGNAR ROL A USUARIOS
@@ -42,7 +41,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                     }
                })
 
-               return new AddPermissionsByRoleEntity(role, actionsSelected, usersByRole);
+               return new AddPermissionsByRoleEntity(role, permissionsByRole, usersByRole);
 
           } catch (error) {
                throw error;
@@ -50,32 +49,15 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
 
      }
 
-     //NOTE: Los permisos con este rol se eliminaran desde Roles > deleteRole
-
-     // async deletePermissionsByRole(deletePermissionsByRoleDto: DeletePermissionsByRoleDto): Promise<DeletePermissionsByRoleEntity> {
-     //      let { id } = deletePermissionsByRoleDto;
-     //      try {
-     //           const exists = await PermissionsByRoleModel.findOne({ id: id })
-     //           if (!exists) throw CustomError.badRequest("The id does not exist or has been deleted. [0] records deleted")
-
-     //           const result = await PermissionsByRoleModel.deleteOne({ id });
-
-     //           return new DeletePermissionsByRoleEntity(result);
-
-     //      } catch (error) {
-     //           throw error;
-     //      }
-     // }
-
      async getPermissionsByRole(): Promise<GetPermissionsByRoleEntity> {
           try {
                const permissionsByRoleModel = await PermissionsByRoleModel.find().lean();
-               let permissionsByRoleList: PermissionsByRole[] = [];
+               let permissionsProfile: PermissionsProfile[] = [];
 
                const foundRole = await RolesModel.find().lean();
 
                for (const role of foundRole) {
-                    let actionsSelectedList: ActionsSelected[] = [];
+                    let permissionsByRoleList: PermissionsByRole[] = [];
                     if (!foundRole) continue;
 
                     const currentRole: Role = {
@@ -85,16 +67,16 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                     };
 
                     for (const permission of permissionsByRoleModel.filter(f => f.roleName === currentRole.roleName)) {
-                         const actionsSelected: ActionsSelected = {
+                         const permissionsByRole: PermissionsByRole = {
                               id: permission.id,
                               actionId: permission.actionId,
                               actionName: permission.actionName,
-                              resourseId: permission.resourseId,
-                              resourseName: permission.resourseName,
+                              pageId: permission.pageId,
+                              pageName: permission.pageName,
                               roleId: permission.roleId,
                               roleName: permission.roleName
                          };
-                         actionsSelectedList.push(actionsSelected);
+                         permissionsByRoleList.push(permissionsByRole);
                     }
 
                     const userList = await SystemUserModel.find({ roles: { $all: [currentRole.roleName] } }).lean();
@@ -105,14 +87,14 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                          imageProfilePath: user.imageProfilePath
                     }));
 
-                    permissionsByRoleList.push({
+                    permissionsProfile.push({
                          role: currentRole,
-                         actionListSelected: actionsSelectedList,
+                         permissionsByRole: permissionsByRoleList,
                          usersByRole: usersByRoleList
                     });
                }
 
-               return new GetPermissionsByRoleEntity(permissionsByRoleList);
+               return new GetPermissionsByRoleEntity(permissionsProfile);
           } catch (error) {
                throw error;
           }

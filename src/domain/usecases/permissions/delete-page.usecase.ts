@@ -1,25 +1,25 @@
-import { GetResourseEntity } from "../../entities";
+import { DeletePageDto } from "../../dtos/permissions";
 import { CustomError } from "../../errors/custom.error";
-import { GetResoursesUseCase } from "../../interfaces";
-import { ResourseRepository } from "../../repositories";
+import { DeletePageUseCase } from "../../interfaces/IPage";
+import { PageRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class GetResourses implements GetResoursesUseCase {
+export class DeletePage implements DeletePageUseCase {
 
-     constructor(private readonly resoursesRepository: ResourseRepository) { }
+     constructor(private readonly pageRepository: PageRepository) { }
 
-     async execute(): Promise<ApiResultResponse> {
+     async execute(deletePageDto: DeletePageDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const resourses = await this.resoursesRepository.getResourses();
-               const data = { ...resourses } as unknown as GetResourseEntity
+               const page = await this.pageRepository.deletePage(deletePageDto);
+
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: data,
-                    message: null,
+                    data: page,
+                    message: "Page deleted successfully.",
                     statusCode: 200,
                     stackTrace: null
                }

@@ -1,6 +1,6 @@
 import { AddRoleDto, DeleteRoleDto, GetRolesDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
-import { RolesRepository } from "../../../domain/repositories/roles.repository";
+import { RoleRepository } from "../../../domain/repositories/role.repository";
 import { ApiResultResponse } from '../../../domain/types/api-result-response.type';
 import { AddRole } from "../../../domain/usecases/permissions/add-role.usecase";
 import { DeleteRole } from "../../../domain/usecases/permissions/delete-role.usecase";
@@ -8,7 +8,7 @@ import { GetRoles } from "../../../domain/usecases/permissions/get-roles.usecase
 
 export class RoleController {
 
-     constructor(private readonly rolesRepository: RolesRepository) { }
+     constructor(private readonly rolesRepository: RoleRepository) { }
 
      addRole = (req: any, res: any) => {
           const [error, addRoleDto] = AddRoleDto.create(req.body);

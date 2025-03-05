@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { ActionsRepositoryImpl } from "../../../infrastructure";
+import { ActionRepositoryImpl } from "../../../infrastructure";
 import AuthMiddleware from "../../middlewares/auth.middleware";
-import { ActionController } from "../controllers/actions.controller";
+import { ActionController } from "../controllers/action.controller";
 import { ActionDatasourceImpl } from "../../../infrastructure/datasources";
 
-export class ActionsRoutes {
+export class ActionRoutes {
 
      static get routes(): Router {
 
           const router = Router();
 
           const datasource = new ActionDatasourceImpl();
-          const actionRepository = new ActionsRepositoryImpl(datasource)
+          const actionRepository = new ActionRepositoryImpl(datasource)
           const controller = new ActionController(actionRepository);
 
           router.post('/', [AuthMiddleware.validateJWT], controller.addAction);
