@@ -1,7 +1,8 @@
 import { PermissionsByRoleModel, RolesModel, rolesSchema, SystemUserModel } from "../../data/mongodb";
 import { PermissionsByRoleDatasource } from "../../domain/datasources";
-import { AddPermissionsByRoleDto } from "../../domain/dtos/permissions";
-import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity } from "../../domain/entities";
+import { AddPermissionsByRoleDto, UpdatePermissionsByRoleDto } from "../../domain/dtos/permissions";
+import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity, UpdatePermissionsByRoleEntity } from "../../domain/entities";
+import { CustomError } from "../../domain/errors/custom.error";
 import { PermissionsByRole, PermissionsProfile, Role, UsersByRole } from "../../domain/types";
 
 export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasource {
@@ -16,30 +17,30 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                if (role.hasOwnProperty('roleName')) {
                     const foundRole = await RolesModel.create({ roleName: role.roleName, roleDescription: role.roleDescription })
                     roleResult = await foundRole.save() as unknown as typeof rolesSchema;
+                    for (const perms of permissionsByRole) {
+                         perms.roleId = foundRole._id.toString();
+                    }
                }
 
                //REGISTRAR PERMISSIONS
                if (permissionsByRole.length > 0) {
-                    const permissionsByRoleInsertResult = await PermissionsByRoleModel.insertMany(permissionsByRole)
-                    console.log('permissionsByRoleInsertResult: ', permissionsByRoleInsertResult)
+                    await PermissionsByRoleModel.insertMany(permissionsByRole)
                }
 
                //ASIGNAR ROL A USUARIOS
-               usersByRole.map(async (user) => {
-                    const currentUser = await SystemUserModel.findOne({ email: user.email })
+               await Promise.all(usersByRole.map(async (user) => {
+                    const currentUser = await SystemUserModel.findOne({ email: user.email });
                     if (currentUser) {
                          await SystemUserModel.findOneAndUpdate(
                               { email: currentUser.email },
                               {
                                    $push: {
-                                        keys: {
-                                             'roles': roleResult.roleName
-                                        }
+                                        roles: roleResult.roleName
                                    }
                               }
-                         )
+                         );
                     }
-               })
+               }));
 
                return new AddPermissionsByRoleEntity(role, permissionsByRole, usersByRole);
 
@@ -47,6 +48,61 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                throw error;
           }
 
+     }
+
+     async updatePermissionsByRole(updatePermissionsByRoleDto: UpdatePermissionsByRoleDto): Promise<UpdatePermissionsByRoleEntity> {
+
+          let { role, permissionsByRole, usersByRole } = updatePermissionsByRoleDto;
+          try {
+
+               // ACTUALIZAR SOLO roleDescription
+               let roleResult = {} as any;
+               if (role.hasOwnProperty('roleName')) {
+                    const result = await RolesModel.findByIdAndUpdate(
+                         role.id,
+                         {
+                              roleDescription: role.roleDescription
+                         },
+                         { new: true }
+                    )
+
+                    if (!result)
+                         throw CustomError.badRequest("An error occurred while updating data.")
+               }
+
+               // PERMISSIONS
+               if (permissionsByRole.length > 0) {
+                    //ELIMINAR TODOS LOS PERMISOS CON EL ROL A ACTUALIZAR
+                    let permisos = await PermissionsByRoleModel.find({ roleName: role.roleName })
+                    if (permisos.length > 0) { //si existen registros se eliminan todos los que coincidan con el roleName
+                         await PermissionsByRoleModel.deleteMany({ roleName: role.roleName });
+                    }
+
+                    //INSERTAR LOS PERMISOS QUE VIENEN EN LA LISTA
+                    await PermissionsByRoleModel.insertMany(permissionsByRole)
+               }
+
+               // ASIGNAR ROL A USUARIOS
+               // SOLO SE VA A ASIGNAR EL ROL A LOS USUARIOS QUE VIENEN EN LA LISTA
+               await Promise.all(usersByRole.map(async (user) => {
+                    const currentUser = await SystemUserModel.findOne({ email: user.email });
+                    if (currentUser) {
+                         await SystemUserModel.findOneAndUpdate(
+                              { email: currentUser.email },
+                              {
+                                   $push: {
+                                        roles: roleResult.roleName
+                                   }
+                              }
+                         );
+                    }
+               }));
+
+               return new UpdatePermissionsByRoleEntity(role, permissionsByRole, usersByRole);
+
+          } catch (error) {
+               throw error;
+          }
      }
 
      async getPermissionsByRole(): Promise<GetPermissionsByRoleEntity> {

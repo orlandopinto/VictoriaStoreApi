@@ -1,5 +1,6 @@
 export * from './add-action.dto'
 export * from './add-permissions-by-role.dto'
+export * from './update-permissions-by-role.dto'
 export * from './add-page.dto'
 export * from './add-role.dto'
 export * from './delete-action.dto'

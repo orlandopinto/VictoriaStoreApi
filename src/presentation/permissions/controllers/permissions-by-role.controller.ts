@@ -1,5 +1,5 @@
-import { AddPermissionsByRole, GetPermissionsByRole } from "../../../domain";
-import { AddPermissionsByRoleDto, GetPermissionsByRoleDto } from "../../../domain/dtos/permissions";
+import { AddPermissionsByRole, GetPermissionsByRole, UpdatePermissionsByRole } from "../../../domain";
+import { AddPermissionsByRoleDto, GetPermissionsByRoleDto, UpdatePermissionsByRoleDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
 import { PermissionsByRoleRepository } from "../../../domain/repositories";
 import { ApiResultResponse } from "../../../domain/types";
@@ -14,6 +14,16 @@ export class PermissionsByRoleController {
 
           new AddPermissionsByRole(this.permissionsByRoleRepository)
                .execute(addPermissionsByRoleDto!)
+               .then((data) => res.json(data))
+               .catch(error => this.handleCustomError(error, res));
+     }
+
+     updatePermissionsByRole = (req: any, res: any) => {
+          const [error, updatePermissionsByRoleDto] = UpdatePermissionsByRoleDto.create(req.body);
+          if (error) return this.handleError(error, res);
+
+          new UpdatePermissionsByRole(this.permissionsByRoleRepository)
+               .execute(updatePermissionsByRoleDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }

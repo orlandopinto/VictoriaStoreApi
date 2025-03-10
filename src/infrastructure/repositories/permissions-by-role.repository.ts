@@ -1,6 +1,6 @@
 import { PermissionsByRoleDatasource } from "../../domain/datasources";
-import { AddPermissionsByRoleDto } from "../../domain/dtos/permissions";
-import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity } from "../../domain/entities";
+import { AddPermissionsByRoleDto, UpdatePermissionsByRoleDto } from "../../domain/dtos/permissions";
+import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity, UpdatePermissionsByRoleEntity } from "../../domain/entities";
 import { PermissionsByRoleRepository } from "../../domain/repositories";
 
 export class PermissionsByRoleRepositoryImpl implements PermissionsByRoleRepository {
@@ -9,6 +9,10 @@ export class PermissionsByRoleRepositoryImpl implements PermissionsByRoleReposit
 
      addPermissionsByRole(addPermissionsByRoleDto: AddPermissionsByRoleDto): Promise<AddPermissionsByRoleEntity> {
           return this.permissionsByRoleDatasource.addPermissionsByRole(addPermissionsByRoleDto);
+     }
+
+     updatePermissionsByRole(updatePermissionsByRoleDto: UpdatePermissionsByRoleDto): Promise<UpdatePermissionsByRoleEntity> {
+          return this.permissionsByRoleDatasource.updatePermissionsByRole(updatePermissionsByRoleDto);
      }
 
      getPermissionsByRole(): Promise<GetPermissionsByRoleEntity> {

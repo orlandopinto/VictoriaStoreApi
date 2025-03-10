@@ -35,25 +35,21 @@ export class RoleDatasourceImpl implements RoleDatasource {
                let exists = await RolesModel.findOne({ roleName: roleName })
                if (!exists) throw CustomError.badRequest("The role name does not exist or has been deleted.")
 
-               // 2. eliminar el role
-               const roleDelete = await RolesModel.deleteOne({ roleName: roleName })
-               //console.log('roleDelete: ', roleDelete)
+               await RolesModel.deleteOne({ roleName: roleName })
 
-               //3. Se buscan si existen permisos 
+               //Se buscan si existen permisos 
                let permisos = await PermissionsByRoleModel.find({ roleName: roleName })
                if (permisos.length > 0) { //si existen registros se eliminan todos los que coincidan con el roleName
-                    const result = await PermissionsByRoleModel.deleteMany({ roleName: roleName });
-                    //console.log(`permisos eliminados con el rol ${roleName}: `, result)
+                    await PermissionsByRoleModel.deleteMany({ roleName: roleName });
                }
 
-               //4. Se verifica si existe este rol asignado a usuarios
+               //Se verifica si existe este rol asignado a usuarios
                const currentUser = await SystemUserModel.find({ roles: { $all: [roleName] } })
                for (const user of currentUser) {
-                    const resultado = await SystemUserModel.findOneAndUpdate(
+                    await SystemUserModel.findOneAndUpdate(
                          { email: user.email },
                          { $pull: { roles: roleName } }
                     )
-                    //console.log('resultado: ', resultado)
                }
 
                return new DeleteRoleEntity(roleName);
