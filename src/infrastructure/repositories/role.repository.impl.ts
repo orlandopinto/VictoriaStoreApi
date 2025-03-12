@@ -1,6 +1,6 @@
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
-import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity } from "../../domain/entities/role.entity";
+import { AddRoleDto, DeleteRoleDto, UpdateRoleDto } from "../../domain/dtos/permissions";
+import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity, UpdateRoleEntity } from "../../domain/entities/role.entity";
 import { RoleRepository } from "../../domain/repositories/role.repository";
 
 export class RoleRepositoryImpl implements RoleRepository {
@@ -9,6 +9,10 @@ export class RoleRepositoryImpl implements RoleRepository {
 
      addRole(addRoleDto: AddRoleDto): Promise<AddRoleEntity> {
           return this.roleDatasource.addRole(addRoleDto);
+     }
+
+     updateRole(updateRoleDto: UpdateRoleDto): Promise<UpdateRoleEntity> {
+          return this.roleDatasource.updateRole(updateRoleDto);
      }
 
      deleteRole(deleteRoleDto: DeleteRoleDto): Promise<DeleteRoleEntity> {

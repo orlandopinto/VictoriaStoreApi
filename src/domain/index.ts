@@ -8,6 +8,7 @@ export * from './usecases/auth/sign-up-user.usecase'
 
 //ROLES
 export * from './usecases/permissions/add-role.usecase'
+export * from './usecases/permissions/update-role.usecase'
 export * from './usecases/permissions/delete-role.usecase'
 export * from './usecases/permissions/get-roles.usecase'
 

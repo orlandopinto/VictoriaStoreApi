@@ -1,8 +1,8 @@
 import { PermissionsByRoleModel, SystemUserModel } from "../../data/mongodb";
 import { RolesModel, rolesSchema } from "../../data/mongodb/models/roles.model";
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
-import { AddRoleDto, DeleteRoleDto } from "../../domain/dtos/permissions";
-import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity } from "../../domain/entities";
+import { AddRoleDto, DeleteRoleDto, UpdateRoleDto } from "../../domain/dtos/permissions";
+import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity, UpdateRoleEntity } from "../../domain/entities";
 import { CustomError } from "../../domain/errors/custom.error";
 
 export class RoleDatasourceImpl implements RoleDatasource {
@@ -20,6 +20,37 @@ export class RoleDatasourceImpl implements RoleDatasource {
                await role.save();
 
                return new AddRoleEntity(role.id, roleName, roleDescription);
+
+          } catch (error) {
+               if (error instanceof CustomError) {
+                    throw error;
+               }
+               throw CustomError.internalServerError();
+          }
+     }
+
+     async updateRole(updateRoleDto: UpdateRoleDto): Promise<UpdateRoleEntity> {
+          let { id, roleName, roleDescription } = updateRoleDto;
+          try {
+
+               // 1. Verificar si existe el role
+               const exists = await RolesModel.findOne({ roleName: roleName })
+               if (!exists) throw CustomError.badRequest('Role name does not exists.')
+
+               // 2. Crear el role
+               const result = await RolesModel.findOneAndUpdate(
+                    { roleName: roleName },
+                    {
+                         $set: {
+                              roleDescription: roleDescription
+                         }
+                    }
+               );
+
+               if (!result)
+                    throw CustomError.badRequest("An error occurred while updating data.")
+
+               return new UpdateRoleEntity(id, roleName, roleDescription);
 
           } catch (error) {
                if (error instanceof CustomError) {

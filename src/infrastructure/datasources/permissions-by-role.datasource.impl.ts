@@ -24,6 +24,9 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
 
                //REGISTRAR PERMISSIONS
                if (permissionsByRole.length > 0) {
+                    for (let permission of permissionsByRole) {
+                         permission.id = `${roleResult._id}.${permission.id}`
+                    }
                     await PermissionsByRoleModel.insertMany(permissionsByRole)
                }
 
@@ -58,7 +61,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                // ACTUALIZAR SOLO roleDescription
                let roleResult = {} as any;
                if (role.hasOwnProperty('roleName')) {
-                    const result = await RolesModel.findByIdAndUpdate(
+                    roleResult = await RolesModel.findByIdAndUpdate(
                          role.id,
                          {
                               roleDescription: role.roleDescription
@@ -66,12 +69,18 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                          { new: true }
                     )
 
-                    if (!result)
+                    if (!roleResult)
                          throw CustomError.badRequest("An error occurred while updating data.")
                }
 
                // PERMISSIONS
                if (permissionsByRole.length > 0) {
+                    for (let perms of permissionsByRole) {
+                         if (perms.id.split('.').length === 2) {
+                              perms.id = `${role.id}.${perms.id}`
+                         }
+                    }
+
                     //ELIMINAR TODOS LOS PERMISOS CON EL ROL A ACTUALIZAR
                     let permisos = await PermissionsByRoleModel.find({ roleName: role.roleName })
                     if (permisos.length > 0) { //si existen registros se eliminan todos los que coincidan con el roleName
@@ -82,9 +91,25 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                     await PermissionsByRoleModel.insertMany(permissionsByRole)
                }
 
-               // ASIGNAR ROL A USUARIOS
-               // SOLO SE VA A ASIGNAR EL ROL A LOS USUARIOS QUE VIENEN EN LA LISTA
+               //SE ELIMINA EL ROL A TODOS LOS USUARIOS QUE LOS TENGAN
+               await new Promise(async (resolve, reject) => {
+                    try {
+                         const userList = await SystemUserModel.find({ roles: { $all: [role.roleName] } });
+                         for (const user of userList) {
+                              await SystemUserModel.findOneAndUpdate(
+                                   { email: user.email },
+                                   { $pull: { roles: role.roleName } }
+                              );
+                         }
+                         resolve(true);
+                    } catch (error) {
+                         reject(error);
+                    }
+               });
+
+               //ASIGNAR ROL A USUARIOS QUE VENGAN EN EL ARREGLO
                await Promise.all(usersByRole.map(async (user) => {
+
                     const currentUser = await SystemUserModel.findOne({ email: user.email });
                     if (currentUser) {
                          await SystemUserModel.findOneAndUpdate(
@@ -96,7 +121,8 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                               }
                          );
                     }
-               }));
+               }))
+
 
                return new UpdatePermissionsByRoleEntity(role, permissionsByRole, usersByRole);
 

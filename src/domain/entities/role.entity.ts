@@ -10,6 +10,16 @@ export class AddRoleEntity {
 
 }
 
+export class UpdateRoleEntity {
+
+     constructor(
+          public id: string,
+          public roleName: string,
+          public roleDescription: string | null
+     ) { }
+
+}
+
 export class DeleteRoleEntity {
 
      constructor(

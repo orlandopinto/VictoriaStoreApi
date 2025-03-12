@@ -15,6 +15,7 @@ export class RoleRoutes {
           const controller = new RoleController(roleRepository);
 
           router.post('/', [AuthMiddleware.validateJWT], controller.addRole);
+          router.put('/', [AuthMiddleware.validateJWT], controller.updateRole);
           router.delete('/', [AuthMiddleware.validateJWT], controller.deleteRole);
           router.get('/', [AuthMiddleware.validateJWT], controller.getRoles);
 

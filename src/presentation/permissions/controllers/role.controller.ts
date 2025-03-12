@@ -1,4 +1,5 @@
-import { AddRoleDto, DeleteRoleDto, GetRolesDto } from "../../../domain/dtos/permissions";
+import { UpdateRole } from "../../../domain";
+import { AddRoleDto, DeleteRoleDto, GetRolesDto, UpdateRoleDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
 import { RoleRepository } from "../../../domain/repositories/role.repository";
 import { ApiResultResponse } from '../../../domain/types/api-result-response.type';
@@ -16,6 +17,16 @@ export class RoleController {
 
           new AddRole(this.rolesRepository)
                .execute(addRoleDto!)
+               .then((data) => res.json(data))
+               .catch(error => this.handleCustomError(error, res));
+     }
+
+     updateRole = (req: any, res: any) => {
+          const [error, updateRoleDto] = UpdateRoleDto.create(req.body);
+          if (error) return this.handleError(error, res);
+
+          new UpdateRole(this.rolesRepository)
+               .execute(updateRoleDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
