@@ -8,17 +8,22 @@ import { EnvironmentSystemUserEntity, SystemUserEntity } from "../../domain/enti
 import { CustomError } from "../../domain/errors/custom.error";
 import { SignToken } from "../../domain/types";
 import { UserMapper } from "../mappers/user.mapper";
+import { AppLogger } from '../../config/appLogger';
 
 type HashFunction = (password: string) => string
 type CompareFunction = (password: string, hashed: string) => boolean
 
 export class AuthDatasourceImpl implements AuthDatasource {
 
+     logger: AppLogger;
+
      constructor(
           private readonly hashPassword: HashFunction = BcryptAdapter.hash,
           private readonly compareFunction: CompareFunction = BcryptAdapter.compare,
           private readonly signToken: SignToken = JwtAdapter.generateToken
-     ) { }
+     ) {
+          this.logger = new AppLogger("AuthDatasourceImpl");
+     }
 
      async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
           const { email, password } = loginUserDto;
@@ -39,6 +44,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                return UserMapper.userEntityFromObject(user);
 
           } catch (error) {
+               //this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }
@@ -62,16 +68,17 @@ export class AuthDatasourceImpl implements AuthDatasource {
                return UserMapper.userEntityFromObject(user);
 
           } catch (error) {
+               //this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }
-               console.log('AuthDatasourceImpl > register > Error: ', error)
                throw CustomError.internalServerError();
           }
      }
 
      async signIn(loginSystemUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
 
+          this.logger.Info('login');
           let { token, email, password } = loginSystemUserDto;
 
           try {
@@ -100,7 +107,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                return new EnvironmentSystemUserEntity(token, userData);
 
           } catch (error) {
-               //NOTE: Registrar en log
+               //this.logger.Error(error as Error);
                throw error;
           }
      }
@@ -121,10 +128,10 @@ export class AuthDatasourceImpl implements AuthDatasource {
                return new SystemUserEntity(user.id, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive);
 
           } catch (error) {
+               //this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }
-               console.log('error: ', error)
                throw CustomError.internalServerError();
           }
      }

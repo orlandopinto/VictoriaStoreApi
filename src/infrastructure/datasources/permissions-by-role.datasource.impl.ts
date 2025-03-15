@@ -1,3 +1,4 @@
+import { AppLogger } from "../../config/appLogger";
 import { PermissionsByRoleModel, RolesModel, rolesSchema, SystemUserModel } from "../../data/mongodb";
 import { PermissionsByRoleDatasource } from "../../domain/datasources";
 import { AddPermissionsByRoleDto, UpdatePermissionsByRoleDto } from "../../domain/dtos/permissions";
@@ -6,6 +7,13 @@ import { CustomError } from "../../domain/errors/custom.error";
 import { PermissionsByRole, PermissionsProfile, Role, UsersByRole } from "../../domain/types";
 
 export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasource {
+
+     logger: AppLogger;
+
+     constructor() {
+          this.logger = new AppLogger("PermissionsByRoleDatasourceImpl");
+     }
+
 
      async addPermissionsByRole(addPermissionsByRoleDto: AddPermissionsByRoleDto): Promise<AddPermissionsByRoleEntity> {
 
@@ -48,6 +56,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                return new AddPermissionsByRoleEntity(role, permissionsByRole, usersByRole);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                throw error;
           }
 
@@ -127,11 +136,13 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                return new UpdatePermissionsByRoleEntity(role, permissionsByRole, usersByRole);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                throw error;
           }
      }
 
      async getPermissionsByRole(): Promise<GetPermissionsByRoleEntity> {
+
           try {
                const permissionsByRoleModel = await PermissionsByRoleModel.find().lean();
                let permissionsProfile: PermissionsProfile[] = [];
@@ -178,6 +189,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
 
                return new GetPermissionsByRoleEntity(permissionsProfile);
           } catch (error) {
+               this.logger.Error(error as Error);
                throw error;
           }
      }

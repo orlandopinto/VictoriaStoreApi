@@ -1,11 +1,15 @@
-import { PagesModel } from "../../../data/mongodb";
-import { AddPage, DeletePage } from "../../../domain";
-import { AddPageDto, DeletePageDto } from "../../../domain/dtos/permissions";
+import { AppLogger } from "../../../config/appLogger";
+import { AddPage, DeletePage, GetPages } from "../../../domain";
+import { AddPageDto, DeletePageDto, GetPagesDto } from "../../../domain/dtos/permissions";
 import { PageRepository } from "../../../domain/repositories";
 
 export class PageController {
 
-     constructor(private readonly pageRepository: PageRepository) { }
+     logger: AppLogger;
+
+     constructor(private readonly pageRepository: PageRepository) {
+          this.logger = new AppLogger("ActionController");
+     }
 
      addPage = (req: any, res: any) => {
           const [error, addPageDto] = AddPageDto.create(req.body);
@@ -27,17 +31,21 @@ export class PageController {
                     .then((data) => res.json(data))
                     .catch(error => { throw { error, res }; });
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 
      getPages = (req: any, res: any) => {
           try {
-               PagesModel.find()
-                    .then(data => res.json({ data }))
+               const [error, getPagesDto] = GetPagesDto.get(req.body);
+               if (error) return res.status(400).json({ error });
+
+               new GetPages(this.pageRepository)
+                    .execute()
+                    .then((data) => res.json(data))
                     .catch(error => { throw { error, res }; });
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 

@@ -1,3 +1,4 @@
+import { AppLogger } from "../../../config/appLogger";
 import { AddPermissionsByRole, GetPermissionsByRole, UpdatePermissionsByRole } from "../../../domain";
 import { AddPermissionsByRoleDto, GetPermissionsByRoleDto, UpdatePermissionsByRoleDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
@@ -6,7 +7,11 @@ import { ApiResultResponse } from "../../../domain/types";
 
 export class PermissionsByRoleController {
 
-     constructor(private readonly permissionsByRoleRepository: PermissionsByRoleRepository) { }
+     logger: AppLogger;
+
+     constructor(private readonly permissionsByRoleRepository: PermissionsByRoleRepository) {
+          this.logger = new AppLogger("ActionController");
+     }
 
      addPermissionsByRole = (req: any, res: any) => {
           const [error, addPermissionsByRoleDto] = AddPermissionsByRoleDto.create(req.body);
@@ -42,11 +47,12 @@ export class PermissionsByRoleController {
                     })
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 
      private handleCustomError = (error: unknown, res: any) => {
+          this.logger.Error(error as Error);
           if (error instanceof CustomError) {
                const responsError: ApiResultResponse = {
                     hasError: true,

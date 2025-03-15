@@ -1,3 +1,4 @@
+import { AppLogger } from "../../config/appLogger";
 import { ActionsModel, actionsSchema } from "../../data/mongodb";
 import { ActionDatasource } from "../../domain/datasources";
 import { AddActionDto, DeleteActionDto } from "../../domain/dtos/permissions";
@@ -5,6 +6,12 @@ import { AddActionEntity, DeleteActionEntity, GetActionsEntity } from "../../dom
 import { CustomError } from "../../domain/errors/custom.error";
 
 export class ActionDatasourceImpl implements ActionDatasource {
+
+     logger: AppLogger;
+
+     constructor() {
+          this.logger = new AppLogger("ActionDatasourceImpl");
+     }
 
      async addAction(addActionDto: AddActionDto): Promise<AddActionEntity> {
           const { actionName } = addActionDto;
@@ -20,6 +27,7 @@ export class ActionDatasourceImpl implements ActionDatasource {
                return new AddActionEntity(action.id, actionName);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                throw error;
           }
      }
@@ -36,6 +44,7 @@ export class ActionDatasourceImpl implements ActionDatasource {
                return new DeleteActionEntity(actionName);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                throw error;
           }
      }
@@ -48,6 +57,7 @@ export class ActionDatasourceImpl implements ActionDatasource {
                return new GetActionsEntity(actions);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }

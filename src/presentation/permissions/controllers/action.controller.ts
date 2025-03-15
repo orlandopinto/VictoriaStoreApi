@@ -1,3 +1,4 @@
+import { AppLogger } from "../../../config/appLogger";
 import { AddAction, DeleteAction, GetActions } from "../../../domain";
 import { AddActionDto, DeleteActionDto, GetActionsDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
@@ -6,7 +7,11 @@ import { ApiResultResponse } from "../../../domain/types";
 
 export class ActionController {
 
-     constructor(private readonly actionRepository: ActionRepository) { }
+     logger: AppLogger;
+
+     constructor(private readonly actionRepository: ActionRepository) {
+          this.logger = new AppLogger("ActionController");
+     }
 
      addAction = async (req: any, res: any) => {
           const [error, addActionDto] = AddActionDto.create(req.body);
@@ -28,7 +33,7 @@ export class ActionController {
                     .then((data) => res.json(data))
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 
@@ -46,7 +51,7 @@ export class ActionController {
                     })
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 

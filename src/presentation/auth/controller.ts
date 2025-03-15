@@ -1,3 +1,4 @@
+import { AppLogger } from "../../config/appLogger";
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { LoginUser, RegisterUser, SignInUser, SignUpUser } from "../../domain";
@@ -7,7 +8,11 @@ import { AuthRepository } from "../../domain/repositories/auth.repository";
 
 export class AuthController {
 
-     constructor(private readonly authRepository: AuthRepository) { }
+     logger: AppLogger;
+
+     constructor(private readonly authRepository: AuthRepository) {
+          this.logger = new AppLogger("AuthController");
+     }
 
      // #region PUBLIC FUNCTIONS
 
@@ -40,7 +45,7 @@ export class AuthController {
                     .then(data => res.json({ data }))
                     .catch(error => this.handleEror(error, res));
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 
@@ -78,7 +83,7 @@ export class AuthController {
                     // console.log('respuesta: ', res)
                     // console.log('status code: ', res.statusCode)
                     // console.log('error: ', error) //posiblemente caduque el token
-                    console.log('error: ', error)
+                    this.logger.Error(error as Error);
                     res.status(500).json({ error: 'Internal Server Error' })
                });
      }
@@ -88,10 +93,10 @@ export class AuthController {
      // #region PRIVATE FUNCTIONS
 
      private handleEror = (error: unknown, res: any) => {
+          this.logger.Error(error as Error);
           if (error instanceof CustomError) {
                return res.status(error.statusCode).json({ error: error.message })
           }
-          console.log('handleEror: ', error)
           return res.status(500).json({ error: 'Internal Server Error' })
      }
 

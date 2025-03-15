@@ -1,3 +1,4 @@
+import { AppLogger } from "../../../config/appLogger";
 import { UpdateRole } from "../../../domain";
 import { AddRoleDto, DeleteRoleDto, GetRolesDto, UpdateRoleDto } from "../../../domain/dtos/permissions";
 import { CustomError } from "../../../domain/errors/custom.error";
@@ -9,7 +10,11 @@ import { GetRoles } from "../../../domain/usecases/permissions/get-roles.usecase
 
 export class RoleController {
 
-     constructor(private readonly rolesRepository: RoleRepository) { }
+     logger: AppLogger;
+
+     constructor(private readonly rolesRepository: RoleRepository) {
+          this.logger = new AppLogger("ActionController");
+     }
 
      addRole = (req: any, res: any) => {
           const [error, addRoleDto] = AddRoleDto.create(req.body);
@@ -41,7 +46,7 @@ export class RoleController {
                     .then((data) => res.json(data))
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 
@@ -59,11 +64,12 @@ export class RoleController {
                     })
                     .catch(error => this.handleCustomError(error, res));
           } catch (error) {
-               console.log('error: ', error)
+               this.logger.Error(error as Error);
           }
      }
 
      private handleCustomError = (error: unknown, res: any) => {
+          this.logger.Error(error as Error);
           if (error instanceof CustomError) {
                const responsError: ApiResultResponse = {
                     hasError: true,

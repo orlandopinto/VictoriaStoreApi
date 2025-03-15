@@ -1,3 +1,4 @@
+import { AppLogger } from "../../config/appLogger";
 import { PermissionsByRoleModel, SystemUserModel } from "../../data/mongodb";
 import { RolesModel, rolesSchema } from "../../data/mongodb/models/roles.model";
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
@@ -6,6 +7,12 @@ import { DeleteRoleEntity, GetRolesEntity, AddRoleEntity, UpdateRoleEntity } fro
 import { CustomError } from "../../domain/errors/custom.error";
 
 export class RoleDatasourceImpl implements RoleDatasource {
+
+     logger: AppLogger;
+
+     constructor() {
+          this.logger = new AppLogger("RoleDatasourceImpl");
+     }
 
      async addRole(addRoleDto: AddRoleDto): Promise<AddRoleEntity> {
           let { roleName, roleDescription } = addRoleDto;
@@ -22,6 +29,7 @@ export class RoleDatasourceImpl implements RoleDatasource {
                return new AddRoleEntity(role.id, roleName, roleDescription);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }
@@ -53,6 +61,7 @@ export class RoleDatasourceImpl implements RoleDatasource {
                return new UpdateRoleEntity(id, roleName, roleDescription);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }
@@ -86,6 +95,7 @@ export class RoleDatasourceImpl implements RoleDatasource {
                return new DeleteRoleEntity(roleName);
 
           } catch (error) {
+               this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }
@@ -97,13 +107,13 @@ export class RoleDatasourceImpl implements RoleDatasource {
           try {
 
                const roles = await RolesModel.find() as unknown as [typeof rolesSchema][]
-
                return new GetRolesEntity(roles);
 
           } catch (error) {
-               if (error instanceof CustomError) {
+               this.logger.Error(error as Error);
+               if (error instanceof CustomError)
                     throw error;
-               }
+
                throw CustomError.internalServerError();
           }
      }
