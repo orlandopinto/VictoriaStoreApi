@@ -1,14 +1,16 @@
-import { BcryptAdapter, DURATION_TOKEN, JwtAdapter } from "../../config";
+import { BcryptAdapter, DURATION_REFRESH_TOKEN, DURATION_TOKEN, JwtAdapter } from "../../config";
+import { AppLogger } from '../../config/appLogger';
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { UserEntity } from "../../domain/entities";
-import { EnvironmentSystemUserEntity, SystemUserEntity } from "../../domain/entities/system-user.entity";
+import { EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity } from "../../domain/entities/system-user.entity";
 import { CustomError } from "../../domain/errors/custom.error";
-import { SignToken } from "../../domain/types";
+import { SignToken, VerifyRefreshToken } from "../../domain/types";
 import { UserMapper } from "../mappers/user.mapper";
-import { AppLogger } from '../../config/appLogger';
+import { RefreshTokenType } from '../../domain/types/system-user.type'
 
 type HashFunction = (password: string) => string
 type CompareFunction = (password: string, hashed: string) => boolean
@@ -20,7 +22,8 @@ export class AuthDatasourceImpl implements AuthDatasource {
      constructor(
           private readonly hashPassword: HashFunction = BcryptAdapter.hash,
           private readonly compareFunction: CompareFunction = BcryptAdapter.compare,
-          private readonly signToken: SignToken = JwtAdapter.generateToken
+          private readonly signToken: SignToken = JwtAdapter.generateToken,
+          private readonly verifyRefreshToken: VerifyRefreshToken = JwtAdapter.verifyRefreshToken
      ) {
           this.logger = new AppLogger("AuthDatasourceImpl");
      }
@@ -78,8 +81,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
 
      async signIn(loginSystemUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
 
-          this.logger.Info('login');
-          let { token, email, password } = loginSystemUserDto;
+          let { accessToken, refreshToken, email, password } = loginSystemUserDto;
 
           try {
                // 1. Verifica si los campos del body son correctos
@@ -98,16 +100,42 @@ export class AuthDatasourceImpl implements AuthDatasource {
                     throw CustomError.badRequest("User name or password invalid..")
                }
 
-               // 4. Se genera el token
-               token = await this.signToken({ email: email }, DURATION_TOKEN) as string
-               if (!token) {
-                    throw CustomError.badRequest("Error generating token.")
+               // 4. Se genera el accessToken
+               accessToken = await this.signToken({ email: email }, DURATION_TOKEN) as string
+               refreshToken = await this.signToken({ email: email }, DURATION_REFRESH_TOKEN) as string
+               if (!accessToken || !refreshToken) {
+                    throw CustomError.internalServerError('Error generating token')
                }
 
-               return new EnvironmentSystemUserEntity(token, userData);
+               return new EnvironmentSystemUserEntity(accessToken, refreshToken, userData);
 
           } catch (error) {
-               //this.logger.Error(error as Error);
+               this.logger.Error(error as Error);
+               throw error;
+          }
+     }
+
+     async refresh(refreshTokenDto: RefreshTokenDto): Promise<RefreshTokenEntity> {
+          let { email, refreshToken } = refreshTokenDto;
+
+          try {
+               // 1. Verifica si los campos del body son correctos
+               if (!email) throw CustomError.badRequest("Missing email")
+               if (!refreshToken) throw CustomError.badRequest("Missing refreshToken")
+
+               //2. Se verifica si es válido el refresh token
+
+               // 3. Se genera el accessToken
+               //accessToken = await this.signToken({ email: email }, DURATION_TOKEN) as string
+               const _refreshToken = await this.verifyRefreshToken(email, refreshToken) as unknown as RefreshTokenType
+               // if (!accessToken || !refreshToken) {
+               //      throw CustomError.internalServerError('Error generating token')
+               // }
+               // accessToken = _refreshToken?.accessToken as string;
+               return new RefreshTokenEntity(_refreshToken.email, _refreshToken.accessToken, _refreshToken.refreshToken);
+
+          } catch (error) {
+               this.logger.Error(error as Error);
                throw error;
           }
      }
@@ -128,7 +156,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                return new SystemUserEntity(user.id, email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive);
 
           } catch (error) {
-               //this.logger.Error(error as Error);
+               this.logger.Error(error as Error);
                if (error instanceof CustomError) {
                     throw error;
                }

@@ -1,28 +1,32 @@
-import { GetRolesEntity } from "../../entities";
-import { CustomError } from "../../errors/custom.error";
-import { GetRolesUseCase } from "../../interfaces";
-import { RoleRepository } from "../../repositories";
-import { ApiResultResponse } from "../../types";
+import { JwtAdapter } from '../../../config';
+import { RefreshTokenDto } from '../../dtos/auth';
+import { CustomError } from '../../errors/custom.error';
+import { RefreshTokenUseCase } from '../../interfaces/IAuth';
+import { AuthRepository } from '../../repositories/auth.repository';
+import { ApiResultResponse, SignToken } from '../../types';
 
-export class GetRoles implements GetRolesUseCase {
+export class RefreshToken implements RefreshTokenUseCase {
 
-     constructor(private readonly rolesByRoleRepository: RoleRepository) { }
+     constructor(
+          private readonly authRepository: AuthRepository,
+          private readonly signToken: SignToken = JwtAdapter.generateToken
+     ) { }
 
-     async execute(): Promise<ApiResultResponse> {
+     async execute(refreshTokenDto: RefreshTokenDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const roles = await this.rolesByRoleRepository.getRoles();
-               const data = { ...roles } as unknown as GetRolesEntity
+               const environment = await this.authRepository.refresh(refreshTokenDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: data,
+                    data: environment,
                     message: null,
                     statusCode: 200,
                     stackTrace: null
                }
+
           } catch (error) {
                const err = error as Error
                let statusCode: number = 500;

@@ -5,6 +5,7 @@ import { ActionRoutes } from './permissions/routes/action.routes';
 import { PermissionsByRoleRoutes } from "./permissions/routes/permissions-by-role.routes";
 import { PageRoutes } from "./permissions/routes/page.routes";
 import { RoleRoutes } from "./permissions/routes/role.routes";
+import { CloudinaryRoutes } from "./permissions/routes/cloudinary.routes";
 
 export class AppRoutes {
      static get routes(): Router {
@@ -17,6 +18,7 @@ export class AppRoutes {
           router.use('/api/permissions', PermissionsByRoleRoutes.routes)
           router.use('/api/pages', PageRoutes.routes)
           router.use('/api/roles', RoleRoutes.routes)
+          router.use('/api/upload', CloudinaryRoutes.routes)
 
           return router;
      }

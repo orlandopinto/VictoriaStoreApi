@@ -1,4 +1,5 @@
 import winston from 'winston';
+import { LOG_FOLDER } from './envs';
 const { combine, label, timestamp, printf } = winston.format;
 
 export class AppLogger {
@@ -20,7 +21,7 @@ export class AppLogger {
                timestamp({ format: "DD-MM-YYYY HH:mm:ss" }),
                this.formatLogger
           ),
-          transports: [new winston.transports.File({ filename: 'src/logs/logs.log' })]
+          transports: [new winston.transports.File({ filename: LOG_FOLDER })]
      });
 
      constructor(private readonly nameClass: string) { }

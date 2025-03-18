@@ -1,5 +1,6 @@
-import { SignInUserDto, SignUpUserDto, LoginUserDto, RegisterUserDto } from "../dtos/auth";
-import { EnvironmentSystemUserEntity, SystemUserEntity, UserEntity } from "../entities";
+import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../dtos/auth";
+import { RefreshTokenDto } from "../dtos/auth/refresh-token.dto";
+import { EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UserEntity } from "../entities";
 
 export abstract class AuthDatasource {
 
@@ -7,5 +8,6 @@ export abstract class AuthDatasource {
      abstract register(registerUserDto: RegisterUserDto): Promise<UserEntity>
      abstract signIn(loginSystemUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity>
      abstract signUp(registerSystemUserDto: SignUpUserDto): Promise<SystemUserEntity>
+     abstract refresh(refreshTokenDto: RefreshTokenDto): Promise<RefreshTokenEntity>
 
 }

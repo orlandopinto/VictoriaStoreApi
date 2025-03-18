@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthDatasourceImpl, AuthRepositoryImpl } from '../../infrastructure';
 import AuthMiddleware from "../middlewares/auth.middleware";
-import { AuthController } from "./controller";
+import { AuthController } from "./auth.controller";
 
 export class AuthorizationRoutes {
 
@@ -14,7 +14,8 @@ export class AuthorizationRoutes {
           const controller = new AuthController(authRepository);
 
           router.post('/signin', controller.signIn);
-          router.post('/signup', controller.signUp);
+          router.post('/signup', [AuthMiddleware.validateJWT], controller.signUp);
+          router.post('/refresh', controller.refreshToken)
           router.get('/', [AuthMiddleware.validateJWT], controller.getSystemUsers)
 
           return router;

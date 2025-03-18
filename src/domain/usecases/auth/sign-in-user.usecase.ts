@@ -8,12 +8,12 @@ export class SignInUser implements SignInUserUseCase {
 
      constructor(private readonly authRepository: AuthRepository) { }
 
-     async execute(SignInUserDto: SignInUserDto): Promise<ApiResultResponse> {
+     async execute(signInUserDto: SignInUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const environment = await this.authRepository.signIn(SignInUserDto);
+               const environment = await this.authRepository.signIn(signInUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,

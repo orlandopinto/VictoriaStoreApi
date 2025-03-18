@@ -1,4 +1,4 @@
-import { DURATION_TOKEN, JwtAdapter } from '../../../config';
+import { DURATION_REFRESH_TOKEN, DURATION_TOKEN, JwtAdapter } from '../../../config';
 import { LoginUserDto } from '../../dtos/auth/login-user.dto';
 import { CustomError } from '../../errors/custom.error';
 import { LoginUserUseCase } from '../../interfaces/IAuth';
@@ -19,13 +19,15 @@ export class LoginUser implements LoginUserUseCase {
           const user = await this.authRepository.login(loginUserDto);
 
           // Token
-          const token = await this.signToken({ id: user.id }, DURATION_TOKEN)
-          if (!token) {
+          const accessToken = await this.signToken({ email: user.email }, DURATION_TOKEN)
+          const refreshToken = await this.signToken({ email: user.email }, DURATION_REFRESH_TOKEN)
+          if (!accessToken || !refreshToken) {
                throw CustomError.internalServerError('Error generating token')
           }
 
           return {
-               token: token,
+               accessToken: accessToken,
+               refreshToken: refreshToken,
                user: {
                     id: user.id,
                     name: user.name,

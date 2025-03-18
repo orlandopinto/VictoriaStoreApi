@@ -58,8 +58,8 @@ export class PageDatasourceImpl implements PageDatasource {
      async getPages(): Promise<GetPagesEntity> {
 
           try {
-
-               return new GetPagesEntity([] as [typeof pagesSchema][]);
+               const pages = await PagesModel.find() as unknown as [typeof pagesSchema][]
+               return new GetPagesEntity(pages);
 
           } catch (error) {
                this.logger.Error(error as Error)

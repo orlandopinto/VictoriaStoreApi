@@ -1,7 +1,8 @@
 import { permissionsByRoleSchema } from "../../data/mongodb";
 
 export type SystemUser = {
-     token: string;
+     accessToken: string;
+     refreshToken: string,
      user: {
           id: string,
           email: string,
@@ -39,4 +40,10 @@ export type userData = {
      roles?: string[],
      isActive?: boolean,
      permissionsByRole?: [typeof permissionsByRoleSchema][]
+}
+
+export type RefreshTokenType = {
+     email: string,
+     accessToken: string;
+     refreshToken: string
 }

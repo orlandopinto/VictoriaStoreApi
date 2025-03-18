@@ -3,8 +3,10 @@ import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { LoginUser, RegisterUser, SignInUser, SignUpUser } from "../../domain";
 import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { CustomError } from "../../domain/errors/custom.error";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
+import { RefreshToken } from "../../domain/usecases/auth/refresh-token.usecase";
 
 export class AuthController {
 
@@ -57,6 +59,20 @@ export class AuthController {
           new SignInUser(this.authRepository)
                .execute(signInUserDto!)
                .then((data) => res.json(data))
+               .catch(error => this.handleEror(error, res));
+     }
+
+     refreshToken = (req: any, res: any) => {
+          const [error, refreshTokenDto] = RefreshTokenDto.refresh(req.body);
+          if (error) return res.status(400).json({ error });
+
+          new RefreshToken(this.authRepository)
+               .execute(refreshTokenDto!)
+               .then((data) => {
+                    //NOTE: Asignar objeto.data para que lo devuelva a la api como data
+                    data.data = data.data
+                    return res.json(data)
+               })
                .catch(error => this.handleEror(error, res));
      }
 

@@ -3,7 +3,7 @@ import { SignUpUserDto } from '../../dtos/auth';
 import { CustomError } from '../../errors/custom.error';
 import { SignUpUserUseCase } from '../../interfaces/IAuth';
 import { AuthRepository } from '../../repositories/auth.repository';
-import { SignToken, SystemUser } from '../../types';
+import { SignToken, ApiResultResponse } from '../../types';
 
 export class SignUpUser implements SignUpUserUseCase {
 
@@ -12,36 +12,35 @@ export class SignUpUser implements SignUpUserUseCase {
           private readonly signToken: SignToken = JwtAdapter.generateToken
      ) { }
 
-     async execute(signUpUserDto: SignUpUserDto): Promise<SystemUser> {
+     async execute(signUpUserDto: SignUpUserDto): Promise<ApiResultResponse> {
 
-          //crear el usuario
-          const user = await this.authRepository.signUp(signUpUserDto);
+          let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
-          // Token
-          const token = await this.signToken({ id: user.id }, DURATION_TOKEN)
-          if (!token) {
-               throw CustomError.internalServerError('Error generating token')
-          }
-
-          //WARNING: Modificar la estructura que se necesita al hacer login
-          return {
-               token: token,
-               user: {
-                    id: user.id,
-                    email: user.email,
-                    password: user.password,
-                    address: user.address,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    phoneNumber: user.phoneNumber,
-                    imageProfilePath: user.imageProfilePath,
-                    city: user.city,
-                    zipcode: user.zipcode,
-                    lockoutEnabled: user.lockoutEnabled,
-                    accessFailedCount: user.accessFailedCount,
-                    birthDate: user.birthDate,
-                    roles: user.roles
+          try {
+               const user = await this.authRepository.signUp(signUpUserDto);
+               resultResponse = {
+                    status: "success",
+                    hasError: false,
+                    data: user,
+                    message: "User registered successfully",
+                    statusCode: 201,
+                    stackTrace: null
+               }
+          } catch (error) {
+               const err = error as Error
+               let statusCode: number = 500;
+               if (error instanceof CustomError) {
+                    statusCode = error.statusCode;
+               }
+               resultResponse = {
+                    status: "error",
+                    hasError: true,
+                    data: null,
+                    message: err.message,
+                    statusCode: statusCode,
+                    stackTrace: err.stack
                }
           }
+          return resultResponse;
      }
 }

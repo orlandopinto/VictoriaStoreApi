@@ -37,12 +37,16 @@ export class PageController {
 
      getPages = (req: any, res: any) => {
           try {
-               const [error, getPagesDto] = GetPagesDto.get(req.body);
+               const [error] = GetPagesDto.get(req.body);
                if (error) return res.status(400).json({ error });
 
                new GetPages(this.pageRepository)
                     .execute()
-                    .then((data) => res.json(data))
+                    .then((data) => {
+                         //NOTE: Asignar objeto.data para que lo devuelva a la api como data
+                         data.data = data.data.pages
+                         return res.json(data)
+                    })
                     .catch(error => { throw { error, res }; });
           } catch (error) {
                this.logger.Error(error as Error);

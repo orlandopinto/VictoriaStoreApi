@@ -25,8 +25,19 @@ export class SystemUserEntity {
 export class EnvironmentSystemUserEntity {
 
      constructor(
-          public token: string,
+          public accessToken: string,
+          public refreshToken: string,
           public userData: userData
+     ) { }
+
+}
+
+export class RefreshTokenEntity {
+
+     constructor(
+          public email: string,
+          public accessToken: string,
+          public refreshToken: string
      ) { }
 
 }
