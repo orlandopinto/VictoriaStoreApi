@@ -22,6 +22,26 @@ export class SystemUserEntity {
 
 }
 
+export class UpdateUserEntity {
+
+     constructor(
+          public id: string,
+          public address?: string,
+          public firstName?: string,
+          public lastName?: string,
+          public phoneNumber?: string,
+          public imageProfilePath?: string,
+          public city?: string,
+          public zipcode?: number,
+          public lockoutEnabled?: boolean,
+          public accessFailedCount?: number,
+          public birthDate?: Date,
+          public roles?: string[],
+          public isActive?: boolean
+     ) { }
+
+}
+
 export class EnvironmentSystemUserEntity {
 
      constructor(

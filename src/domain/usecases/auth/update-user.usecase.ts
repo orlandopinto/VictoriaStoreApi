@@ -1,35 +1,32 @@
-import { JwtAdapter } from '../../../config';
-import { RefreshTokenDto } from '../../dtos/auth';
+import { UpdateUserDto } from '../../dtos/auth';
 import { CustomError } from '../../errors/custom.error';
-import { RefreshTokenUseCase } from '../../interfaces/IAuth';
+import { UpdateUserUseCase } from '../../interfaces/IAuth';
 import { AuthRepository } from '../../repositories/auth.repository';
-import { ApiResultResponse, SignToken } from '../../types';
+import { ApiResultResponse } from '../../types';
 
-export class RefreshToken implements RefreshTokenUseCase {
+export class UpdateUser implements UpdateUserUseCase {
 
      constructor(
-          private readonly authRepository: AuthRepository,
-          private readonly signToken: SignToken = JwtAdapter.generateToken
+          private readonly authRepository: AuthRepository
      ) { }
 
-     async execute(refreshTokenDto: RefreshTokenDto): Promise<ApiResultResponse> {
+     async execute(updateUserDto: UpdateUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const environment = await this.authRepository.refresh(refreshTokenDto);
+               const user = await this.authRepository.update(updateUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: environment,
-                    message: null,
+                    data: user,
+                    message: "User updated successfully",
                     statusCode: 200,
                     stackTrace: null
                }
-
           } catch (error) {
                const err = error as Error
-               let statusCode: number = /expired|accessToken|refreshToken/.test(err.message) ? 401 : 500;
+               let statusCode: number = 500;
                if (error instanceof CustomError) {
                     statusCode = error.statusCode;
                }

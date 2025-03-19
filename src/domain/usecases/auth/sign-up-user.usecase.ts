@@ -1,16 +1,12 @@
-import { DURATION_TOKEN, JwtAdapter } from '../../../config';
 import { SignUpUserDto } from '../../dtos/auth';
 import { CustomError } from '../../errors/custom.error';
 import { SignUpUserUseCase } from '../../interfaces/IAuth';
 import { AuthRepository } from '../../repositories/auth.repository';
-import { SignToken, ApiResultResponse } from '../../types';
+import { ApiResultResponse } from '../../types';
 
 export class SignUpUser implements SignUpUserUseCase {
 
-     constructor(
-          private readonly authRepository: AuthRepository,
-          private readonly signToken: SignToken = JwtAdapter.generateToken
-     ) { }
+     constructor(private readonly authRepository: AuthRepository) { }
 
      async execute(signUpUserDto: SignUpUserDto): Promise<ApiResultResponse> {
 

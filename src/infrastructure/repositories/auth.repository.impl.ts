@@ -1,8 +1,8 @@
 
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
-import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
-import { EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UserEntity } from "../../domain/entities";
+import { EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity, UserEntity } from "../../domain/entities";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 
 export class AuthRepositoryImpl implements AuthRepository {
@@ -19,6 +19,10 @@ export class AuthRepositoryImpl implements AuthRepository {
 
      signIn(signInUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
           return this.authDatasource.signIn(signInUserDto);
+     }
+
+     update(updateUserDto: UpdateUserDto): Promise<UpdateUserEntity> {
+          return this.authDatasource.update(updateUserDto);
      }
 
      refresh(refreshTokenDto: RefreshTokenDto): Promise<RefreshTokenEntity> {

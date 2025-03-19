@@ -2,11 +2,12 @@ import { AppLogger } from "../../config/appLogger";
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { LoginUser, RegisterUser, SignInUser, SignUpUser } from "../../domain";
-import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { CustomError } from "../../domain/errors/custom.error";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 import { RefreshToken } from "../../domain/usecases/auth/refresh-token.usecase";
+import { UpdateUser } from "../../domain/usecases/auth/update-user.usecase";
 
 export class AuthController {
 
@@ -82,6 +83,16 @@ export class AuthController {
 
           new SignUpUser(this.authRepository)
                .execute(signUpUserDto!)
+               .then((data) => res.json(data))
+               .catch(error => this.handleEror(error, res));
+     }
+
+     update = (req: any, res: any) => {
+          const [error, updateUserDto] = UpdateUserDto.create(req.body);
+          if (error) return res.status(400).json({ error });
+
+          new UpdateUser(this.authRepository)
+               .execute(updateUserDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleEror(error, res));
      }

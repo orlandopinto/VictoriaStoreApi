@@ -1,4 +1,4 @@
-import { LoginUserDto, RefreshTokenDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../dtos/auth";
+import { LoginUserDto, RefreshTokenDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../dtos/auth";
 import { ApiResultResponse } from "../types";
 import { UserToken } from "../types/auth.type";
 
@@ -12,6 +12,10 @@ export interface RegisterUserUseCase {
 
 export interface SignInUserUseCase {
      execute(signInUserDto: SignInUserDto): Promise<ApiResultResponse>
+}
+
+export interface UpdateUserUseCase {
+     execute(updateUserDto: UpdateUserDto): Promise<ApiResultResponse>
 }
 
 export interface RefreshTokenUseCase {

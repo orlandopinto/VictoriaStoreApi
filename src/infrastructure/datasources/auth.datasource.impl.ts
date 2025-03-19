@@ -3,10 +3,10 @@ import { AppLogger } from '../../config/appLogger';
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
-import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto } from "../../domain/dtos/auth";
+import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { UserEntity } from "../../domain/entities";
-import { EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity } from "../../domain/entities/system-user.entity";
+import { EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity } from "../../domain/entities/system-user.entity";
 import { CustomError } from "../../domain/errors/custom.error";
 import { SignToken, VerifyRefreshToken } from "../../domain/types";
 import { UserMapper } from "../mappers/user.mapper";
@@ -79,9 +79,9 @@ export class AuthDatasourceImpl implements AuthDatasource {
           }
      }
 
-     async signIn(loginSystemUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
+     async signIn(signInUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
 
-          let { accessToken, refreshToken, email, password } = loginSystemUserDto;
+          let { accessToken, refreshToken, email, password } = signInUserDto;
 
           try {
                // 1. Verifica si los campos del body son correctos
@@ -112,6 +112,36 @@ export class AuthDatasourceImpl implements AuthDatasource {
           } catch (error) {
                this.logger.Error(error as Error);
                throw error;
+          }
+     }
+
+     async update(updateUserDto: UpdateUserDto): Promise<UpdateUserEntity> {
+          const { id, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = updateUserDto;
+          try {
+               const resultUserUpdated = await SystemUserModel.findByIdAndUpdate(id, {
+                    address,
+                    firstName,
+                    lastName,
+                    phoneNumber,
+                    imageProfilePath,
+                    city,
+                    zipcode,
+                    lockoutEnabled,
+                    accessFailedCount,
+                    birthDate,
+                    roles,
+                    isActive
+               }, { new: true });
+
+               // 3. Mapear la respuesta a la entidad
+               return new UpdateUserEntity(id, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive);
+
+          } catch (error) {
+               this.logger.Error(error as Error);
+               if (error instanceof CustomError) {
+                    throw error;
+               }
+               throw CustomError.internalServerError();
           }
      }
 

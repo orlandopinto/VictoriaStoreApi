@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { Secret } from 'jsonwebtoken';
-import { DURATION_REFRESH_TOKEN, DURATION_TOKEN, JWT_SEED } from './envs';
+import { RefreshTokenType } from '../../src/domain/types/system-user.type';
 import { ApiResultResponse } from '../domain/types';
-import { RefreshTokenType } from '../../src/domain/types/system-user.type'
+import { DURATION_REFRESH_TOKEN, DURATION_TOKEN, JWT_SEED } from './envs';
 
 export class JwtAdapter {
 
@@ -73,40 +73,23 @@ export class JwtAdapter {
           try {
                const secret: Secret = JWT_SEED;
                let refreshTokenType: RefreshTokenType = {} as RefreshTokenType;
-               // Verifying refresh token
 
-               // jwt.verify(refreshToken, secret, async (err, decode) => {
-               //      if (err) {
-               //           return 'error to generate accessToken ' + err;
-               //      } else {
-               //           const newAccessToken = await jwt.sign({ email: email }, secret, { expiresIn: DURATION_TOKEN });
-               //           if (!newAccessToken) {
-               //                return 'error to generate accessToken';
-               //           }
-               //           const newRefreshToken = await jwt.sign({ email: email }, secret, { expiresIn: DURATION_REFRESH_TOKEN })
-               //           if (!newRefreshToken) {
-               //                return 'error to generate refresh accessToken';
-               //           }
-               //           refreshTokenType = {
-               //                email,
-               //                accessToken: newAccessToken!,
-               //                refreshToken: newRefreshToken!
-               //           }
-               //      }
-               // });
                return new Promise<RefreshTokenType | string | null>((resolve, reject) => {
                     jwt.verify(refreshToken, secret, async (err, decode) => {
                          if (err) {
-                              return reject('error to generate accessToken ' + err);
+                              {
+
+                                   return reject(new Error('Error to generate accessToken ' + err));
+                              }
                          } else {
                               try {
-                                   const newAccessToken = await jwt.sign({ email: email }, secret, { expiresIn: DURATION_TOKEN });
+                                   const newAccessToken = jwt.sign({ email: email }, secret, { expiresIn: DURATION_TOKEN });
                                    if (!newAccessToken) {
-                                        return reject('error to generate accessToken');
+                                        return reject(new Error('Error to generate accessToken'));
                                    }
-                                   const newRefreshToken = await jwt.sign({ email: email }, secret, { expiresIn: DURATION_REFRESH_TOKEN });
+                                   const newRefreshToken = jwt.sign({ email: email }, secret, { expiresIn: DURATION_REFRESH_TOKEN });
                                    if (!newRefreshToken) {
-                                        return reject('error to generate refresh accessToken');
+                                        return reject(new Error('Error to generate refreshToken'));
                                    }
                                    refreshTokenType = {
                                         email,
@@ -122,8 +105,8 @@ export class JwtAdapter {
                });
 
           } catch (error) {
-               // console.error(error);
-               return null;
+               const err = new Error(error as string)
+               return err.message;
           }
      }
 

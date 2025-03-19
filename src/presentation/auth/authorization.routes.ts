@@ -15,6 +15,7 @@ export class AuthorizationRoutes {
 
           router.post('/signin', controller.signIn);
           router.post('/signup', [AuthMiddleware.validateJWT], controller.signUp);
+          router.put('/:id', [AuthMiddleware.validateJWT], controller.update);
           router.post('/refresh', controller.refreshToken)
           router.get('/', [AuthMiddleware.validateJWT], controller.getSystemUsers)
 
