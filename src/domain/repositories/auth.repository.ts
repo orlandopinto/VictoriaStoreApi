@@ -1,6 +1,7 @@
-import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../dtos/auth";
+import { ChangePasswordDto, LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../dtos/auth";
+import { DeleteSystemUserDto } from "../dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../dtos/auth/refresh-token.dto";
-import { EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity, UserEntity } from "../entities";
+import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity, UserEntity } from "../entities";
 
 export abstract class AuthRepository {
 
@@ -10,5 +11,7 @@ export abstract class AuthRepository {
      abstract signUp(signUpUserDto: SignUpUserDto): Promise<SystemUserEntity>
      abstract update(updateUserDto: UpdateUserDto): Promise<UpdateUserEntity>
      abstract refresh(refreshTokenDto: RefreshTokenDto): Promise<RefreshTokenEntity>
+     abstract changePassword(refreshTokenDto: ChangePasswordDto): Promise<ChangePasswordEntity>
+     abstract deleteSystemUser(deleteSystemUserDto: DeleteSystemUserDto): Promise<SystemUserEntity>
 
 }

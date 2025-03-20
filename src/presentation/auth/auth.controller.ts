@@ -2,10 +2,14 @@ import { AppLogger } from "../../config/appLogger";
 import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { LoginUser, RegisterUser, SignInUser, SignUpUser } from "../../domain";
-import { LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { ChangePasswordDto, LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { CustomError } from "../../domain/errors/custom.error";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
+import { ApiResultResponse } from "../../domain/types";
+import { ChangePassword } from "../../domain/usecases/auth/change-password.usecase";
+import { DeleteSystemUser } from "../../domain/usecases/auth/delete-system-user.usecase";
 import { RefreshToken } from "../../domain/usecases/auth/refresh-token.usecase";
 import { UpdateUser } from "../../domain/usecases/auth/update-user.usecase";
 
@@ -20,11 +24,10 @@ export class AuthController {
      // #region PUBLIC FUNCTIONS
 
      loginUser = (req: any, res: any) => {
-          // if (!req.body || typeof req.body !== 'object') {
-          //      return res.status(400).json({ error: 'Invalid request body' });
-          // }
           const [error, loginUserDto] = LoginUserDto.login(req.body);
-          if (error) return res.status(400).json({ error });
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
 
           new LoginUser(this.authRepository)
                .execute(loginUserDto!)
@@ -34,7 +37,9 @@ export class AuthController {
 
      registerUser = (req: any, res: any) => {
           const [error, registerUserDto] = RegisterUserDto.create(req.body);
-          if (error) return res.status(400).json({ error });
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
 
           new RegisterUser(this.authRepository)
                .execute(registerUserDto!)
@@ -55,7 +60,9 @@ export class AuthController {
      // CUENTAS DEL SISTEMA
      signIn = (req: any, res: any) => {
           const [error, signInUserDto] = SignInUserDto.signIn(req.body);
-          if (error) return res.status(400).json({ error });
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
 
           new SignInUser(this.authRepository)
                .execute(signInUserDto!)
@@ -65,7 +72,9 @@ export class AuthController {
 
      refreshToken = (req: any, res: any) => {
           const [error, refreshTokenDto] = RefreshTokenDto.refresh(req.body);
-          if (error) return res.status(400).json({ error });
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
 
           new RefreshToken(this.authRepository)
                .execute(refreshTokenDto!)
@@ -79,7 +88,9 @@ export class AuthController {
 
      signUp = (req: any, res: any) => {
           const [error, signUpUserDto] = SignUpUserDto.create(req.body);
-          if (error) return res.status(400).json({ error });
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
 
           new SignUpUser(this.authRepository)
                .execute(signUpUserDto!)
@@ -89,7 +100,9 @@ export class AuthController {
 
      update = (req: any, res: any) => {
           const [error, updateUserDto] = UpdateUserDto.create(req.body);
-          if (error) return res.status(400).json({ error });
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
 
           new UpdateUser(this.authRepository)
                .execute(updateUserDto!)
@@ -115,17 +128,52 @@ export class AuthController {
                });
      }
 
+     changePassword = (req: any, res: any) => {
+          const [error, changePasswordDto] = ChangePasswordDto.change(req.body);
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
+
+          new ChangePassword(this.authRepository)
+               .execute(changePasswordDto!)
+               .then((data) => res.json(data))
+               .catch(error => this.handleEror(error, res));
+     }
+
+     deleteSystemUser = (req: any, res: any) => {
+          const [error, deleteSystemUserDto] = DeleteSystemUserDto.delete(req.body);
+          if (error) {
+               return this.handleCustomError(error, res);
+          }
+
+          new DeleteSystemUser(this.authRepository)
+               .execute(deleteSystemUserDto!)
+               .then((data) => res.json(data))
+               .catch(error => this.handleEror(error, res));
+     }
+
      // #endregion
 
      // #region PRIVATE FUNCTIONS
 
      private handleEror = (error: unknown, res: any) => {
-          this.logger.Error(error as Error);
           if (error instanceof CustomError) {
                return res.status(error.statusCode).json({ error: error.message })
           }
           return res.status(500).json({ error: 'Internal Server Error' })
      }
 
+     private handleCustomError(error: string, res: any) {
+          const resultResponse: ApiResultResponse = {
+               status: "error",
+               hasError: true,
+               data: null,
+               message: error,
+               statusCode: 400,
+               stackTrace: null
+          };
+
+          return res.status(400).json(resultResponse);
+     }
      // #endregion
 }

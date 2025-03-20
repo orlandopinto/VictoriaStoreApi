@@ -8,7 +8,8 @@ export class SignUpUserDto {
           public firstName: string,
           public lastName: string,
           public phoneNumber: string,
-          public imageProfilePath: string,
+          public public_id: string,
+          public secure_url: string,
           public city: string,
           public zipcode: number,
           public lockoutEnabled: boolean,
@@ -19,20 +20,21 @@ export class SignUpUserDto {
      ) { }
 
      static create(object: { [key: string]: any }): [string?, SignUpUserDto?] {
-          const { email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = object;
+          const { email, password, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = object;
 
-          if (!email) return ['Missing email on register user']
-          if (!password) return ['Missing password on register user']
-          if (!firstName) return ['Missing firstName on register user']
-          if (!lastName) return ['Missing lastName on register user']
-          if (!phoneNumber) return ['Missing phoneNumber on register user']
-          if (!imageProfilePath) return ['Missing imageProfilePath on register user']
-          if (!roles) return ['Missing roles on register user']
-          if (!isActive) return ['Missing isActive on register user']
+          if (email === undefined) return ['Missing email on register user']
+          if (password === undefined) return ['Missing password on register user']
+          if (firstName === undefined) return ['Missing firstName on register user']
+          if (lastName === undefined) return ['Missing lastName on register user']
+          if (phoneNumber === undefined) return ['Missing phoneNumber on register user']
+          if (public_id === undefined) return ['Missing public_id on register user']
+          if (secure_url === undefined) return ['Missing secure_url on register user']
+          if (roles === undefined) return ['Missing roles on register user']
+          if (isActive === undefined) return ['Missing isActive on register user']
 
           return [
                undefined,
-               new SignUpUserDto(email, password, address, firstName, lastName, phoneNumber, imageProfilePath, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive)
+               new SignUpUserDto(email, password, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive)
           ];
      }
 }

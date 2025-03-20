@@ -177,7 +177,8 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                          email: user.email,
                          firstName: user.firstName,
                          lastName: user.lastName,
-                         imageProfilePath: user.imageProfilePath
+                         public_id: user.public_id,
+                         secure_url: user.secure_url
                     }));
 
                     permissionsProfile.push({

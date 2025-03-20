@@ -1,4 +1,5 @@
-import { LoginUserDto, RefreshTokenDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../dtos/auth";
+import { ChangePasswordDto, LoginUserDto, RefreshTokenDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../dtos/auth";
+import { DeleteSystemUserDto } from "../dtos/auth/delete-system-user.dto";
 import { ApiResultResponse } from "../types";
 import { UserToken } from "../types/auth.type";
 
@@ -24,4 +25,12 @@ export interface RefreshTokenUseCase {
 
 export interface SignUpUserUseCase {
      execute(signUpUserDto: SignUpUserDto): Promise<ApiResultResponse>
+}
+
+export interface ChangePasswordUseCase {
+     execute(changePasswordDto: ChangePasswordDto): Promise<ApiResultResponse>
+}
+
+export interface DeleteSystemUserUseCase {
+     execute(deleteSystemUserDto: DeleteSystemUserDto): Promise<ApiResultResponse>
 }

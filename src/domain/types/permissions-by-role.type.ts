@@ -18,7 +18,8 @@ export type UsersByRole = {
      email: string,
      firstName: string,
      lastName: string,
-     imageProfilePath?: string
+     public_id?: string,
+     secure_url?: string,
 }
 
 export type PermissionsProfile = {

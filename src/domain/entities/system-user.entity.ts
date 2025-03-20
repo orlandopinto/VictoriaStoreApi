@@ -10,14 +10,17 @@ export class SystemUserEntity {
           public firstName?: string,
           public lastName?: string,
           public phoneNumber?: string,
-          public imageProfilePath?: string,
+          public public_id?: string,
+          public secure_url?: string,
           public city?: string,
           public zipcode?: number,
           public lockoutEnabled?: boolean,
           public accessFailedCount?: number,
           public birthDate?: Date,
           public roles?: string[],
-          public isActive?: boolean
+          public isActive?: boolean,
+          public createdAt?: string,
+          public updatedAt?: string
      ) { }
 
 }
@@ -30,14 +33,17 @@ export class UpdateUserEntity {
           public firstName?: string,
           public lastName?: string,
           public phoneNumber?: string,
-          public imageProfilePath?: string,
+          public public_id?: string,
+          public secure_url?: string,
           public city?: string,
           public zipcode?: number,
           public lockoutEnabled?: boolean,
           public accessFailedCount?: number,
           public birthDate?: Date,
           public roles?: string[],
-          public isActive?: boolean
+          public isActive?: boolean,
+          public createdAt?: string,
+          public updatedAt?: string
      ) { }
 
 }
@@ -58,6 +64,15 @@ export class RefreshTokenEntity {
           public email: string,
           public accessToken: string,
           public refreshToken: string
+     ) { }
+
+}
+
+export class ChangePasswordEntity {
+
+     constructor(
+          public email: string,
+          public newPasswod: string,
      ) { }
 
 }

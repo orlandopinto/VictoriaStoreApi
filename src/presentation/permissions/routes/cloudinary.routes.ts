@@ -1,9 +1,10 @@
 import { Router } from 'express';
+import fs from 'fs-extra';
+import multer from 'multer';
 import { AppLogger } from '../../../config/appLogger';
 import { FOLDER_TO_UPLOAD, IMAGE_UPLOAD_PATH } from '../../../config/envs';
-import { CloudinaryController } from '../controllers/cloudinary-controller';
-import multer from 'multer';
 import { CloudinaryResult } from '../../../domain/types/cloudinary-result.type';
+import { CloudinaryController } from '../controllers/cloudinary.controller';
 
 export class CloudinaryRoutes {
 
@@ -26,9 +27,8 @@ export class CloudinaryRoutes {
                try {
                     const file = req.file;
                     const result = await controller.uploadMediaFile(file) as unknown as CloudinaryResult
-                    console.dir(result);
-                    res.status(200).send(result)
-                    //await fs.unlink(req.files.file.tempFilePath)
+                    res.status(200).send(result);
+                    await fs.unlink(file.path)
                } catch (error) {
                     logger.Error(error as Error);
                }
@@ -37,7 +37,7 @@ export class CloudinaryRoutes {
 
           router.delete(`/${FOLDER_TO_UPLOAD}/:public_id`, async (req, res) => {
                try {
-                    //logger.info('req.params.id: ', req.params.public_id)
+                    logger.Info('req.params.id: ' + req.params.public_id)
                     const result = await controller.deleteMediaFile(`${FOLDER_TO_UPLOAD}/${req.params.public_id}`)
                     res.status(200).send(result)
                } catch (error) {

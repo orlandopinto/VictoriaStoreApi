@@ -15,9 +15,11 @@ export class AuthorizationRoutes {
 
           router.post('/signin', controller.signIn);
           router.post('/signup', [AuthMiddleware.validateJWT], controller.signUp);
+          router.post('/change-password', [AuthMiddleware.validateJWT], controller.changePassword);
           router.put('/:id', [AuthMiddleware.validateJWT], controller.update);
           router.post('/refresh', controller.refreshToken)
           router.get('/', [AuthMiddleware.validateJWT], controller.getSystemUsers)
+          router.delete('/', [AuthMiddleware.validateJWT], controller.deleteSystemUser)
 
           return router;
      }

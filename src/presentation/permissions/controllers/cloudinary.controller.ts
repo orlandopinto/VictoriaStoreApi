@@ -32,7 +32,6 @@ export class CloudinaryController {
                     resource_type: file.mimetype === 'video/mp4' ? 'video' : 'image' as 'video' | 'image',
                     overwrite: true,
                }
-               //this.logger.Info('CloudinaryController > uploadMediaFile > file.tempFilePath: ' + file.path);
                return await cloudinary.uploader.upload(file.path, options)
           } catch (error) {
                this.logger.Error(error as Error);
