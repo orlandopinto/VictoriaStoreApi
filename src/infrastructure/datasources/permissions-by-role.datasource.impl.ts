@@ -71,7 +71,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                let roleResult = {} as any;
                if (role.hasOwnProperty('roleName')) {
                     roleResult = await RolesModel.findByIdAndUpdate(
-                         role.id,
+                         role._id,
                          {
                               roleDescription: role.roleDescription
                          },
@@ -86,7 +86,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                if (permissionsByRole.length > 0) {
                     for (let perms of permissionsByRole) {
                          if (perms.id.split('.').length === 2) {
-                              perms.id = `${role.id}.${perms.id}`
+                              perms.id = `${role._id}.${perms.id}`
                          }
                     }
 
@@ -154,7 +154,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                     if (!foundRole) continue;
 
                     const currentRole: Role = {
-                         id: role._id.toString(),
+                         _id: role._id.toString(),
                          roleName: role.roleName,
                          roleDescription: role.roleDescription
                     };

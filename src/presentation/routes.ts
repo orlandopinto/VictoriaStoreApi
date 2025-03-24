@@ -2,12 +2,15 @@ import { Router } from "express";
 import { AuthRoutes } from "./auth/auth.routes";
 import { AuthorizationRoutes } from "./auth/authorization.routes";
 import { ActionRoutes } from './permissions/routes/action.routes';
-import { PermissionsByRoleRoutes } from "./permissions/routes/permissions-by-role.routes";
-import { PageRoutes } from "./permissions/routes/page.routes";
-import { RoleRoutes } from "./permissions/routes/role.routes";
+import { CategoryRoutes } from "./permissions/routes/category.routes";
 import { CloudinaryRoutes } from "./permissions/routes/cloudinary.routes";
+import { PageRoutes } from "./permissions/routes/page.routes";
+import { PermissionsByRoleRoutes } from "./permissions/routes/permissions-by-role.routes";
+import { RoleRoutes } from "./permissions/routes/role.routes";
+import { SubCategoryRoutes } from "./permissions/routes/sub-category.routes";
 
 export class AppRoutes {
+
      static get routes(): Router {
           const router = Router();
 
@@ -20,6 +23,10 @@ export class AppRoutes {
           router.use('/api/roles', RoleRoutes.routes)
           router.use('/api/upload', CloudinaryRoutes.routes)
 
+          router.use('/api/category', CategoryRoutes.routes)
+          router.use('/api/sub-category', SubCategoryRoutes.routes)
+
           return router;
      }
+
 }

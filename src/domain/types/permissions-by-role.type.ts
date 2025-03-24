@@ -1,5 +1,5 @@
 export type Role = {
-     id?: string,
+     _id?: string,
      roleName: string,
      roleDescription?: string
 }

@@ -25,13 +25,33 @@ export class CloudinaryController {
           this.router = Router();
      }
 
-     uploadMediaFile = async (file: any) => {
+     uploadMediaFile = async (file: any, folderToUpload: string) => {
           try {
                const options = {
-                    folder: FOLDER_TO_UPLOAD,
+                    folder: folderToUpload,
                     resource_type: file.mimetype === 'video/mp4' ? 'video' : 'image' as 'video' | 'image',
                     overwrite: true,
+                    crop: 'auto',
+                    gravity: 'auto',
+                    width: 500,
+                    height: 500,
                }
+
+               return await cloudinary.uploader.upload(file.path, options)
+          } catch (error) {
+               this.logger.Error(error as Error);
+          }
+     }
+
+     updateMediaFile = async (file: any, public_id: string) => {
+          try {
+               const options = {
+                    public_id: public_id,
+                    resource_type: file.mimetype === 'video/mp4' ? 'video' : 'image' as 'video' | 'image',
+                    overwrite: true,
+                    invalidate: true
+               }
+
                return await cloudinary.uploader.upload(file.path, options)
           } catch (error) {
                this.logger.Error(error as Error);

@@ -24,24 +24,44 @@ export class CloudinaryRoutes {
           })
 
           router.post('/', multer({ storage: storage }).single('file'), async (req: any, res) => {
+
                try {
                     const file = req.file;
-                    const result = await controller.uploadMediaFile(file) as unknown as CloudinaryResult
+                    const result = await controller.uploadMediaFile(file, req.body.folder) as unknown as CloudinaryResult
                     res.status(200).send(result);
                     await fs.unlink(file.path)
-               } catch (error) {
-                    logger.Error(error as Error);
+               } catch (err) {
+                    const error = err as Error
+                    logger.Error(error);
+                    res.status(400).send(error);
+               }
+
+          });
+
+          router.put('/', multer({ storage: storage }).single('file'), async (req: any, res) => {
+
+               try {
+                    const file = req.file;
+                    const result = await controller.updateMediaFile(file, req.body.public_id) as unknown as CloudinaryResult
+                    res.status(200).send(result);
+                    await fs.unlink(file.path)
+               } catch (err) {
+                    const error = err as Error
+                    logger.Error(error);
+                    res.status(400).send(error);
                }
 
           });
 
           router.delete(`/${FOLDER_TO_UPLOAD}/:public_id`, async (req, res) => {
+
                try {
-                    logger.Info('req.params.id: ' + req.params.public_id)
                     const result = await controller.deleteMediaFile(`${FOLDER_TO_UPLOAD}/${req.params.public_id}`)
                     res.status(200).send(result)
-               } catch (error) {
-                    logger.Error(error as Error);
+               } catch (err) {
+                    const error = err as Error
+                    logger.Error(error);
+                    res.status(400).send(error);
                }
 
           });
