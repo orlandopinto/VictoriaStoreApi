@@ -1,18 +1,18 @@
 import { CustomError } from "../../errors/custom.error";
-import { GetSubCategoriesUseCase } from "../../interfaces/ISubCategory";
-import { SubCategoryRepository } from "../../repositories/sub-category.repository";
+import { GetTaxesUseCase } from "../../interfaces/ITax";
+import { TaxRepository } from "../../repositories/tax.repository";
 import { ApiResultResponse } from "../../types";
 
-export class GetSubCategories implements GetSubCategoriesUseCase {
+export class GetTaxes implements GetTaxesUseCase {
 
-     constructor(private readonly subCategoryRepository: SubCategoryRepository) { }
+     constructor(private readonly taxRepository: TaxRepository) { }
 
      async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const data = await this.subCategoryRepository.getSubCategories();
+               const data = await this.taxRepository.getTaxes();
                resultResponse = {
                     status: "success",
                     hasError: false,

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { PermissionsByRoleRepositoryImpl } from "../../../infrastructure";
 import { PermissionsByRoleDatasourceImpl } from "../../../infrastructure/datasources";
 import AuthMiddleware from "../../middlewares/auth.middleware";
-import { PermissionsByRoleController } from "../controllers/permissions-by-role.controller";
+import { PermissionsByRoleController } from "../../controllers/permissions/permissions-by-role.controller";
 
 export class PermissionsByRoleRoutes {
 

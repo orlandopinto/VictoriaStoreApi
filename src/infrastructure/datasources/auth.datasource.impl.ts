@@ -12,7 +12,7 @@ import { SignToken, VerifyRefreshToken } from "../../domain/types";
 import { UserMapper } from "../mappers/user.mapper";
 import { RefreshTokenType } from '../../domain/types/system-user.type'
 import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
-import { CloudinaryController } from "../../presentation/permissions/controllers/cloudinary.controller";
+import { CloudinaryController } from "../../presentation/controllers/adapters/cloudinary.controller";
 
 type HashFunction = (password: string) => string
 type CompareFunction = (password: string, hashed: string) => boolean

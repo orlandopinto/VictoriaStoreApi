@@ -15,6 +15,6 @@ export interface DeleteSubCategoryUseCase {
      execute(deleteSubCategoryDto: DeleteSubCategoryDto): Promise<ApiResultResponse>
 }
 
-export interface GetCategoriesUseCase {
+export interface GetSubCategoriesUseCase {
      execute(): Promise<ApiResultResponse>
 }

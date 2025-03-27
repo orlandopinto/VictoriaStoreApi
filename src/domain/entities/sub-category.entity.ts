@@ -1,4 +1,4 @@
-import { subCategoriesSchema } from "../../data/mongodb/models/sub-categories.model";
+import { subCategoriesSchema } from "../../data/mongodb";
 
 export class SubCategoryEntity {
      constructor(

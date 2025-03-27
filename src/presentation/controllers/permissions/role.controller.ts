@@ -13,7 +13,7 @@ export class RoleController {
      logger: AppLogger;
 
      constructor(private readonly rolesRepository: RoleRepository) {
-          this.logger = new AppLogger("ActionController");
+          this.logger = new AppLogger("RoleController");
      }
 
      addRole = (req: any, res: any) => {

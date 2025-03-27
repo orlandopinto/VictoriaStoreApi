@@ -1,13 +1,14 @@
 import { Router } from "express";
 import { AuthRoutes } from "./auth/auth.routes";
 import { AuthorizationRoutes } from "./auth/authorization.routes";
-import { ActionRoutes } from './permissions/routes/action.routes';
-import { CategoryRoutes } from "./permissions/routes/category.routes";
-import { CloudinaryRoutes } from "./permissions/routes/cloudinary.routes";
-import { PageRoutes } from "./permissions/routes/page.routes";
-import { PermissionsByRoleRoutes } from "./permissions/routes/permissions-by-role.routes";
-import { RoleRoutes } from "./permissions/routes/role.routes";
-import { SubCategoryRoutes } from "./permissions/routes/sub-category.routes";
+import { ActionRoutes } from './routes/permissions/action.routes';
+import { CategoryRoutes } from "./routes/admin/category.routes";
+import { PermissionsByRoleRoutes } from "./routes/permissions/permissions-by-role.routes";
+import { RoleRoutes } from "./routes/permissions/role.routes";
+import { SubCategoryRoutes } from "./routes/admin/sub-category.routes";
+import { TaxRoutes } from "./routes/admin/tax.routes";
+import { CloudinaryRoutes } from "./routes/adpaters/cloudinary.routes";
+import { PageRoutes } from "./routes/permissions/page.routes";
 
 export class AppRoutes {
 
@@ -21,10 +22,11 @@ export class AppRoutes {
           router.use('/api/permissions', PermissionsByRoleRoutes.routes)
           router.use('/api/pages', PageRoutes.routes)
           router.use('/api/roles', RoleRoutes.routes)
-          router.use('/api/upload', CloudinaryRoutes.routes)
-
           router.use('/api/category', CategoryRoutes.routes)
           router.use('/api/sub-category', SubCategoryRoutes.routes)
+          router.use('/api/taxes', TaxRoutes.routes)
+
+          router.use('/api/upload', CloudinaryRoutes.routes)
 
           return router;
      }

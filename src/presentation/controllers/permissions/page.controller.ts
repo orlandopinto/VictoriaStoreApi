@@ -8,7 +8,7 @@ export class PageController {
      logger: AppLogger;
 
      constructor(private readonly pageRepository: PageRepository) {
-          this.logger = new AppLogger("ActionController");
+          this.logger = new AppLogger("PageController");
      }
 
      addPage = (req: any, res: any) => {

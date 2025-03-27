@@ -72,7 +72,7 @@ export class SubCategoryController {
 
      handleError = (error: string, res: any) => {
           if (error) {
-               const responsError: ApiResultResponse = {
+               const responseError: ApiResultResponse = {
                     hasError: true,
                     message: error as string,
                     stackTrace: null,
@@ -80,7 +80,7 @@ export class SubCategoryController {
                     statusCode: 400,
                     data: null
                }
-               return res.status(400).json(responsError)
+               return res.status(400).json(responseError)
           }
      }
 

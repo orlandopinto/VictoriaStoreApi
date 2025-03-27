@@ -12,7 +12,7 @@ export class UpdateSubCategoryDto {
 
           const requiredFields = ['_id', 'subCategoryName', 'slug', 'CategoryId', 'subCategoryDescription'];
           for (const field of requiredFields) {
-               if (object[field] === undefined) return [`Missing ${field} on update category`];
+               if (object[field] === undefined) return [`Missing ${field} on update sub category`];
           }
 
           return [

@@ -1,7 +1,6 @@
 import { AppLogger } from "../../../config/appLogger";
 import { AddCategoryDto } from "../../../domain/dtos/categories/add-category.dto";
 import { DeleteCategoryDto } from "../../../domain/dtos/categories/delete-category.dto";
-import { GetCategoriesDto } from "../../../domain/dtos/categories/get-categories.dto";
 import { UpdateCategoryDto } from "../../../domain/dtos/categories/update.category.dto";
 import { CategoryRepository } from "../../../domain/repositories/category.repository";
 import { ApiResultResponse } from "../../../domain/types";
@@ -22,18 +21,18 @@ export class CategoryController {
           const [error, addCategoryDto] = AddCategoryDto.create(req.body);
           if (error) return this.handleError(error, res);
 
-          new AddCategory(this.categoryRepository)
+          await new AddCategory(this.categoryRepository)
                .execute(addCategoryDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleError(error, res));
      }
 
-     updateCategory = (req: any, res: any) => {
-          const [error, updateUserDto] = UpdateCategoryDto.update(req.body);
+     updateCategory = async (req: any, res: any) => {
+          const [error, updateCategoryDto] = UpdateCategoryDto.update(req.body);
           if (error) return this.handleError(error, res);
 
           new UpdateCategory(this.categoryRepository)
-               .execute(updateUserDto!)
+               .execute(updateCategoryDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleError(error, res));
      }
@@ -53,9 +52,6 @@ export class CategoryController {
      }
 
      getCategories = async (req: any, res: any) => {
-          const [error] = GetCategoriesDto.get(req.body);
-          if (error) return this.handleError(error, res);
-
           try {
                const data = await new GetCategories(this.categoryRepository).execute();
                return res.json({ ...data, data: data.data.categories });
@@ -66,7 +62,7 @@ export class CategoryController {
 
      handleError = (error: string, res: any) => {
           if (error) {
-               const responsError: ApiResultResponse = {
+               const responseError: ApiResultResponse = {
                     hasError: true,
                     message: error as string,
                     stackTrace: null,
@@ -74,7 +70,7 @@ export class CategoryController {
                     statusCode: 400,
                     data: null
                }
-               return res.status(400).json(responsError)
+               return res.status(400).json(responseError)
           }
      }
 

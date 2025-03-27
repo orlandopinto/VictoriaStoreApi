@@ -2,7 +2,7 @@
 export class DeleteSubCategoryDto {
 
      constructor(
-          public _id: string,
+          public _id: string
      ) { }
 
      static delete(object: { [key: string]: any }): [string?, DeleteSubCategoryDto?] {

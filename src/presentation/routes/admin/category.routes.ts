@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { CategoryDatasourceImpl } from "../../../infrastructure/datasources/category.datasource.impl";
 import { CategoryRepositoryImpl } from "../../../infrastructure/repositories/category.repository.impl";
+import { CategoryController } from "../../controllers/admin/category.controller";
 import AuthMiddleware from "../../middlewares/auth.middleware";
-import { CategoryController } from "../controllers/category.controller";
 
 export class CategoryRoutes {
 
@@ -11,8 +11,8 @@ export class CategoryRoutes {
           const router = Router();
 
           const datasource = new CategoryDatasourceImpl();
-          const actionRepository = new CategoryRepositoryImpl(datasource)
-          const controller = new CategoryController(actionRepository);
+          const categoryRepository = new CategoryRepositoryImpl(datasource)
+          const controller = new CategoryController(categoryRepository);
 
           router.post('/', [AuthMiddleware.validateJWT], controller.addCategory);
           router.put('/', [AuthMiddleware.validateJWT], controller.updateCategory);

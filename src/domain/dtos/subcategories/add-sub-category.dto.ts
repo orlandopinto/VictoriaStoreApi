@@ -16,7 +16,7 @@ export class AddSubCategoryDto {
           if (subCategoryName === undefined) return ['Missing Sub Category name on create sub category']
           if (slug === undefined) return ['Missing slug on create sub category']
           if (CategoryId === undefined) return ['Missing Category Id on create sub category']
-          if (subCategoryDescription === undefined) return ['Missing sub category description Id on create sub category']
+          if (subCategoryDescription === undefined) return ['Missing sub category description on create sub category']
 
           return [
                undefined,

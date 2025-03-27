@@ -1,4 +1,4 @@
-import { categoriesSchema } from "../../data/mongodb/models/categories.model";
+import { categoriesSchema } from "../../data/mongodb";
 
 export class CategoryEntity {
      constructor(

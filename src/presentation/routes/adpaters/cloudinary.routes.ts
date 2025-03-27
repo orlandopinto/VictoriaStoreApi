@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import fs from 'fs-extra';
 import multer from 'multer';
+import { IMAGE_UPLOAD_PATH, FOLDER_TO_UPLOAD } from '../../../config';
 import { AppLogger } from '../../../config/appLogger';
-import { FOLDER_TO_UPLOAD, IMAGE_UPLOAD_PATH } from '../../../config/envs';
 import { CloudinaryResult } from '../../../domain/types/cloudinary-result.type';
-import { CloudinaryController } from '../controllers/cloudinary.controller';
+import { CloudinaryController } from '../../controllers/adapters/cloudinary.controller';
+
 
 export class CloudinaryRoutes {
 

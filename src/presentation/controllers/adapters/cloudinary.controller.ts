@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { Router } from 'express';
+import { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, FOLDER_TO_UPLOAD } from '../../../config';
 import { AppLogger } from '../../../config/appLogger';
-import { CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, CLOUDINARY_NAME, FOLDER_TO_UPLOAD } from '../../../config/envs';
 
 export class CloudinaryController {
      logger: AppLogger;

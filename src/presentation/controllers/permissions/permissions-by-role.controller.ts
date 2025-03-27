@@ -10,7 +10,7 @@ export class PermissionsByRoleController {
      logger: AppLogger;
 
      constructor(private readonly permissionsByRoleRepository: PermissionsByRoleRepository) {
-          this.logger = new AppLogger("ActionController");
+          this.logger = new AppLogger("PermissionsByRoleController");
      }
 
      addPermissionsByRole = (req: any, res: any) => {

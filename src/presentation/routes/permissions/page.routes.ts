@@ -1,6 +1,6 @@
 import { Router } from "express";
 import AuthMiddleware from "../../middlewares/auth.middleware";
-import { PageController } from "../controllers/page.controller";
+import { PageController } from "../../controllers/permissions/page.controller";
 import { PageRepositoryImpl } from "../../../infrastructure";
 import { PageDatasourceImpl } from "../../../infrastructure/datasources";
 
