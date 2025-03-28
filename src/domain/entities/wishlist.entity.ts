@@ -25,10 +25,7 @@ export class UpdateWishListEntity {
 
 export class DeleteWishListEntity {
 
-     constructor(public wishlistName: string) { }
-     /*
-     NOTE: Validar si el campo tiene el sufijo "Name"
-     */
+     constructor(public _id: string) { }
 
 }
 

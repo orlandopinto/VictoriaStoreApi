@@ -15,8 +15,8 @@ export const usersSchema = new Schema
                secure_url: { type: Date, default: null },
                emailVerified: { type: Boolean, default: false },
                gender: { type: String, default: null },
-               shippingAddresses: { type: [Schema.Types.ObjectId], ref: 'ShippingAddress' },
-               wishList: { type: [Schema.Types.ObjectId], ref: 'WishList' },
+               shippingAddresses: { type: [Schema.Types.ObjectId], default: null, ref: 'ShippingAddress' },
+               wishList: { type: [Schema.Types.ObjectId], default: null, ref: 'WishList' },
           },
           { timestamps: true, versionKey: false }
      )

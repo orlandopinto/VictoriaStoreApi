@@ -1,24 +1,24 @@
-import { SignUpUserDto } from '../../dtos/auth';
-import { CustomError } from '../../errors/custom.error';
-import { SignUpUserUseCase } from '../../interfaces/IAuth';
-import { AuthRepository } from '../../repositories/auth.repository';
-import { ApiResultResponse } from '../../types';
+﻿import { DeleteUserDto } from "../../dtos/users/delete-user.dto";
+import { CustomError } from "../../errors/custom.error";
+import { DeleteUserUseCase } from "../../interfaces/IUsers";
+import { UserRepository } from "../../repositories";
+import { ApiResultResponse } from "../../types";
 
-export class SignUpUser implements SignUpUserUseCase {
+export class DeleteUser implements DeleteUserUseCase {
 
-     constructor(private readonly authRepository: AuthRepository) { }
+     constructor(private readonly userRepository: UserRepository) { }
 
-     async execute(signUpUserDto: SignUpUserDto): Promise<ApiResultResponse> {
+     async execute(deleteUserDto: DeleteUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const user = await this.authRepository.signUp(signUpUserDto);
+               const user = await this.userRepository.deleteUser(deleteUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
                     data: user,
-                    message: "User registered successfully",
+                    message: "User deleted successfully",
                     statusCode: 201,
                     stackTrace: null
                }

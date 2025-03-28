@@ -1,27 +1,25 @@
-import { UpdateSystemUserDto } from '../../dtos/auth';
-import { CustomError } from '../../errors/custom.error';
-import { UpdateSystemUserUseCase } from '../../interfaces/IAuth';
-import { AuthRepository } from '../../repositories/auth.repository';
-import { ApiResultResponse } from '../../types';
+﻿import { DeleteSystemUserDto } from "../../dtos/systemusers/delete-system-user.dto";
+import { CustomError } from "../../errors/custom.error";
+import { DeleteSystemUserUseCase } from "../../interfaces/ISystemUsers";
+import { SystemUserRepository } from "../../repositories";
+import { ApiResultResponse } from "../../types";
 
-export class UpdateSystemUser implements UpdateSystemUserUseCase {
+export class DeleteSystemUser implements DeleteSystemUserUseCase {
 
-     constructor(
-          private readonly authRepository: AuthRepository
-     ) { }
+     constructor(private readonly systemuserRepository: SystemUserRepository) { }
 
-     async execute(updateSystemUserDto: UpdateSystemUserDto): Promise<ApiResultResponse> {
+     async execute(deleteSystemUserDto: DeleteSystemUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const systemUser = await this.authRepository.updateSystemUser(updateSystemUserDto);
+               const systemuser = await this.systemuserRepository.deleteSystemUser(deleteSystemUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: systemUser,
-                    message: "User updated successfully",
-                    statusCode: 200,
+                    data: systemuser,
+                    message: "SystemUser deleted successfully",
+                    statusCode: 201,
                     stackTrace: null
                }
           } catch (error) {

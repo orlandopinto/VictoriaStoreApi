@@ -1,17 +1,19 @@
-
+﻿
 export class DeleteSystemUserDto {
+
      constructor(
-          public _id: string,
+          public email: string
      ) { }
 
      static delete(object: { [key: string]: any }): [string?, DeleteSystemUserDto?] {
-          const { _id } = object;
 
-          if (_id === undefined) return ['Missing _id on delete user']
+          const { email } = object;
+
+          if (email === undefined) return ['Missing email on delete user']
 
           return [
                undefined,
-               new DeleteSystemUserDto(_id)
+               new DeleteSystemUserDto(email)
           ];
      }
 

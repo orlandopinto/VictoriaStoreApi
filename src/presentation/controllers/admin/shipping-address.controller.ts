@@ -5,10 +5,10 @@ import { UpdateShippingAddressDto } from "../../../domain/dtos/shippingAddresses
 import { CustomError } from "../../../domain/errors/custom.error";
 import { ShippingAddressRepository } from "../../../domain/repositories";
 import { ApiResultResponse } from "../../../domain/types";
-import { AddShippingAddress } from "../../../domain/usecases/shippingAddresses/add-shipping-address.usecase";
-import { DeleteShippingAddress } from "../../../domain/usecases/shippingAddresses/delete-shipping-address.usecase";
-import { GetShippingAddresses } from "../../../domain/usecases/shippingAddresses/get-shipping-address.usecase";
-import { UpdateShippingAddress } from "../../../domain/usecases/shippingAddresses/update-shipping-address.usecase";
+import { AddShippingAddress } from "../../../domain/usecases/shippingAddress/add-shipping-address.usecase";
+import { DeleteShippingAddress } from "../../../domain/usecases/shippingAddress/delete-shipping-address.usecase";
+import { GetShippingAddresses } from "../../../domain/usecases/shippingAddress/get-shipping-address.usecase";
+import { UpdateShippingAddress } from "../../../domain/usecases/shippingAddress/update-shipping-address.usecase";
 
 export class ShippingAddressController {
 

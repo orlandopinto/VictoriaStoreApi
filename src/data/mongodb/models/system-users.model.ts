@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-const systemUserSchema = new Schema
+export const systemUsersSchema = new Schema
      (
           {
                email: { type: String, required: [true, 'Email is required'], unique: true },
@@ -22,4 +22,4 @@ const systemUserSchema = new Schema
           { timestamps: true, versionKey: false }
      )
 
-export const SystemUserModel = mongoose.model('SystemUsers', systemUserSchema);
+export const SystemUsersModel = mongoose.model('SystemUsers', systemUsersSchema);

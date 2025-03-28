@@ -68,7 +68,6 @@ export class WishListDatasourceImpl implements WishListDatasource {
                const wishlist = await WishListModel.findOne({ _id: _id })
                if (!wishlist) throw CustomError.badRequest("WishList does not exist or has been deleted.")
                await WishListModel.deleteOne({ _id: _id })
-               //NOTE: Corregir la siguiente linea
                return new DeleteWishListEntity(wishlist._id.toString());
 
           } catch (error) {

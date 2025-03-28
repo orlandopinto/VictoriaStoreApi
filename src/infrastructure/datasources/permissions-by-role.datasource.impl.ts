@@ -1,5 +1,5 @@
 import { AppLogger } from "../../config/appLogger";
-import { PermissionsByRoleModel, RolesModel, rolesSchema, SystemUserModel } from "../../data/mongodb";
+import { PermissionsByRoleModel, RolesModel, rolesSchema, SystemUsersModel } from "../../data/mongodb";
 import { PermissionsByRoleDatasource } from "../../domain/datasources";
 import { AddPermissionsByRoleDto, UpdatePermissionsByRoleDto } from "../../domain/dtos/permissions";
 import { AddPermissionsByRoleEntity, GetPermissionsByRoleEntity, UpdatePermissionsByRoleEntity } from "../../domain/entities";
@@ -40,9 +40,9 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
 
                //ASIGNAR ROL A USUARIOS
                await Promise.all(usersByRole.map(async (user) => {
-                    const currentUser = await SystemUserModel.findOne({ email: user.email });
+                    const currentUser = await SystemUsersModel.findOne({ email: user.email });
                     if (currentUser) {
-                         await SystemUserModel.findOneAndUpdate(
+                         await SystemUsersModel.findOneAndUpdate(
                               { email: currentUser.email },
                               {
                                    $push: {
@@ -103,9 +103,9 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                //SE ELIMINA EL ROL A TODOS LOS USUARIOS QUE LOS TENGAN
                await new Promise(async (resolve, reject) => {
                     try {
-                         const userList = await SystemUserModel.find({ roles: { $all: [role.roleName] } });
+                         const userList = await SystemUsersModel.find({ roles: { $all: [role.roleName] } });
                          for (const user of userList) {
-                              await SystemUserModel.findOneAndUpdate(
+                              await SystemUsersModel.findOneAndUpdate(
                                    { email: user.email },
                                    { $pull: { roles: role.roleName } }
                               );
@@ -119,9 +119,9 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                //ASIGNAR ROL A USUARIOS QUE VENGAN EN EL ARREGLO
                await Promise.all(usersByRole.map(async (user) => {
 
-                    const currentUser = await SystemUserModel.findOne({ email: user.email });
+                    const currentUser = await SystemUsersModel.findOne({ email: user.email });
                     if (currentUser) {
-                         await SystemUserModel.findOneAndUpdate(
+                         await SystemUsersModel.findOneAndUpdate(
                               { email: currentUser.email },
                               {
                                    $push: {
@@ -172,7 +172,7 @@ export class PermissionsByRoleDatasourceImpl implements PermissionsByRoleDatasou
                          permissionsByRoleList.push(permissionsByRole);
                     }
 
-                    const userList = await SystemUserModel.find({ roles: { $all: [currentRole.roleName] } }).lean();
+                    const userList = await SystemUsersModel.find({ roles: { $all: [currentRole.roleName] } }).lean();
                     let usersByRoleList: UsersByRole[] = userList.map(user => ({
                          email: user.email,
                          firstName: user.firstName,

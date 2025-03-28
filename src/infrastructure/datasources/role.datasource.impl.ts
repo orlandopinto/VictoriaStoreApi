@@ -1,5 +1,5 @@
 import { AppLogger } from "../../config/appLogger";
-import { PermissionsByRoleModel, SystemUserModel } from "../../data/mongodb";
+import { PermissionsByRoleModel, SystemUsersModel } from "../../data/mongodb";
 import { RolesModel, rolesSchema } from "../../data/mongodb/models/roles.model";
 import { RoleDatasource } from "../../domain/datasources/role.datasource";
 import { AddRoleDto, DeleteRoleDto, UpdateRoleDto } from "../../domain/dtos/permissions";
@@ -84,9 +84,9 @@ export class RoleDatasourceImpl implements RoleDatasource {
                }
 
                //Se verifica si existe este rol asignado a usuarios
-               const currentUser = await SystemUserModel.find({ roles: { $all: [roleName] } })
+               const currentUser = await SystemUsersModel.find({ roles: { $all: [roleName] } })
                for (const user of currentUser) {
-                    await SystemUserModel.findOneAndUpdate(
+                    await SystemUsersModel.findOneAndUpdate(
                          { email: user.email },
                          { $pull: { roles: roleName } }
                     )

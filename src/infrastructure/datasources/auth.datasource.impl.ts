@@ -1,15 +1,11 @@
-import { BcryptAdapter, DURATION_REFRESH_TOKEN, DURATION_TOKEN, JwtAdapter } from "../../config";
-import { AppLogger } from '../../config/appLogger';
-import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
-import { AuthDatasource } from "../../domain/datasources/auth.datasource";
-import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateSystemUserDto } from "../../domain/dtos/auth";
-import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
-import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
-import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateSystemUserEntity } from "../../domain/entities/system-user.entity";
+import { BcryptAdapter, JwtAdapter, DURATION_TOKEN, DURATION_REFRESH_TOKEN } from "../../config";
+import { AppLogger } from "../../config/appLogger";
+import { SystemUsersModel } from "../../data/mongodb";
+import { AuthDatasource } from "../../domain/datasources";
+import { SignInUserDto, RefreshTokenDto, ChangePasswordDto } from "../../domain/dtos/auth";
+import { EnvironmentSystemUserEntity, SystemUserEntity, RefreshTokenEntity, ChangePasswordEntity } from "../../domain/entities";
 import { CustomError } from "../../domain/errors/custom.error";
-import { SignToken, VerifyRefreshToken } from "../../domain/types";
-import { RefreshTokenType } from '../../domain/types/system-user.type';
-import { CloudinaryController } from "../../presentation/controllers/adapters/cloudinary.controller";
+import { SignToken, VerifyRefreshToken, RefreshTokenType } from "../../domain/types";
 
 type HashFunction = (password: string) => string
 type CompareFunction = (password: string, hashed: string) => boolean
@@ -38,7 +34,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                //if (password.length < 6) throw CustomError.badRequest('Password too short')
 
                // 2. Verifica si existe el usuario
-               let userData = await SystemUserModel.findOne({ email }).lean() as unknown as SystemUserEntity
+               let userData = await SystemUsersModel.findOne({ email }).lean() as unknown as SystemUserEntity
                if (!userData) {
                     throw CustomError.badRequest("User name or password invalid..")
                }
@@ -63,36 +59,6 @@ export class AuthDatasourceImpl implements AuthDatasource {
           }
      }
 
-     async updateSystemUser(updateSystemUserDto: UpdateSystemUserDto): Promise<UpdateSystemUserEntity> {
-          const { id, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = updateSystemUserDto;
-          try {
-               const resultUserUpdated = await SystemUserModel.findByIdAndUpdate(id, {
-                    address,
-                    firstName,
-                    lastName,
-                    phoneNumber,
-                    secure_url,
-                    city,
-                    zipcode,
-                    lockoutEnabled,
-                    accessFailedCount,
-                    birthDate,
-                    roles,
-                    isActive
-               }, { new: true });
-
-               // 3. Mapear la respuesta a la entidad
-               return new UpdateSystemUserEntity(id, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive, resultUserUpdated?.createdAt as unknown as string, resultUserUpdated?.updatedAt as unknown as string);
-
-          } catch (error) {
-               this.logger.Error(error as Error);
-               if (error instanceof CustomError) {
-                    throw error;
-               }
-               throw CustomError.internalServerError();
-          }
-     }
-
      async refresh(refreshTokenDto: RefreshTokenDto): Promise<RefreshTokenEntity> {
           let { email, refreshToken } = refreshTokenDto;
 
@@ -112,39 +78,15 @@ export class AuthDatasourceImpl implements AuthDatasource {
           }
      }
 
-     async signUp(registerUserDto: SignUpUserDto): Promise<SystemUserEntity> {
-          //NOTE: Aqui es donde se especifican todos los campos para realizar el registro del usuario
-          const { email, password, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = registerUserDto;
-          try {
-               // 1. verificar si el correo existe
-               const exists = await SystemUserModel.findOne({ email: email })
-               if (exists) throw CustomError.badRequest('User already exists.')
-
-               // 2. Hash de contraseña
-               const user = await SystemUserModel.create({ email: email, password: this.hashPassword(password), address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive })
-               await user.save();
-
-               // 3. Mapear la respuesta a la entidad
-               return new SystemUserEntity(user.id, email, password, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive, user.createdAt as unknown as string, user.updatedAt as unknown as string);
-
-          } catch (error) {
-               this.logger.Error(error as Error);
-               if (error instanceof CustomError) {
-                    throw error;
-               }
-               throw CustomError.internalServerError();
-          }
-     }
-
      async changePassword(changePasswordDto: ChangePasswordDto): Promise<ChangePasswordEntity> {
           const { email, newPassword } = changePasswordDto;
           try {
                // 1. verificar si el correo existe
-               const exists = await SystemUserModel.findOne({ email: email })
+               const exists = await SystemUsersModel.findOne({ email: email })
                if (!exists) throw CustomError.badRequest('User does not exists.')
 
                // 2. Hash de contraseña
-               const user = await SystemUserModel.findOneAndUpdate(
+               const user = await SystemUsersModel.findOneAndUpdate(
                     { email: email },
                     { $set: { password: this.hashPassword(newPassword) } }
                )
@@ -160,31 +102,5 @@ export class AuthDatasourceImpl implements AuthDatasource {
                throw CustomError.internalServerError();
           }
      }
-
-     async deleteSystemUser(deleteSystemUserDto: DeleteSystemUserDto): Promise<SystemUserEntity> {
-          const { _id } = deleteSystemUserDto;
-          try {
-               // 1. verificar si el correo existe
-               const foundUser = await SystemUserModel.findOne({ _id: _id })
-               if (!foundUser) throw CustomError.badRequest('User does not exists.')
-
-               // 2. Hash de contraseña
-               await SystemUserModel.deleteOne({ _id: _id });
-
-               const controller = new CloudinaryController();
-               controller.deleteMediaFile(foundUser.public_id);
-
-               // 3. Mapear la respuesta a la entidad
-               return new SystemUserEntity(_id, foundUser.email, foundUser.password, foundUser.address, foundUser.firstName, foundUser.lastName, foundUser.phoneNumber, foundUser.public_id, foundUser.secure_url, foundUser.city, foundUser.zipcode, foundUser.lockoutEnabled, foundUser.accessFailedCount, foundUser.birthDate, foundUser.roles, foundUser.isActive, foundUser.createdAt as unknown as string, undefined);
-
-          } catch (error) {
-               //this.logger.Error(error as Error);
-               if (error instanceof CustomError) {
-                    throw error;
-               }
-               throw CustomError.internalServerError();
-          }
-     }
-
 
 }
