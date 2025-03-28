@@ -29,11 +29,11 @@ export class SubCategoryController {
      }
 
      updateSubCategory = (req: any, res: any) => {
-          const [error, updateUserDto] = UpdateSubCategoryDto.update(req.body);
+          const [error, updateSubCategoryDto] = UpdateSubCategoryDto.update(req.body);
           if (error) return this.handleError(error, res);
 
           new UpdateSubCategory(this.subCategoryRepository)
-               .execute(updateUserDto!)
+               .execute(updateSubCategoryDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleError(error, res));
      }

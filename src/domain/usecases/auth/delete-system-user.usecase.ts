@@ -15,11 +15,11 @@ export class DeleteSystemUser implements DeleteSystemUserUseCase {
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const user = await this.authRepository.deleteSystemUser(deleteSystemUserDto);
+               const systemUser = await this.authRepository.deleteSystemUser(deleteSystemUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: user,
+                    data: systemUser,
                     message: "User deleted successfully",
                     statusCode: 200,
                     stackTrace: null

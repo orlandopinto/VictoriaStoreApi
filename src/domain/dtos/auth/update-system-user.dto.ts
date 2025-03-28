@@ -1,4 +1,4 @@
-export class UpdateUserDto {
+export class UpdateSystemUserDto {
 
      private constructor(
           public id: string,
@@ -17,7 +17,7 @@ export class UpdateUserDto {
           public isActive?: boolean
      ) { }
 
-     static create(object: { [key: string]: any }): [string?, UpdateUserDto?] {
+     static create(object: { [key: string]: any }): [string?, UpdateSystemUserDto?] {
           const requiredFields = ['id', 'address', 'firstName', 'lastName', 'phoneNumber', 'public_id', 'secure_url', 'city', 'zipcode', 'lockoutEnabled', 'accessFailedCount', 'birthDate'];
           for (const field of requiredFields) {
                if (object[field] === undefined) return [`Missing ${field} on update user`];
@@ -25,7 +25,7 @@ export class UpdateUserDto {
 
           return [
                undefined,
-               new UpdateUserDto(
+               new UpdateSystemUserDto(
                     object.id,
                     object.address,
                     object.firstName,

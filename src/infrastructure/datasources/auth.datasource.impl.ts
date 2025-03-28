@@ -2,7 +2,7 @@ import { BcryptAdapter, DURATION_REFRESH_TOKEN, DURATION_TOKEN, JwtAdapter } fro
 import { AppLogger } from '../../config/appLogger';
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
-import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateSystemUserDto } from "../../domain/dtos/auth";
 import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateSystemUserEntity } from "../../domain/entities/system-user.entity";
@@ -63,8 +63,8 @@ export class AuthDatasourceImpl implements AuthDatasource {
           }
      }
 
-     async update(updateUserDto: UpdateUserDto): Promise<UpdateSystemUserEntity> {
-          const { id, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = updateUserDto;
+     async updateSystemUser(updateSystemUserDto: UpdateSystemUserDto): Promise<UpdateSystemUserEntity> {
+          const { id, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = updateSystemUserDto;
           try {
                const resultUserUpdated = await SystemUserModel.findByIdAndUpdate(id, {
                     address,

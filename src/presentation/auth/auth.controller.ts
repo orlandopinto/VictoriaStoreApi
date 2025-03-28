@@ -1,7 +1,7 @@
 import { AppLogger } from "../../config/appLogger";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { SignInUser, SignUpUser } from "../../domain";
-import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateSystemUserDto } from "../../domain/dtos/auth";
 import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { CustomError } from "../../domain/errors/custom.error";
@@ -10,7 +10,7 @@ import { ApiResultResponse } from "../../domain/types";
 import { ChangePassword } from "../../domain/usecases/auth/change-password.usecase";
 import { DeleteSystemUser } from "../../domain/usecases/auth/delete-system-user.usecase";
 import { RefreshToken } from "../../domain/usecases/auth/refresh-token.usecase";
-import { UpdateUser } from "../../domain/usecases/auth/update-user.usecase";
+import { UpdateSystemUser } from "../../domain/usecases/auth/update-system-user.usecase";
 
 export class AuthController {
 
@@ -74,13 +74,13 @@ export class AuthController {
      }
 
      update = (req: any, res: any) => {
-          const [error, updateUserDto] = UpdateUserDto.create(req.body);
+          const [error, updateSystemUserDto] = UpdateSystemUserDto.create(req.body);
           if (error) {
                return this.handleCustomError(error, res);
           }
 
-          new UpdateUser(this.authRepository)
-               .execute(updateUserDto!)
+          new UpdateSystemUser(this.authRepository)
+               .execute(updateSystemUserDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleEror(error, res));
      }

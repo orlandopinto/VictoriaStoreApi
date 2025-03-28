@@ -1,25 +1,25 @@
-import { UpdateUserDto } from '../../dtos/auth';
+import { UpdateSystemUserDto } from '../../dtos/auth';
 import { CustomError } from '../../errors/custom.error';
-import { UpdateUserUseCase } from '../../interfaces/IAuth';
+import { UpdateSystemUserUseCase } from '../../interfaces/IAuth';
 import { AuthRepository } from '../../repositories/auth.repository';
 import { ApiResultResponse } from '../../types';
 
-export class UpdateUser implements UpdateUserUseCase {
+export class UpdateSystemUser implements UpdateSystemUserUseCase {
 
      constructor(
           private readonly authRepository: AuthRepository
      ) { }
 
-     async execute(updateUserDto: UpdateUserDto): Promise<ApiResultResponse> {
+     async execute(updateSystemUserDto: UpdateSystemUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const user = await this.authRepository.update(updateUserDto);
+               const systemUser = await this.authRepository.updateSystemUser(updateSystemUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: user,
+                    data: systemUser,
                     message: "User updated successfully",
                     statusCode: 200,
                     stackTrace: null
