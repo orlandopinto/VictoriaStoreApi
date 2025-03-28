@@ -25,7 +25,7 @@ export class SystemUserEntity {
 
 }
 
-export class UpdateUserEntity {
+export class UpdateSystemUserEntity {
 
      constructor(
           public id: string,

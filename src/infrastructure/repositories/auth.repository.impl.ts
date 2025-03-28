@@ -3,7 +3,7 @@ import { AuthDatasource } from "../../domain/datasources/auth.datasource";
 import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
 import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
-import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity } from "../../domain/entities";
+import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateSystemUserEntity } from "../../domain/entities";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 
 export class AuthRepositoryImpl implements AuthRepository {
@@ -14,7 +14,7 @@ export class AuthRepositoryImpl implements AuthRepository {
           return this.authDatasource.signIn(signInUserDto);
      }
 
-     update(updateUserDto: UpdateUserDto): Promise<UpdateUserEntity> {
+     update(updateUserDto: UpdateUserDto): Promise<UpdateSystemUserEntity> {
           return this.authDatasource.update(updateUserDto);
      }
 

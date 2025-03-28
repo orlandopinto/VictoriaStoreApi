@@ -5,7 +5,7 @@ import { AuthDatasource } from "../../domain/datasources/auth.datasource";
 import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
 import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
-import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity } from "../../domain/entities/system-user.entity";
+import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateSystemUserEntity } from "../../domain/entities/system-user.entity";
 import { CustomError } from "../../domain/errors/custom.error";
 import { SignToken, VerifyRefreshToken } from "../../domain/types";
 import { RefreshTokenType } from '../../domain/types/system-user.type';
@@ -63,7 +63,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
           }
      }
 
-     async update(updateUserDto: UpdateUserDto): Promise<UpdateUserEntity> {
+     async update(updateUserDto: UpdateUserDto): Promise<UpdateSystemUserEntity> {
           const { id, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive } = updateUserDto;
           try {
                const resultUserUpdated = await SystemUserModel.findByIdAndUpdate(id, {
@@ -82,7 +82,7 @@ export class AuthDatasourceImpl implements AuthDatasource {
                }, { new: true });
 
                // 3. Mapear la respuesta a la entidad
-               return new UpdateUserEntity(id, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive, resultUserUpdated?.createdAt as unknown as string, resultUserUpdated?.updatedAt as unknown as string);
+               return new UpdateSystemUserEntity(id, address, firstName, lastName, phoneNumber, public_id, secure_url, city, zipcode, lockoutEnabled, accessFailedCount, birthDate, roles, isActive, resultUserUpdated?.createdAt as unknown as string, resultUserUpdated?.updatedAt as unknown as string);
 
           } catch (error) {
                this.logger.Error(error as Error);
