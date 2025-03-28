@@ -10,5 +10,5 @@ export * from './IRole'
 export * from './ISubCategory'
 export * from './ITax'
 export * from './IWishList'
-
+export * from './IShippingAddress'
 

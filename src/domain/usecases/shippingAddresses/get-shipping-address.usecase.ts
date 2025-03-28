@@ -1,22 +1,22 @@
-import { CustomError } from "../../errors/custom.error";
-import { GetCategoriesUseCase } from "../../interfaces/ICategory";
-import { CategoryRepository } from "../../repositories/category.repository";
+﻿import { CustomError } from "../../errors/custom.error";
+import { GetShippingAddressesUseCase } from "../../interfaces/IShippingAddress";
+import { ShippingAddressRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class GetCategories implements GetCategoriesUseCase {
+export class GetShippingAddresses implements GetShippingAddressesUseCase {
 
-     constructor(private readonly categoryRepository: CategoryRepository) { }
+     constructor(private readonly shippingaddressRepository: ShippingAddressRepository) { }
 
      async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const data = await this.categoryRepository.getCategories();
+               const shippingaddresses = await this.shippingaddressRepository.getShippingAddresses();
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: data,
+                    data: shippingaddresses,
                     message: null,
                     statusCode: 200,
                     stackTrace: null

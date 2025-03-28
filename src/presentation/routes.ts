@@ -11,6 +11,7 @@ import { PageRoutes } from "./routes/permissions/page.routes";
 import { AttributeRoutes } from "./routes/admin/attributes.routes";
 import { DiscountsRoutes } from "./routes/admin/discount.routes";
 import { WishListRoutes } from "./routes/admin/wishlist.routes";
+import { ShippingAddressRoutes } from "./routes/admin/shipping-address.routes";
 
 export class AppRoutes {
 
@@ -29,6 +30,7 @@ export class AppRoutes {
           router.use('/api/attributes', AttributeRoutes.routes)
           router.use('/api/discounts', DiscountsRoutes.routes)
           router.use('/api/wishlist', WishListRoutes.routes)
+          router.use('/api/shipping-address', ShippingAddressRoutes.routes)
 
           router.use('/api/upload', CloudinaryRoutes.routes)
 

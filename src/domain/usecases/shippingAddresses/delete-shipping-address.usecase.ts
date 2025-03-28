@@ -1,24 +1,25 @@
+﻿import { DeleteShippingAddressDto } from "../../dtos/shippingAddresses/delete-shipping-address.dto";
 import { CustomError } from "../../errors/custom.error";
-import { GetCategoriesUseCase } from "../../interfaces/ICategory";
-import { CategoryRepository } from "../../repositories/category.repository";
+import { DeleteShippingAddressUseCase } from "../../interfaces/IShippingAddress";
+import { ShippingAddressRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class GetCategories implements GetCategoriesUseCase {
+export class DeleteShippingAddress implements DeleteShippingAddressUseCase {
 
-     constructor(private readonly categoryRepository: CategoryRepository) { }
+     constructor(private readonly shippingaddressRepository: ShippingAddressRepository) { }
 
-     async execute(): Promise<ApiResultResponse> {
+     async execute(deleteShippingAddressDto: DeleteShippingAddressDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const data = await this.categoryRepository.getCategories();
+               const shippingaddress = await this.shippingaddressRepository.deleteShippingAddress(deleteShippingAddressDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: data,
-                    message: null,
-                    statusCode: 200,
+                    data: shippingaddress,
+                    message: "Shipping address deleted successfully",
+                    statusCode: 201,
                     stackTrace: null
                }
           } catch (error) {

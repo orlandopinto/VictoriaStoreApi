@@ -1,24 +1,25 @@
+﻿import { UpdateShippingAddressDto } from "../../dtos/shippingAddresses/update-shipping-address.dto";
 import { CustomError } from "../../errors/custom.error";
-import { GetCategoriesUseCase } from "../../interfaces/ICategory";
-import { CategoryRepository } from "../../repositories/category.repository";
+import { UpdateShippingAddressUseCase } from "../../interfaces/IShippingAddress";
+import { ShippingAddressRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
-export class GetCategories implements GetCategoriesUseCase {
+export class UpdateShippingAddress implements UpdateShippingAddressUseCase {
 
-     constructor(private readonly categoryRepository: CategoryRepository) { }
+     constructor(private readonly shippingaddressRepository: ShippingAddressRepository) { }
 
-     async execute(): Promise<ApiResultResponse> {
+     async execute(updateShippingAddressDto: UpdateShippingAddressDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const data = await this.categoryRepository.getCategories();
+               const shippingaddress = await this.shippingaddressRepository.updateShippingAddress(updateShippingAddressDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: data,
-                    message: null,
-                    statusCode: 200,
+                    data: shippingaddress,
+                    message: "Shipping address updated successfully",
+                    statusCode: 201,
                     stackTrace: null
                }
           } catch (error) {

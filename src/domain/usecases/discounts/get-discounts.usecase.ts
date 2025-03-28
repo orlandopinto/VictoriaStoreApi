@@ -18,7 +18,7 @@ export class GetDiscounts implements GetDiscountsUseCase {
                     hasError: false,
                     data: discounts,
                     message: null,
-                    statusCode: 201,
+                    statusCode: 200,
                     stackTrace: null
                }
           } catch (error) {

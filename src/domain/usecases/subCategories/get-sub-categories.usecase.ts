@@ -18,7 +18,7 @@ export class GetSubCategories implements GetSubCategoriesUseCase {
                     hasError: false,
                     data: data,
                     message: null,
-                    statusCode: 201,
+                    statusCode: 200,
                     stackTrace: null
                }
           } catch (error) {

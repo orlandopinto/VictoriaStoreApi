@@ -18,7 +18,7 @@ export class GetWishLists implements GetWishListsUseCase {
                     hasError: false,
                     data: wishlists,
                     message: null,
-                    statusCode: 201,
+                    statusCode: 200,
                     stackTrace: null
                }
           } catch (error) {

@@ -13,7 +13,7 @@ export const shippingAddressSchema = new Schema
                state: { type: String, required: [true, 'State is required'] },
                zipCode: { type: String, required: [true, 'Zipcode is required'] },
                country: { type: String, required: [true, 'Country is required'] },
-               isDefault: { type: Boolean, default: null }
+               isDefault: { type: Boolean, default: false }
           },
           { timestamps: true, versionKey: false }
      )
