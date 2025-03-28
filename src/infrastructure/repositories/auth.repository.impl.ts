@@ -1,22 +1,14 @@
 
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
-import { ChangePasswordDto, LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
 import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
-import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity, UserEntity } from "../../domain/entities";
+import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity } from "../../domain/entities";
 import { AuthRepository } from "../../domain/repositories/auth.repository";
 
 export class AuthRepositoryImpl implements AuthRepository {
 
      constructor(private readonly authDatasource: AuthDatasource) { }
-
-     login(loginUserDto: LoginUserDto): Promise<UserEntity> {
-          return this.authDatasource.login(loginUserDto);
-     }
-
-     register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
-          return this.authDatasource.register(registerUserDto);
-     }
 
      signIn(signInUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {
           return this.authDatasource.signIn(signInUserDto);

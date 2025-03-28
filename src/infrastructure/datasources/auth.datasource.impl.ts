@@ -1,17 +1,14 @@
 import { BcryptAdapter, DURATION_REFRESH_TOKEN, DURATION_TOKEN, JwtAdapter } from "../../config";
 import { AppLogger } from '../../config/appLogger';
-import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
 import { AuthDatasource } from "../../domain/datasources/auth.datasource";
-import { ChangePasswordDto, LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
-import { UserEntity } from "../../domain/entities";
 import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, SystemUserEntity, UpdateUserEntity } from "../../domain/entities/system-user.entity";
 import { CustomError } from "../../domain/errors/custom.error";
 import { SignToken, VerifyRefreshToken } from "../../domain/types";
-import { UserMapper } from "../mappers/user.mapper";
-import { RefreshTokenType } from '../../domain/types/system-user.type'
-import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
+import { RefreshTokenType } from '../../domain/types/system-user.type';
 import { CloudinaryController } from "../../presentation/controllers/adapters/cloudinary.controller";
 
 type HashFunction = (password: string) => string
@@ -28,57 +25,6 @@ export class AuthDatasourceImpl implements AuthDatasource {
           private readonly verifyRefreshToken: VerifyRefreshToken = JwtAdapter.verifyRefreshToken
      ) {
           this.logger = new AppLogger("AuthDatasourceImpl");
-     }
-
-     async login(loginUserDto: LoginUserDto): Promise<UserEntity> {
-          const { email, password } = loginUserDto;
-          try {
-
-               // 1. Verificar si existe el email
-               const user = await UserModel.findOne({ email }).lean()
-               if (!user) {
-                    throw CustomError.notFound('User name or password invalid.');
-               }
-
-               // 2. Verifica si la contraseña hace match
-               if (!this.compareFunction(password, user.password)) {
-                    throw CustomError.notFound('User name or password invalid.');
-               }
-
-               // 3. Mapear la respuesta a la entidad
-               return UserMapper.userEntityFromObject(user);
-
-          } catch (error) {
-               //this.logger.Error(error as Error);
-               if (error instanceof CustomError) {
-                    throw error;
-               }
-               throw CustomError.internalServerError();
-          }
-     }
-
-     async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
-
-          const { name, email, password, img } = registerUserDto;
-          try {
-               // 1. verificar si el correo existe
-               const exists = await UserModel.findOne({ email: email })
-               if (exists) throw CustomError.badRequest('User already exists.')
-
-               // 2. Hash de contraseña
-               const user = await UserModel.create({ name: name, email: email, password: this.hashPassword(password), img })
-               await user.save();
-
-               // 3. Mapear la respuesta a la entidad
-               return UserMapper.userEntityFromObject(user);
-
-          } catch (error) {
-               //this.logger.Error(error as Error);
-               if (error instanceof CustomError) {
-                    throw error;
-               }
-               throw CustomError.internalServerError();
-          }
      }
 
      async signIn(signInUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity> {

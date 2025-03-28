@@ -1,8 +1,7 @@
 import { AppLogger } from "../../config/appLogger";
-import { UserModel } from "../../data/mongodb";
 import { SystemUserModel } from "../../data/mongodb/models/system-user.model";
-import { LoginUser, RegisterUser, SignInUser, SignUpUser } from "../../domain";
-import { ChangePasswordDto, LoginUserDto, RegisterUserDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
+import { SignInUser, SignUpUser } from "../../domain";
+import { ChangePasswordDto, SignInUserDto, SignUpUserDto, UpdateUserDto } from "../../domain/dtos/auth";
 import { DeleteSystemUserDto } from "../../domain/dtos/auth/delete-system-user.dto";
 import { RefreshTokenDto } from "../../domain/dtos/auth/refresh-token.dto";
 import { CustomError } from "../../domain/errors/custom.error";
@@ -23,39 +22,15 @@ export class AuthController {
 
      // #region PUBLIC FUNCTIONS
 
-     loginUser = (req: any, res: any) => {
-          const [error, loginUserDto] = LoginUserDto.login(req.body);
-          if (error) {
-               return this.handleCustomError(error, res);
-          }
-
-          new LoginUser(this.authRepository)
-               .execute(loginUserDto!)
-               .then((data) => res.json(data))
-               .catch(error => this.handleEror(error, res));
-     }
-
-     registerUser = (req: any, res: any) => {
-          const [error, registerUserDto] = RegisterUserDto.create(req.body);
-          if (error) {
-               return this.handleCustomError(error, res);
-          }
-
-          new RegisterUser(this.authRepository)
-               .execute(registerUserDto!)
-               .then((data) => res.json(data))
-               .catch(error => this.handleEror(error, res));
-     }
-
-     getUsers = (req: any, res: any) => {
-          try {
-               UserModel.find()
-                    .then(data => res.json({ data }))
-                    .catch(error => this.handleEror(error, res));
-          } catch (error) {
-               this.logger.Error(error as Error);
-          }
-     }
+     // getUsers = (req: any, res: any) => {
+     //      try {
+     //           UserModel.find()
+     //                .then(data => res.json({ data }))
+     //                .catch(error => this.handleEror(error, res));
+     //      } catch (error) {
+     //           this.logger.Error(error as Error);
+     //      }
+     // }
 
      // CUENTAS DEL SISTEMA
      signIn = (req: any, res: any) => {

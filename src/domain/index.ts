@@ -1,6 +1,4 @@
 //USER AUTHORIZATION
-export * from './usecases/auth/login-user.use-case'
-export * from './usecases/auth/register-user.use-case'
 
 //SYSTEM AUTHORIZATION
 export * from './usecases/auth/sign-in-user.usecase'
@@ -26,3 +24,9 @@ export * from './usecases/permissions/get-permissions-by-role.usecase'
 export * from './usecases/permissions/add-action.usecase'
 export * from './usecases/permissions/delete-action.usecase'
 export * from './usecases/permissions/get-actions.usecase'
+
+//WISHLIST
+export * from './usecases/wishlists/add-wishlist.usecase'
+export * from './usecases/wishlists/delete-wishlist.usecase'
+export * from './usecases/wishlists/get-wishlist.usecase'
+export * from './usecases/wishlists/update-wishlist.usecase'

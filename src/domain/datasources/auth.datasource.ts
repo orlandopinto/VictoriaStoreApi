@@ -5,8 +5,8 @@ import { ChangePasswordEntity, EnvironmentSystemUserEntity, RefreshTokenEntity, 
 
 export abstract class AuthDatasource {
 
-     abstract login(loginUserDto: LoginUserDto): Promise<UserEntity>
-     abstract register(registerUserDto: RegisterUserDto): Promise<UserEntity>
+     // abstract login(loginUserDto: LoginUserDto): Promise<UserEntity>
+     // abstract register(registerUserDto: RegisterUserDto): Promise<UserEntity>
      abstract signIn(signInUserDto: SignInUserDto): Promise<EnvironmentSystemUserEntity>
      abstract signUp(signUpUserDto: SignUpUserDto): Promise<SystemUserEntity>
      abstract update(updateUserDto: UpdateUserDto): Promise<UpdateUserEntity>
