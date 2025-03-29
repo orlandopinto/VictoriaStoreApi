@@ -6,19 +6,19 @@ import { ApiResultResponse } from "../../types";
 
 export class AddSystemUser implements AddSystemUserUseCase {
 
-     constructor(private readonly systemuserRepository: SystemUserRepository) { }
+     constructor(private readonly systemUserRepository: SystemUserRepository) { }
 
      async execute(addSystemUserDto: AddSystemUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const systemuser = await this.systemuserRepository.addSystemUser(addSystemUserDto);
+               const systemuser = await this.systemUserRepository.addSystemUser(addSystemUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
                     data: systemuser,
-                    message: "SystemUser created successfully",
+                    message: "User created successfully",
                     statusCode: 201,
                     stackTrace: null
                }

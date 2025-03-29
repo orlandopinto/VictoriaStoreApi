@@ -1,10 +1,10 @@
-import { AppLogger } from "../../config/appLogger";
-import { SignInUser, RefreshToken } from "../../domain";
-import { SignInUserDto, RefreshTokenDto, ChangePasswordDto } from "../../domain/dtos/auth";
-import { CustomError } from "../../domain/errors/custom.error";
-import { AuthRepository } from "../../domain/repositories";
-import { ApiResultResponse } from "../../domain/types";
-import { ChangePassword } from "../../domain/usecases/auth/change-password.usecase";
+import { AppLogger } from "../../../config/appLogger";
+import { SignInUser, RefreshToken } from "../../../domain";
+import { SignInUserDto, RefreshTokenDto, ChangePasswordDto } from "../../../domain/dtos/auth";
+import { CustomError } from "../../../domain/errors/custom.error";
+import { AuthRepository } from "../../../domain/repositories";
+import { ApiResultResponse } from "../../../domain/types";
+import { ChangePassword } from "../../../domain/usecases/auth/change-password.usecase";
 
 export class SystemAuthController {
 

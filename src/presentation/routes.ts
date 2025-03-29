@@ -4,16 +4,16 @@ import { CategoryRoutes } from "./routes/admin/category.routes";
 import { DiscountsRoutes } from "./routes/admin/discount.routes";
 import { ShippingAddressRoutes } from "./routes/admin/shipping-address.routes";
 import { SubCategoryRoutes } from "./routes/admin/sub-category.routes";
-import { SystemUserRoutes } from "./routes/admin/system-users.routes";
+import { SystemUserRoutes } from "./routes/system-users/system-users.routes";
 import { TaxRoutes } from "./routes/admin/tax.routes";
-import { UserRoutes } from "./routes/admin/users.routes";
 import { WishListRoutes } from "./routes/admin/wishlist.routes";
 import { CloudinaryRoutes } from "./routes/adpaters/cloudinary.routes";
-import { SystemAuthorizationRoutes } from "./routes/auth/system-authorization.routes";
-import { ActionRoutes } from './routes/permissions/action.routes';
 import { PageRoutes } from "./routes/permissions/page.routes";
 import { PermissionsByRoleRoutes } from "./routes/permissions/permissions-by-role.routes";
 import { RoleRoutes } from "./routes/permissions/role.routes";
+import { SystemAuthorizationRoutes } from "./routes/system-auth/system-authorization.routes";
+import { ActionRoutes } from "./routes/permissions/action.routes";
+import { UsersRoutes } from "./routes/users/users-routes";
 
 export class AppRoutes {
 
@@ -24,7 +24,7 @@ export class AppRoutes {
           router.use('/api/system-users', SystemUserRoutes.routes)
 
           //router.use('/api/auth', AuthorizationRoutes.routes)
-          router.use('/api/users', UserRoutes.routes)
+          router.use('/api/users', UsersRoutes.routes)
 
           router.use('/api/actions', ActionRoutes.routes)
           router.use('/api/permissions', PermissionsByRoleRoutes.routes)

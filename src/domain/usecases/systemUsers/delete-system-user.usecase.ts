@@ -6,19 +6,19 @@ import { ApiResultResponse } from "../../types";
 
 export class DeleteSystemUser implements DeleteSystemUserUseCase {
 
-     constructor(private readonly systemuserRepository: SystemUserRepository) { }
+     constructor(private readonly systemUserRepository: SystemUserRepository) { }
 
      async execute(deleteSystemUserDto: DeleteSystemUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const systemuser = await this.systemuserRepository.deleteSystemUser(deleteSystemUserDto);
+               const systemuser = await this.systemUserRepository.deleteSystemUser(deleteSystemUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
                     data: systemuser,
-                    message: "SystemUser deleted successfully",
+                    message: "User deleted successfully",
                     statusCode: 201,
                     stackTrace: null
                }

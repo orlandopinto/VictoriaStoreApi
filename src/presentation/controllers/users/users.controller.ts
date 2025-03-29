@@ -1,47 +1,50 @@
 ﻿import { AppLogger } from "../../../config/appLogger";
-import { AddSystemUser, UpdateSystemUser, DeleteSystemUser, GetSystemUsers } from "../../../domain";
-import { AddSystemUserDto } from "../../../domain/dtos/systemusers/add-system-user.dto";
-import { DeleteSystemUserDto } from "../../../domain/dtos/systemusers/delete-system-user.dto";
-import { UpdateSystemUserDto } from "../../../domain/dtos/systemusers/update-system-user.dto";
+import { AddUserDto } from "../../../domain/dtos/users/add-user.dto";
+import { DeleteUserDto } from "../../../domain/dtos/users/delete-user.dto";
+import { UpdateUserDto } from "../../../domain/dtos/users/update-user.dto";
 import { CustomError } from "../../../domain/errors/custom.error";
-import { SystemUserRepository } from "../../../domain/repositories";
+import { UserRepository } from "../../../domain/repositories";
 import { ApiResultResponse } from "../../../domain/types";
+import { AddUser } from "../../../domain/usecases/users/add-user.usecase";
+import { DeleteUser } from "../../../domain/usecases/users/delete-user.usecase";
+import { GetUsers } from "../../../domain/usecases/users/get-users.usecase";
+import { UpdateUser } from "../../../domain/usecases/users/update-user.usecase";
 
-export class SystemUserController {
+export class UsersController {
 
      logger: AppLogger;
 
-     constructor(private readonly systemuserRepository: SystemUserRepository) {
-          this.logger = new AppLogger("SystemUserController");
+     constructor(private readonly userRepository: UserRepository) {
+          this.logger = new AppLogger("UserController");
      }
 
-     addSystemUser = async (req: any, res: any) => {
-          const [error, addSystemUserDto] = AddSystemUserDto.create(req.body);
+     addUser = async (req: any, res: any) => {
+          const [error, addUserDto] = AddUserDto.create(req.body);
           if (error) return this.handleError(error, res);
 
-          await new AddSystemUser(this.systemuserRepository)
-               .execute(addSystemUserDto!)
+          await new AddUser(this.userRepository)
+               .execute(addUserDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
 
-     updateSystemUser = async (req: any, res: any) => {
-          const [error, updateSystemUserDto] = UpdateSystemUserDto.update(req.body);
+     updateUser = async (req: any, res: any) => {
+          const [error, updateUserDto] = UpdateUserDto.update(req.body);
           if (error) return this.handleError(error, res);
 
-          await new UpdateSystemUser(this.systemuserRepository)
-               .execute(updateSystemUserDto!)
+          await new UpdateUser(this.userRepository)
+               .execute(updateUserDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
 
-     deleteSystemUser = async (req: any, res: any) => {
+     deleteUser = async (req: any, res: any) => {
           try {
-               const [error, deleteSystemUserDto] = DeleteSystemUserDto.delete(req.body);
+               const [error, deleteUserDto] = DeleteUserDto.delete(req.body);
                if (error) return this.handleError(error, res);
 
-               await new DeleteSystemUser(this.systemuserRepository)
-                    .execute(deleteSystemUserDto!)
+               await new DeleteUser(this.userRepository)
+                    .execute(deleteUserDto!)
                     .then((data) => res.json(data))
                     .catch(error => this.handleError(error, res));
           } catch (error) {
@@ -49,10 +52,10 @@ export class SystemUserController {
           }
      }
 
-     getSystemUsers = async (req: any, res: any) => {
+     getUsers = async (req: any, res: any) => {
           try {
-               const data = await new GetSystemUsers(this.systemuserRepository).execute();
-               return res.json({ ...data, data: data.data.systemUsers });
+               const data = await new GetUsers(this.userRepository).execute();
+               return res.json({ ...data, data: data.data.users });
           } catch (error) {
                this.handleCustomError(error as Error, res);
           }

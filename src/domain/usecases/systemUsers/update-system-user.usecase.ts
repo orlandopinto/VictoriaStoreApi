@@ -6,18 +6,18 @@ import { ApiResultResponse } from "../../types";
 
 export class UpdateSystemUser implements UpdateSystemUserUseCase {
 
-     constructor(private readonly systemuserRepository: SystemUserRepository) { }
+     constructor(private readonly systemUserRepository: SystemUserRepository) { }
 
      async execute(updateSystemUserDto: UpdateSystemUserDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const systemuser = await this.systemuserRepository.updateSystemUser(updateSystemUserDto);
+               const systemUser = await this.systemUserRepository.updateSystemUser(updateSystemUserDto);
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: systemuser,
+                    data: systemUser,
                     message: "User updated successfully",
                     statusCode: 201,
                     stackTrace: null

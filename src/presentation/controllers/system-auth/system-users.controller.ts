@@ -1,49 +1,46 @@
 ﻿import { AppLogger } from "../../../config/appLogger";
-import { AddUserDto } from "../../../domain/dtos/users/add-user.dto";
-import { DeleteUserDto } from "../../../domain/dtos/users/delete-user.dto";
-import { UpdateUserDto } from "../../../domain/dtos/users/update-user.dto";
+import { AddSystemUser, DeleteSystemUser, GetSystemUsers, UpdateSystemUser } from "../../../domain";
+import { AddSystemUserDto } from "../../../domain/dtos/systemusers/add-system-user.dto";
+import { DeleteSystemUserDto } from "../../../domain/dtos/systemusers/delete-system-user.dto";
+import { UpdateSystemUserDto } from "../../../domain/dtos/systemusers/update-system-user.dto";
 import { CustomError } from "../../../domain/errors/custom.error";
-import { UserRepository } from "../../../domain/repositories";
+import { SystemUserRepository } from "../../../domain/repositories";
 import { ApiResultResponse } from "../../../domain/types";
-import { AddUser } from "../../../domain/usecases/users/add-user.usecase";
-import { DeleteUser } from "../../../domain/usecases/users/delete-user.usecase";
-import { GetUsers } from "../../../domain/usecases/users/get-users.usecase";
-import { UpdateUser } from "../../../domain/usecases/users/update-user.usecase";
 
-export class UserController {
+export class SystemUserController {
 
      logger: AppLogger;
 
-     constructor(private readonly userRepository: UserRepository) {
-          this.logger = new AppLogger("UserController");
+     constructor(private readonly systemUserRepository: SystemUserRepository) {
+          this.logger = new AppLogger("SystemUserController");
      }
 
-     addUser = async (req: any, res: any) => {
-          const [error, addUserDto] = AddUserDto.create(req.body);
+     addSystemUser = async (req: any, res: any) => {
+          const [error, addUserDto] = AddSystemUserDto.create(req.body);
           if (error) return this.handleError(error, res);
 
-          await new AddUser(this.userRepository)
+          await new AddSystemUser(this.systemUserRepository)
                .execute(addUserDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
 
-     updateUser = async (req: any, res: any) => {
-          const [error, updateUserDto] = UpdateUserDto.update(req.body);
+     updateSystemUser = async (req: any, res: any) => {
+          const [error, updateUserDto] = UpdateSystemUserDto.update(req.body);
           if (error) return this.handleError(error, res);
 
-          await new UpdateUser(this.userRepository)
+          await new UpdateSystemUser(this.systemUserRepository)
                .execute(updateUserDto!)
                .then((data) => res.json(data))
                .catch(error => this.handleCustomError(error, res));
      }
 
-     deleteUser = async (req: any, res: any) => {
+     deleteSystemUser = async (req: any, res: any) => {
           try {
-               const [error, deleteUserDto] = DeleteUserDto.delete(req.body);
+               const [error, deleteUserDto] = DeleteSystemUserDto.delete(req.body);
                if (error) return this.handleError(error, res);
 
-              await new DeleteUser(this.userRepository)
+               await new DeleteSystemUser(this.systemUserRepository)
                     .execute(deleteUserDto!)
                     .then((data) => res.json(data))
                     .catch(error => this.handleError(error, res));
@@ -52,16 +49,16 @@ export class UserController {
           }
      }
 
-     getUsers = async (req: any, res: any) => {
+     getSystemUsers = async (req: any, res: any) => {
           try {
-               const data = await new GetUsers(this.userRepository).execute();
-               return res.json({ ...data, data: data.data.users });
+               const data = await new GetSystemUsers(this.systemUserRepository).execute();
+               return res.json({ ...data, data: data.data.systemUsers });
           } catch (error) {
                this.handleCustomError(error as Error, res);
           }
      }
 
-    private handleCustomError = (error: unknown, res: any) => {
+     private handleCustomError = (error: unknown, res: any) => {
           this.logger.Error(error as Error);
           if (error instanceof CustomError) {
                const responsError: ApiResultResponse = {

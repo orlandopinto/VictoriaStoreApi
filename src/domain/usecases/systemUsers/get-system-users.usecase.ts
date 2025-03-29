@@ -5,18 +5,18 @@ import { ApiResultResponse } from "../../types";
 
 export class GetSystemUsers implements GetSystemUsersUseCase {
 
-     constructor(private readonly systemuserRepository: SystemUserRepository) { }
+     constructor(private readonly systemUserRepository: SystemUserRepository) { }
 
      async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const systemusers = await this.systemuserRepository.getSystemUsers();
+               const systemUsers = await this.systemUserRepository.getSystemUsers();
                resultResponse = {
                     status: "success",
                     hasError: false,
-                    data: systemusers,
+                    data: systemUsers,
                     message: null,
                     statusCode: 200,
                     stackTrace: null
