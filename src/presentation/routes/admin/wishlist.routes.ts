@@ -1,6 +1,6 @@
 ﻿import { Router } from "express";
 import { WishListDatasourceImpl } from "../../../infrastructure/datasources";
-import { WishListRepositoryImpl } from "../../../infrastructure";
+import { WishListRepositoryImpl } from "../../../infrastructure/repositories";
 import { WishListController } from "../../controllers/admin/wishlist.controller";
 import AuthMiddleware from "../../middlewares/auth.middleware";
 

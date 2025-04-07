@@ -18,7 +18,9 @@ export class UpdateDiscountEntity {
 
           public _id: string,
           public discountName: string,
-          public discountValue: string | null
+          public discountValue: string | null,
+          public createdAt?: string,
+          public updatedAt?: string
 
      ) { }
 

@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { AuthDatasourceImpl, AuthRepositoryImpl } from '../../../infrastructure';
 import AuthMiddleware from "../../middlewares/auth.middleware";
 import { SystemAuthController } from "../../controllers/system-auth/system-auth.controller";
+import { AuthDatasourceImpl } from "../../../infrastructure/datasources";
+import { AuthRepositoryImpl } from "../../../infrastructure/repositories";
 
 export class SystemAuthorizationRoutes {
 

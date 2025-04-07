@@ -11,7 +11,7 @@ export class AddSystemUserDto {
 		public public_id: string | null,
 		public secure_url: string | null,
 		public city: string | null,
-		public zipcode: | null,
+		public zipcode: number | null,
 		public lockoutEnabled: boolean,
 		public accessFailedCount: number,
 		public address: string | null,

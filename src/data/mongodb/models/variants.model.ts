@@ -6,6 +6,7 @@ export const variantsSchema = new Schema
                product_id: { type: Schema.Types.ObjectId, required: [true, 'Product ID is required'], ref: 'Products' },
                price: { type: mongoose.Schema.Types.Decimal128, required: [true, 'Price is required'] },
                discount_id: { type: Schema.Types.ObjectId, default: null, ref: 'Discounts' },
+               tax_id: { type: Schema.Types.ObjectId, default: null, ref: 'Taxes' },
                sku: { type: String, default: null },
                in_stock: { type: Boolean, required: [true, 'In stock value is required'] },
                stock: { type: Number, required: [true, 'Stock is required'] },

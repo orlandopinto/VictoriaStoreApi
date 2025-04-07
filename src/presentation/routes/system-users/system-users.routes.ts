@@ -1,5 +1,5 @@
 ﻿import { Router } from "express";
-import { SystemUserRepositoryImpl } from "../../../infrastructure";
+import { SystemUserRepositoryImpl } from "../../../infrastructure/repositories";
 import { SystemUserDatasourceImpl } from "../../../infrastructure/datasources";
 import { SystemUserController } from "../../controllers/system-auth/system-users.controller";
 import AuthMiddleware from "../../middlewares/auth.middleware";

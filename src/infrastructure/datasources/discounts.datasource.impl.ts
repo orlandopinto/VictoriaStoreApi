@@ -17,13 +17,13 @@ export class DiscountDatasourceImpl implements DiscountDatasource {
 
      async addDiscount(addDiscountDto: AddDiscountDto): Promise<AddDiscountEntity> {
 
-          const { _id, discountName, discountValue } = addDiscountDto;
+          const { discountName, discountValue } = addDiscountDto;
 
           try {
 
                const discount = await DiscountsModel.findOne({ discountName: discountName })
                if (discount) throw CustomError.badRequest('Discount already exists.')
-               const result = await DiscountsModel.create({ _id, discountName, discountValue })
+               const result = await DiscountsModel.create({ discountName, discountValue })
                await result.save();
                return new AddDiscountEntity(result._id.toString(), result.discountName, result.discountValue.toString(),);
 
@@ -49,7 +49,7 @@ export class DiscountDatasourceImpl implements DiscountDatasource {
                if (!result)
                     throw CustomError.notFound('Discount not found.');
 
-               return new UpdateDiscountEntity(result._id.toString(), result.discountName, result.discountValue.toString(),);
+               return new UpdateDiscountEntity(result._id.toString(), result.discountName, result.discountValue.toString(), result.createdAt as unknown as string, result.updatedAt as unknown as string);
                //Agregar si es necesario result.createdAt as unknown as string, result.updatedAt as unknown as string);
 
           } catch (error) {

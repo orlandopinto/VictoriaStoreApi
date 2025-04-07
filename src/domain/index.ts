@@ -47,3 +47,35 @@ export * from './usecases/systemUsers/add-system-user.usecase'
 export * from './usecases/systemUsers/delete-system-user.usecase'
 export * from './usecases/systemUsers/get-system-users.usecase'
 export * from './usecases/systemUsers/update-system-user.usecase'
+
+//PRODUCT IMAGES
+export * from './usecases/productImages/add-product-image.usecase'
+export * from './usecases/productImages/delete-product-image.usecase'
+export * from './usecases/productImages/get-product-images.usecase'
+
+//PRODUCT VIDEOS
+export * from './usecases/productVideos/add-product-video.usecase'
+export * from './usecases/productVideos/delete-product-video.usecase'
+export * from './usecases/productVideos/get-product-videos.usecase'
+
+//PRODUCTS
+export * from './usecases/products/add-product.usecase'
+export * from './usecases/products/delete-product.usecase'
+export * from './usecases/products/get-products.usecase'
+export * from './usecases/products/update-product.usecase'
+
+//RATINGS
+export * from './usecases/ratings/add-rating.usecase'
+export * from './usecases/ratings/delete-rating.usecase'
+export * from './usecases/ratings/get-rating.usecase'
+export * from './usecases/ratings/update-rating.usecase'
+
+//REVIEWS
+export * from './usecases/reviews/add-review.usecase'
+export * from './usecases/reviews/get-review.usecase'
+
+//VARIANTS
+export * from './usecases/variants/add-variant.usecase'
+export * from './usecases/variants/delete-variant.usecase'
+export * from './usecases/variants/get-variant.usecase'
+export * from './usecases/variants/update-variant.usecase'

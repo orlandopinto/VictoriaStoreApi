@@ -1,18 +1,18 @@
 ﻿import { CustomError } from "../../errors/custom.error";
 import { GetAttributesUseCase } from "../../interfaces";
-import { AttributeRepository } from "../../repositories";
+import { AttributeNamesRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
 export class GetAttributes implements GetAttributesUseCase {
 
-     constructor(private readonly attributeRepository: AttributeRepository) { }
+     constructor(private readonly attributeRepository: AttributeNamesRepository) { }
 
      async execute(): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const attributes = await this.attributeRepository.getAttributes();
+               const attributes = await this.attributeRepository.getAttributeNames();
                resultResponse = {
                     status: "success",
                     hasError: false,

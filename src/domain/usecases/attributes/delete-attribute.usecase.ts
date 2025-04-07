@@ -1,19 +1,19 @@
-﻿import { DeleteAttributeDto } from "../../dtos/attributes/delete-attribute.dto";
+﻿import { DeleteAttributeNameDto } from "../../dtos/attributeNames/delete-attribute-name.dto";
 import { CustomError } from "../../errors/custom.error";
 import { DeleteAttributeUseCase } from "../../interfaces";
-import { AttributeRepository } from "../../repositories";
+import { AttributeNamesRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
 export class DeleteAttribute implements DeleteAttributeUseCase {
 
-     constructor(private readonly attributeRepository: AttributeRepository) { }
+     constructor(private readonly attributeRepository: AttributeNamesRepository) { }
 
-     async execute(deleteAttributeDto: DeleteAttributeDto): Promise<ApiResultResponse> {
+     async execute(deleteAttributeNameDto: DeleteAttributeNameDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const attributes = await this.attributeRepository.deleteAttribute(deleteAttributeDto);
+               const attributes = await this.attributeRepository.deleteAttribute(deleteAttributeNameDto);
                resultResponse = {
                     status: "success",
                     hasError: false,

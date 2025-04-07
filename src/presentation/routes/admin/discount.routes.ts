@@ -1,6 +1,6 @@
 ﻿import { Router } from "express";
 import { DiscountDatasourceImpl } from "../../../infrastructure/datasources";
-import { DiscountRepositoryImpl } from "../../../infrastructure";
+import { DiscountRepositoryImpl } from "../../../infrastructure/repositories";
 import { DiscountController } from "../../controllers/admin/discounts.controller";
 import AuthMiddleware from "../../middlewares/auth.middleware";
 

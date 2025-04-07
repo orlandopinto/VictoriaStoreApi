@@ -1,6 +1,6 @@
 ﻿import { Router } from "express";
 import { ShippingAddressDatasourceImpl } from "../../../infrastructure/datasources";
-import { ShippingAddressRepositoryImpl } from "../../../infrastructure";
+import { ShippingAddressRepositoryImpl } from "../../../infrastructure/repositories";
 import { ShippingAddressController } from "../../controllers/admin/shipping-address.controller";
 import AuthMiddleware from "../../middlewares/auth.middleware";
 

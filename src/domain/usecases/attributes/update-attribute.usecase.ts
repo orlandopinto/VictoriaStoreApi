@@ -1,19 +1,19 @@
-﻿import { UpdateAttributeDto } from "../../dtos/attributes/update-attribute.dto";
+﻿import { UpdateAttributeNameDto } from "../../dtos/attributeNames/update-attribute-name.dto";
 import { CustomError } from "../../errors/custom.error";
 import { UpdateAttributeUseCase } from "../../interfaces";
-import { AttributeRepository } from "../../repositories";
+import { AttributeNamesRepository } from "../../repositories";
 import { ApiResultResponse } from "../../types";
 
 export class UpdateAttribute implements UpdateAttributeUseCase {
 
-     constructor(private readonly attributeRepository: AttributeRepository) { }
+     constructor(private readonly attributeRepository: AttributeNamesRepository) { }
 
-     async execute(updateAttributeDto: UpdateAttributeDto): Promise<ApiResultResponse> {
+     async execute(updateAttributeNameDto: UpdateAttributeNameDto): Promise<ApiResultResponse> {
 
           let resultResponse: ApiResultResponse = {} as ApiResultResponse
 
           try {
-               const attributes = await this.attributeRepository.updateAttribute(updateAttributeDto);
+               const attributes = await this.attributeRepository.updateAttributeName(updateAttributeNameDto);
                resultResponse = {
                     status: "success",
                     hasError: false,

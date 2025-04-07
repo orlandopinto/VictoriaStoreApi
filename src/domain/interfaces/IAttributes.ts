@@ -1,18 +1,18 @@
-﻿import { AddAttributeDto } from "../dtos/attributes/add-attribute.dto"
-import { DeleteAttributeDto } from "../dtos/attributes/delete-attribute.dto"
-import { UpdateAttributeDto } from "../dtos/attributes/update-attribute.dto"
+﻿import { AddAttributeNameDto } from "../dtos/attributeNames/add-attribute-name.dto"
+import { DeleteAttributeNameDto } from "../dtos/attributeNames/delete-attribute-name.dto"
+import { UpdateAttributeNameDto } from "../dtos/attributeNames/update-attribute-name.dto"
 import { ApiResultResponse } from "../types/api-result-response.type"
 
 export interface AddAttributeUseCase {
-     execute(addAttributeDto: AddAttributeDto): Promise<ApiResultResponse>
+     execute(addAttributeNameDto: AddAttributeNameDto): Promise<ApiResultResponse>
 }
 
 export interface UpdateAttributeUseCase {
-     execute(updateAttributeDto: UpdateAttributeDto): Promise<ApiResultResponse>
+     execute(updateAttributeNameDto: UpdateAttributeNameDto): Promise<ApiResultResponse>
 }
 
 export interface DeleteAttributeUseCase {
-     execute(deleteAttributeDto: DeleteAttributeDto): Promise<ApiResultResponse>
+     execute(deleteAttributeNameDto: DeleteAttributeNameDto): Promise<ApiResultResponse>
 }
 
 export interface GetAttributesUseCase {
