@@ -19,6 +19,7 @@ import { ProductVideoRoutes } from "./routes/admin/product-videos.routes";
 import { ProductRoutes } from "./routes/admin/product.routes";
 import { ReviewRoutes } from "./routes/admin/review.routes";
 import { VariantRoutes } from "./routes/admin/variant.routes";
+import { AttributeValuesRoutes } from "./routes/admin/attribute-value.routes";
 
 export class AppRoutes {
 
@@ -39,6 +40,7 @@ export class AppRoutes {
           router.use('/api/sub-category', SubCategoryRoutes.routes)
           router.use('/api/taxes', TaxRoutes.routes)
           router.use('/api/attributes-names', AttributeNamesRoutes.routes)
+          router.use('/api/attributes-values', AttributeValuesRoutes.routes)
           router.use('/api/discounts', DiscountsRoutes.routes)
           router.use('/api/wishlist', WishListRoutes.routes)
           router.use('/api/shipping-address', ShippingAddressRoutes.routes)

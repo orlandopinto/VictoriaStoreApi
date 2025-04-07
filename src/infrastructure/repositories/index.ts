@@ -15,4 +15,5 @@ export * from './system-users.repository.impl'
 export * from './tax.repository.impl'
 export * from './users.repository.impl'
 export * from './wishlist.repository.impl'
+export * from './attribute-value.repository.impl'
 
